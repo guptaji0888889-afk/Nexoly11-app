@@ -1,51 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexoly11 - India's Social Media</title>
+<title>Nexoly11 🇮🇳</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#000;color:#fff;transition:0.3s}
-body.light{background:#fff;color:#000}
-.header{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #222}
-.dp{width:90px;height:90px;border-radius:50%;padding:3px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)}
-.dp img{width:100%;height:100%;border-radius:50%;border:3px solid #000;display:block}
-.profile{padding:15px}
-.stats{display:flex;gap:30px;margin:15px 0}
-.stat b{display:block;font-size:18px}
-.bio{margin-bottom:12px;line-height:1.4}
-.btns{display:flex;gap:8px}
-.btn{flex:1;padding:8px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#fff;font-weight:600}
-.tabs{display:flex;justify-content:space-around;border-top:1px solid #222;border-bottom:1px solid #222;margin-top:10px}
-.tabs div{padding:12px;font-size:20px}
-.tabs .active{border-bottom:2px solid #fff}
-.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px}
-.post{aspect-ratio:1;background:linear-gradient(135deg,#4f5bd5,#962fbf,#d62976);display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:800;font-size:14px}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #222;display:flex;justify-content:space-around;padding:10px}
-.theme{position:fixed;top:60px;right:10px;background:#fff;color:#000;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:system-ui}
+.header{padding:12px 15px;display:flex;justify-content:space-between;border-bottom:1px solid #222}
+.logo{font-weight:900;font-size:22px;letter-spacing:1px}
+.story-row{display:flex;gap:12px;overflow-x:auto;padding:12px;border-bottom:1px solid #222}
+.story-row::-webkit-scrollbar{display:none}
+.s{text-align:center;min-width:62px}
+.ring{width:62px;height:62px;border-radius:50%;padding:2px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)}
+.inner{width:100%;height:100%;border-radius:50%;border:3px solid #000;background:#222;display:flex;align-items:center;justify-content:center;font-size:24px}
+.s span{font-size:10px;display:block;margin-top:4px}
+.profile{padding:15px;padding-bottom:70px}
+.top{display:flex;gap:20px;align-items:center}
+.dp{width:84px;height:84px;border-radius:50%;background:linear-gradient(45deg,#ff0050,#7000ff);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900}
+.stats{display:flex;gap:22px;text-align:center}
+.stats b{display:block;font-size:18px}
+.bio{margin-top:12px;font-size:14px;line-height:1.4}
+.btns{display:flex;gap:8px;margin-top:12px}
+.btn{flex:1;padding:9px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#fff;font-weight:600;text-decoration:none;text-align:center}
+.btn.primary{background:#fff;color:#000}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-top:15px}
+.box{aspect-ratio:1;background:#111;display:flex;align-items:center;justify-content:center;font-size:26px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #222;display:flex;justify-content:space-around;padding:12px 0}
+.nav a{color:#fff;text-decoration:none;font-size:22px}
+.wm{position:fixed;top:60px;right:8px;background:rgba(255,255,255,0.12);padding:3px 8px;border-radius:12px;font-size:10px}
 </style>
 </head>
 <body>
-<div class="theme" onclick="document.body.classList.toggle('light')">🌙/☀️ Theme</div>
-<div class="header"><b>Nexoly11_Official ✓</b><span> + ☰ </span></div>
+<div class="header"><div class="logo">NEXOLY11 🇮🇳</div><div>☾</div></div>
+
+<div class="story-row">
+  <div class="s"><div class="ring"><div class="inner">➕</div></div><span>Your Story</span></div>
+  <div class="s"><div class="ring"><div class="inner">🔥</div></div><span>Nexoly11</span></div>
+  <div class="s"><div class="ring"><div class="inner">🇮🇳</div></div><span>Desi</span></div>
+  <div class="s"><div class="ring"><div class="inner">⭐</div></div><span>India</span></div>
+  <div class="s"><div class="ring"><div class="inner">💪</div></div><span>GuptaJi</span></div>
+</div>
+
+<div class="wm">NEXOLY11 OFFICIAL</div>
+
 <div class="profile">
-  <div style="display:flex;gap:20px;align-items:center">
-    <div class="dp"><img src="https://i.pravatar.cc/150?img=12"></div>
+  <div class="top">
+    <div class="dp">N11</div>
     <div class="stats">
-      <div class="stat"><b>45</b>Posts</div>
-      <div class="stat"><b>254K</b>Followers</div>
-      <div class="stat"><b>120</b>Following</div>
+      <div><b>11</b>Posts</div>
+      <div><b>11K</b>Followers</div>
+      <div><b>111</b>Following</div>
     </div>
   </div>
-  <div class="bio"><b>Nexoly11</b><br>India's Social Media 🇮🇳<br>Dream Big Work Hard<br>@Nexoly11_Official</div>
-  <div class="btns"><button class="btn">Edit Profile</button><button class="btn">Share Profile</button></div>
+  <div class="bio">
+    <b>Nexoly11_Official ✓</b><br>
+    India's Own Social App 🇮🇳<br>
+    60 Sec Reels • Desi Stories 💪<br>
+    👇 Reels Dekho
+  </div>
+  <div class="btns">
+    <a class="btn primary" href="reels.html">▶️ Reels (60 sec)</a>
+    <a class="btn">✉️ Share</a>
+  </div>
+  <div class="grid">
+    <div class="box">📸</div><div class="box">🎬</div><div class="box">🔥</div>
+    <div class="box">🇮🇳</div><div class="box">💯</div><div class="box">⭐</div>
+  </div>
 </div>
-<div class="tabs"><div class="active">⊞</div><div>▶</div><div>🔒</div></div>
-<div class="grid">
-  <div class="post">Keep<br>Growing</div><div class="post">Dream Big</div><div class="post">Work Hard</div>
-  <div class="post">Stay Positive</div><div class="post">Never Give Up</div><div class="post">Stay Focused</div>
+
+<div class="nav">
+  <a href="index.html">🏠</a>
+  <a href="reels.html">🎬</a>
+  <a>➕</a>
+  <a>❤️</a>
+  <a>👤</a>
 </div>
-<div class="nav"><span>⌂</span><span>🔍</span><span>⊕</span><span>▶</span><span>👤</span></div>
 </body>
 </html>
