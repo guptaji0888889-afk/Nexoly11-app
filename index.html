@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexoly11 - India's Social Media</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#000;color:#fff;transition:0.3s}
+body.light{background:#fff;color:#000}
+.header{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #222}
+.dp{width:90px;height:90px;border-radius:50%;padding:3px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)}
+.dp img{width:100%;height:100%;border-radius:50%;border:3px solid #000;display:block}
+.profile{padding:15px}
+.stats{display:flex;gap:30px;margin:15px 0}
+.stat b{display:block;font-size:18px}
+.bio{margin-bottom:12px;line-height:1.4}
+.btns{display:flex;gap:8px}
+.btn{flex:1;padding:8px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#fff;font-weight:600}
+.tabs{display:flex;justify-content:space-around;border-top:1px solid #222;border-bottom:1px solid #222;margin-top:10px}
+.tabs div{padding:12px;font-size:20px}
+.tabs .active{border-bottom:2px solid #fff}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px}
+.post{aspect-ratio:1;background:linear-gradient(135deg,#4f5bd5,#962fbf,#d62976);display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:800;font-size:14px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #222;display:flex;justify-content:space-around;padding:10px}
+.theme{position:fixed;top:60px;right:10px;background:#fff;color:#000;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="theme" onclick="document.body.classList.toggle('light')">🌙/☀️ Theme</div>
+<div class="header"><b>Nexoly11_Official ✓</b><span> + ☰ </span></div>
+<div class="profile">
+  <div style="display:flex;gap:20px;align-items:center">
+    <div class="dp"><img src="https://i.pravatar.cc/150?img=12"></div>
+    <div class="stats">
+      <div class="stat"><b>45</b>Posts</div>
+      <div class="stat"><b>254K</b>Followers</div>
+      <div class="stat"><b>120</b>Following</div>
+    </div>
+  </div>
+  <div class="bio"><b>Nexoly11</b><br>India's Social Media 🇮🇳<br>Dream Big Work Hard<br>@Nexoly11_Official</div>
+  <div class="btns"><button class="btn">Edit Profile</button><button class="btn">Share Profile</button></div>
+</div>
+<div class="tabs"><div class="active">⊞</div><div>▶</div><div>🔒</div></div>
+<div class="grid">
+  <div class="post">Keep<br>Growing</div><div class="post">Dream Big</div><div class="post">Work Hard</div>
+  <div class="post">Stay Positive</div><div class="post">Never Give Up</div><div class="post">Stay Focused</div>
+</div>
+<div class="nav"><span>⌂</span><span>🔍</span><span>⊕</span><span>▶</span><span>👤</span></div>
+</body>
+</html>
