@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Messages - NEXOLY11</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#000;color:#fff;height:100vh;display:flex;flex-direction:column}
+.top{padding:15px;display:flex;justify-content:space-between;border-bottom:1px solid #222;font-weight:900}
+.list{flex:1;overflow:auto}
+.item{padding:12px 15px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #111;cursor:pointer}
+.item:hover{background:#111}
+.avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px}
+.ai-bg{background:linear-gradient(135deg,#a855f7,#ff0050)}
+.chat{flex:1}
+.name{font-weight:700;font-size:14px} .msg{font-size:12px;color:#888;margin-top:2px}
+.online{width:8px;height:8px;background:#00ff88;border-radius:50%}
+.chatBox{display:none;flex-direction:column;height:100vh;position:fixed;inset:0;background:#000;z-index:10}
+.chatHead{padding:12px;border-bottom:1px solid #222;display:flex;gap:10px;align-items:center}
+.chatMsgs{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.bubble{max-width:75%;padding:10px 14px;border-radius:18px;font-size:14px}
+.me{align-self:flex-end;background:#fff;color:#000} .other{align-self:flex-start;background:#222;color:#fff}
+.inputRow{padding:10px;display:flex;gap:8px;border-top:1px solid #222}
+.inputRow input{flex:1;padding:12px;border-radius:22px;border:1px solid #333;background:#1a1a1a;color:#fff;outline:none}
+.inputRow button{padding:12px 18px;border-radius:22px;border:none;background:#fff;font-weight:900}
+</style>
+</head>
+<body>
+<!-- INBOX LIST -->
+<div id="inbox">
+  <div class="top">💬 Messages <span onclick="location.href='reels.html'">✕</span></div>
+  <div style="padding:10px"><input placeholder="🔍 Search" style="width:100%;padding:10px;border-radius:12px;border:1px solid #222;background:#111;color:#fff"></div>
+  <div class="list">
+    <!-- NEXOLY11 AI PINNED ON TOP - INSTA STYLE -->
+    <div class="item" onclick="openChat('ai')" style="background:#111;border-left:3px solid #a855f7">
+      <div class="avatar ai-bg">🤖</div>
+      <div class="chat"><div class="name">NEXOLY11 AI ✓ <span style="background:linear-gradient(135deg,#a855f7,#ff0050);font-size:9px;padding:2px 6px;border-radius:10px;margin-left:5px">AI</span></div><div class="msg">Hi! Pucho kuch bhi... Reels viral kaise kare? ✨</div></div>
+      <div class="online"></div>
+    </div>
+    <div class="item"><div class="avatar" style="background:#333">GU</div><div class="chat"><div class="name">guptaji0888889-afk</div><div class="msg">Reel dekhi? 🔥</div></div></div>
+    <div class="item"><div class="avatar" style="background:#222">RA</div><div class="chat"><div class="name">rahul_01</div><div class="msg">Bhai like kar diya</div></div></div>
+  </div>
+</div>
+
+<!-- CHAT WINDOW -->
+<div id="chatBox" class="chatBox">
+  <div class="chatHead"><span onclick="closeChat()" style="font-size:20px;cursor:pointer">←</span><div class="avatar ai-bg" style="width:32px;height:32px;font-size:14px">🤖</div><div><div class="name" id="cName">NEXOLY11 AI</div><div class="msg" style="font-size:10px">Online • AI Assistant</div></div></div>
+  <div id="msgs" class="chatMsgs"><div class="bubble other">Namaste Boss! 🙏 Main NEXOLY11 AI hu. Instagram ki tarah yahan DM me hi hu. Pucho:<br><br>• Reel viral kaise kare?<br>• Caption kya likhu?<br>• Earning kaise hogi?</div></div>
+  <div class="inputRow"><input id="inp" placeholder="Message..."><button onclick="send()">Send</button></div>
+</div>
+
+<script>
+let current='ai';
+function openChat(who){current=who; document.getElementById('inbox').style.display='none'; document.getElementById('chatBox').style.display='flex'; document.getElementById('cName').innerText=who==='ai'?'NEXOLY11 AI ✓':'User';}
+function closeChat(){document.getElementById('inbox').style.display='block'; document.getElementById('chatBox').style.display='none';}
+function send(){
+  let t=document.getElementById('inp').value; if(!t) return;
+  let box=document.getElementById('msgs');
+  box.innerHTML+=`<div class="bubble me">${t}</div>`;
+  document.getElementById('inp').value='';
+  setTimeout(()=>{
+    let reply="Samajh gaya Boss! 😊";
+    if(t.toLowerCase().includes('viral')) reply="🔥 Viral Trick: 1) Roz 3 Reels 7PM pe dalo 2) #nexoly11 #viral lagao 3) Pehle 30 min me sabko share karo";
+    else if(t.toLowerCase().includes('earn')) reply="💰 Earning: 1000 Views = ₹50, 1 Lakh Views = ₹5000. Dashboard me track hoga!";
+    else if(t.toLowerCase().includes('caption')) reply="✍️ Caption Idea: 'Bharat ka apna Reels App 🇮🇳 - NEXOLY11 pe dekho 🔥' - ye daalo viral hoga!";
+    else reply=`Aapne bola: "${t}" - Main abhi seekh raha hu Boss, jaldi full ChatGPT ban jaunga! 🇮🇳`;
+    box.innerHTML+=`<div class="bubble other">🤖 ${reply}</div>`;
+    box.scrollTop=box.scrollHeight;
+  },700);
+  box.scrollTop=box.scrollHeight;
+}
+document.getElementById('inp').addEventListener('keypress',e=>{if(e.key==='Enter') send()});
+</script>
+</body>
+</html>
