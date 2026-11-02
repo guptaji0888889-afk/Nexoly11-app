@@ -1,22 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexoly11 Reels</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Nexoly11 Reels 🇮🇳</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#000;color:#fff;font-family:system-ui;overflow:hidden}
-.reel{height:100vh;width:100vw;position:relative;scroll-snap-align:start;background:#111;display:flex;align-items:flex-end}
+.reel{height:100vh;width:100vw;position:relative;background:#111;scroll-snap-align:start}
 video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
-.info{position:relative;z-index:2;padding:15px 15px 70px;width:100%;background:linear-gradient(transparent,rgba(0,0,0,0.8))}
+.info{position:relative;z-index:2;padding:15px 60px 90px 15px;background:linear-gradient(transparent,rgba(0,0,0,0.9));position:absolute;bottom:0;left:0;right:0}
 .container{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory}
-.actions{position:absolute;right:10px;bottom:100px;z-index:3;display:flex;flex-direction:column;gap:20px;font-size:24px;text-align:center}
+.container::-webkit-scrollbar{display:none}
+.actions{position:absolute;right:10px;bottom:130px;display:flex;flex-direction:column;gap:16px;z-index:5;align-items:center}
+.act{display:flex;flex-direction:column;align-items:center;gap:3px}
+.btn{width:50px;height:50px;background:rgba(255,255,255,0.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;border:none;color:#fff;backdrop-filter:blur(8px)}
+.btn:active{transform:scale(0.85)}
+.cnt{font-size:11px;font-weight:700}
+.top{position:fixed;top:0;left:0;right:0;padding:12px;z-index:10;display:flex;justify-content:space-between;background:rgba(0,0,0,0.25)}
+.wm{position:fixed;top:55px;right:10px;background:rgba(255,255,255,0.2);padding:5px 10px;border-radius:20px;font-size:11px;font-weight:900;z-index:20;border:1px solid rgba(255,255,255,0.3);backdrop-filter:blur(10px)}
+.liked{background:#ff2a6d !important}
+#comment{position:fixed;bottom:-100%;left:0;right:0;background:#111;padding:15px;border-radius:20px 20px 0 0;z-index:30;transition:0.35s;border-top:1px solid #222}
+#comment.show{bottom:68px}
 </style>
 </head>
 <body>
+<div class="top"><b>NEXOLY11 🇮🇳 REELS</b><span>🔍</span></div>
+<div class="wm" id="wm">@guptaji0888889-afk • NEXOLY11 ✓</div>
+
 <div class="container">
-  <div class="reel"><video autoplay muted loop src="https://www.w3schools.com/html/mov_bbb.mp4"></video><div class="info"><b>@Nexoly11_Official ✓</b><br>India's Own Reels 🇮🇳 #Nexoly11</div><div class="actions">❤️<br>254K<br>💬<br>12K<br>↗️</div></div>
-  <div class="reel"><video autoplay muted loop src="https://www.w3schools.com/html/movie.mp4"></video><div class="info"><b>@desi_creator</b><br>Dream Big Work Hard 💪</div><div class="actions">❤️<br>89K<br>💬<br>5K<br>↗️</div></div>
+  <div class="reel">
+    <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+    <div class="actions">
+      <div class="act"><button class="btn" id="likeB" onclick="like()">❤️</button><span class="cnt" id="likeC">12.4K</span></div>
+      <div class="act"><button class="btn" onclick="openC()">💬</button><span class="cnt">342</span></div>
+      <div class="act"><button class="btn" onclick="msg()">✉️</button><span class="cnt">Msg</span></div>
+      <div class="act"><button class="btn" onclick="share()">↗️</button><span class="cnt">Share</span></div>
+      <div class="act"><button class="btn" onclick="down()">⬇️</button><span class="cnt">Save</span></div>
+    </div>
+    <div class="info"><b id="userT">@guptaji0888889-afk ✓</b><br>Ye hai Nexoly11 ka Reels! Jai Hind 🇮🇳 #nexoly11</div>
+  </div>
+  <div class="reel"><video autoplay muted loop playsinline src="https://www.w3schools.com/html/movie.mp4"></video><div class="info"><b>@nexoly11_official ✓</b><br>Second Reels 🔥</div></div>
 </div>
+
+<div id="comment">
+  <div style="display:flex;justify-content:space-between"><b>💬 Comments</b><span onclick="closeC()">❌</span></div>
+  <div style="margin:12px 0;font-size:13px;color:#ccc">🇮🇳 @desi: Mast App hai Boss!<br><br>❤️ @fan: Love Nexoly11</div>
+  <div style="display:flex;gap:8px"><input id="cIn" placeholder="Add comment..." style="flex:1;padding:10px;border-radius:20px;border:1px solid #333;background:#222;color:#fff"><button onclick="postC()" style="padding:10px 15px;border-radius:20px;border:none;background:#fff;font-weight:900">Post</button></div>
+</div>
+
+<div style="position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #222;display:flex;justify-content:space-around;padding:12px;z-index:10">
+  <a href="index.html" style="color:#fff;text-decoration:none">🏠</a>
+  <a href="reels.html" style="color:#ff0050;text-decoration:none">🎬</a>
+  <a href="dashboard.html" style="color:#fff;text-decoration:none">👤</a>
+</div>
+
+<script>
+// USERNAME + NEXOLY11 WATERMARK
+let uname = "guptaji0888889-afk";
+try{uname = localStorage.getItem('username') || uname;}catch(e){}
+document.getElementById('wm').innerText = "@"+uname+" • NEXOLY11 ✓";
+document.getElementById('userT').innerText = "@"+uname+" ✓";
+
+let liked=false; let cnt=12400;
+function like(){
+  let b=document.getElementById('likeB'); let c=document.getElementById('likeC');
+  if(!liked){b.classList.add('liked'); b.innerText='💖'; cnt++; liked=true; if(navigator.vibrate) navigator.vibrate(50);} 
+  else{b.classList.remove('liked'); b.innerText='❤️'; cnt--; liked=false;}
+  c.innerText = cnt>1000?(cnt/1000).toFixed(1)+'K':cnt;
+}
+function openC(){document.getElementById('comment').classList.add('show')}
+function closeC(){document.getElementById('comment').classList.remove('show')}
+function postC(){let v=document.getElementById('cIn').value; if(v){alert('Comment Posted: '+v); document.getElementById('cIn').value=''; closeC();}}
+function msg(){let m=prompt('Message to @'+uname+':','Hi Boss!'); if(m) alert('✉️ Message Sent: '+m);}
+function share(){
+  let url=location.href;
+  if(navigator.share){navigator.share({title:'NEXOLY11 🇮🇳',text:'Dekho ye Reels Nexoly11 pe!',url:url});}
+  else{navigator.clipboard.writeText(url); alert('🔗 Link Copied: '+url);}
+}
+function down(){
+  let wm=document.getElementById('wm').innerText;
+  if(confirm('📥 Download with '+wm+' watermark?\nSave to Gallery?')){
+    let a=document.createElement('a'); a.download='NEXOLY11_'+uname+'.mp4';
+    let blob=new Blob(['NEXOLY11 Reels Video - '+wm],{type:'video/mp4'});
+    a.href=URL.createObjectURL(blob); a.click();
+    alert('✅ Saved! /Download/NEXOLY11_'+uname+'.mp4\nWatermark: '+wm);
+  }
+}
+</script>
 </body>
 </html>
