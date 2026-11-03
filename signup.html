@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexoly11 Signup</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    padding: 25px;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.logo span {
+    color: #ff1744;
+}
+
+.subtitle {
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+input {
+    width: 100%;
+    padding: 16px;
+    margin: 10px 0;
+    background: #171717;
+    border: 1px solid #444;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    margin-top: 20px;
+    background: linear-gradient(90deg,#ff1744,#9c27b0);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+a {
+    color: #ff4081;
+    text-decoration: none;
+}
+
+#message {
+    margin-top: 15px;
+    color: #ffcc80;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">
+NEXOLY11 🇮🇳
+</div>
+
+<p class="subtitle">
+India's Own Social Media Platform
+</p>
+
+<h2>Create Account</h2>
+
+<form id="signupForm">
+
+<input
+type="text"
+id="name"
+placeholder="Full Name"
+required
+>
+
+<input
+type="email"
+id="email"
+placeholder="Enter Email"
+required
+>
+
+<input
+type="password"
+id="password"
+placeholder="Create Password"
+minlength="6"
+required
+>
+
+<button type="submit">
+CREATE ACCOUNT
+</button>
+
+</form>
+
+<p id="message" role="status"></p>
+
+<p>
+Already have an account?
+<a href="login.html">Login</a>
+</p>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://qaexwsxxprvtkzidmwbx.supabase.co"
+const SUPABASE_KEY = "sb_publishable_LEvFzFYhxnenoBkPSwL1sA_EI-u9Htb"
+
+const client = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+document.getElementById("signupForm")
+.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const message = document.getElementById("message");
+
+    message.textContent = "Creating account...";
+
+    const { data, error } = await client.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+            data: {
+                full_name: name
+            },
+            emailRedirectTo: new URL(
+                "login.html",
+                window.location.href
+            ).href
+        }
+    });
+
+    if (error) {
+        message.textContent = error.message;
+    } else {
+        message.textContent =
+        "Account created! Please check your email for confirmation.";
+    }
+
+});
+</script>
+
+</body>
+</html>
