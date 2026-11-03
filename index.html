@@ -1,81 +1,328 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#000000">
-  <title>Nexoly11</title>
+<meta name="theme-color" content="#080808">
+<title>Nexoly11 - Home</title>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;color:#fff;font-family:system-ui}
-.header{padding:12px 15px;display:flex;justify-content:space-between;border-bottom:1px solid #222}
-.logo{font-weight:900;font-size:22px;letter-spacing:1px}
-.story-row{display:flex;gap:12px;overflow-x:auto;padding:12px;border-bottom:1px solid #222}
-.story-row::-webkit-scrollbar{display:none}
-.s{text-align:center;min-width:62px}
-.ring{width:62px;height:62px;border-radius:50%;padding:2px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)}
-.inner{width:100%;height:100%;border-radius:50%;border:3px solid #000;background:#222;display:flex;align-items:center;justify-content:center;font-size:24px}
-.s span{font-size:10px;display:block;margin-top:4px}
-.profile{padding:15px;padding-bottom:70px}
-.top{display:flex;gap:20px;align-items:center}
-.dp{width:84px;height:84px;border-radius:50%;background:linear-gradient(45deg,#ff0050,#7000ff);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900}
-.stats{display:flex;gap:22px;text-align:center}
-.stats b{display:block;font-size:18px}
-.bio{margin-top:12px;font-size:14px;line-height:1.4}
-.btns{display:flex;gap:8px;margin-top:12px}
-.btn{flex:1;padding:9px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#fff;font-weight:600;text-decoration:none;text-align:center}
-.btn.primary{background:#fff;color:#000}
-.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-top:15px}
-.box{aspect-ratio:1;background:#111;display:flex;align-items:center;justify-content:center;font-size:26px}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #222;display:flex;justify-content:space-around;padding:12px 0}
-.nav a{color:#fff;text-decoration:none;font-size:22px}
-.wm{position:fixed;top:60px;right:8px;background:rgba(255,255,255,0.12);padding:3px 8px;border-radius:12px;font-size:10px}
+
+body{
+background:#080808;
+color:white;
+font-family:Arial,sans-serif;
+padding-bottom:75px;
+}
+
+header{
+height:60px;
+padding:12px 16px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid #252525;
+position:sticky;
+top:0;
+background:#080808;
+z-index:10;
+}
+
+.logo{font-size:23px;font-weight:900}
+.icons{font-size:23px;display:flex;gap:20px}
+
+.stories{
+display:flex;
+overflow-x:auto;
+gap:15px;
+padding:15px;
+border-bottom:1px solid #222;
+}
+
+.story{text-align:center;min-width:65px}
+.ring{
+width:62px;height:62px;
+border-radius:50%;
+padding:3px;
+background:linear-gradient(45deg,#ffb700,#ff0050,#8b00ff);
+}
+
+.inner{
+width:100%;height:100%;
+border-radius:50%;
+background:#222;
+border:3px solid black;
+display:grid;
+place-items:center;
+font-size:25px;
+}
+
+.story small{font-size:11px}
+
+.categories{
+display:flex;
+overflow-x:auto;
+gap:9px;
+padding:14px;
+}
+
+.cat{
+white-space:nowrap;
+padding:9px 14px;
+border-radius:20px;
+border:1px solid #333;
+background:#171717;
+color:white;
+}
+
+.cat.active{
+background:white;
+color:black;
+}
+
+.section{
+padding:10px 15px;
+font-weight:bold;
+font-size:18px;
+}
+
+.post{
+margin:12px;
+border:1px solid #292929;
+border-radius:12px;
+overflow:hidden;
+background:#111;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+}
+
+.avatar{
+width:38px;height:38px;
+border-radius:50%;
+background:linear-gradient(45deg,#ff0050,#7000ff);
+display:grid;
+place-items:center;
+font-weight:bold;
+}
+
+.username{font-size:14px;font-weight:bold}
+.verified{color:#36aaff}
+
+.media{
+height:300px;
+position:relative;
+display:grid;
+place-items:center;
+font-size:65px;
+background:linear-gradient(140deg,#202020,#3b164c,#101010);
+}
+
+.watermark{
+position:absolute;
+bottom:14px;
+right:12px;
+font-size:13px;
+font-weight:bold;
+color:rgba(255,255,255,.8);
+text-shadow:1px 1px 3px black;
+pointer-events:none;
+}
+
+.creator{
+position:absolute;
+bottom:34px;
+right:12px;
+font-size:10px;
+color:rgba(255,255,255,.8);
+text-shadow:1px 1px 3px black;
+pointer-events:none;
+}
+
+.actions{
+display:flex;
+gap:20px;
+padding:13px;
+font-size:23px;
+}
+
+.actions button{
+background:none;
+border:none;
+color:white;
+font-size:22px;
+}
+
+.caption{padding:0 13px 14px;font-size:14px}
+
+nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:62px;
+background:#080808;
+border-top:1px solid #333;
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:20;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-size:23px;
+}
+
 </style>
 </head>
+
 <body>
-<div class="header"><div class="logo">NEXOLY11 🇮🇳</div><div>☾</div></div>
 
-<div class="story-row">
-  <div class="s"><div class="ring"><div class="inner">➕</div></div><span>Your Story</span></div>
-  <div class="s"><div class="ring"><div class="inner">🔥</div></div><span>Nexoly11</span></div>
-  <div class="s"><div class="ring"><div class="inner">🇮🇳</div></div><span>Desi</span></div>
-  <div class="s"><div class="ring"><div class="inner">⭐</div></div><span>India</span></div>
-  <div class="s"><div class="ring"><div class="inner">💪</div></div><span>GuptaJi</span></div>
+<header>
+<div class="logo">NEXOLY11 🇮🇳</div>
+<div class="icons">
+<span>♡</span>
+<span>✉</span>
+</div>
+</header>
+
+<div class="stories">
+
+<div class="story">
+<div class="ring"><div class="inner">+</div></div>
+<small>Your Story</small>
 </div>
 
-<div class="wm">NEXOLY11 OFFICIAL</div>
-
-<div class="profile">
-  <div class="top">
-    <div class="dp">N11</div>
-    <div class="stats">
-      <div><b>11</b>Posts</div>
-      <div><b>11K</b>Followers</div>
-      <div><b>111</b>Following</div>
-    </div>
-  </div>
-  <div class="bio">
-    <b>Nexoly11_Official ✓</b><br>
-    India's Own Social App 🇮🇳<br>
-    60 Sec Reels • Desi Stories 💪<br>
-    👇 Reels Dekho
-  </div>
-  <div class="btns">
-    <a class="btn primary" href="reels.html">▶️ Reels (60 sec)</a>
-    <a class="btn">✉️ Share</a>
-  </div>
-  <div class="grid">
-    <div class="box">📸</div><div class="box">🎬</div><div class="box">🔥</div>
-    <div class="box">🇮🇳</div><div class="box">💯</div><div class="box">⭐</div>
-  </div>
+<div class="story">
+<div class="ring"><div class="inner">🔥</div></div>
+<small>Nexoly11</small>
 </div>
 
-<div class="nav">
-  <a href="index.html">🏠</a>
-  <a href="reels.html">🎬</a>
-  <a>➕</a>
-  <a>❤️</a>
-  <a>👤</a>
+<div class="story">
+<div class="ring"><div class="inner">🇮🇳</div></div>
+<small>India</small>
 </div>
-</body>
-</html>
+
+<div class="story">
+<div class="ring"><div class="inner">💪</div></div>
+<small>Motivation</small>
+</div>
+
+<div class="story">
+<div class="ring"><div class="inner">⭐</div></div>
+<small>Business</small>
+</div>
+
+</div>
+
+<div class="categories">
+<button class="cat active" onclick="filter(this,'All')">All</button>
+<button class="cat" onclick="filter(this,'Motivation')">Motivation</button>
+<button class="cat" onclick="filter(this,'Business')">Business</button>
+<button class="cat" onclick="filter(this,'Bhakti')">Bhakti</button>
+<button class="cat" onclick="filter(this,'Education')">Education</button>
+<button class="cat" onclick="filter(this,'Bollywood')">Bollywood</button>
+<button class="cat" onclick="filter(this,'Rajniti')">Rajniti</button>
+</div>
+
+<div class="section">🏠 Home Feed</div>
+
+<div id="feed">
+
+<div class="post" data-category="Motivation">
+
+<div class="user">
+<div class="avatar">N11</div>
+<div>
+<div class="username">Nexoly11 Official <span class="verified">✓</span></div>
+<small>India 🇮🇳</small>
+</div>
+</div>
+
+<div class="media">
+🔥
+<div class="creator">Created by @nexoly11_official</div>
+<div class="watermark">NEXOLY11 🇮🇳</div>
+</div>
+
+<div class="actions">
+<button onclick="like(this)">♡</button>
+<button onclick="comment()">💬</button>
+<button onclick="share()">↗</button>
+</div>
+
+<div class="caption">
+<b>Motivation</b><br>
+अपने सपनों के लिए मेहनत करते रहो। 🇮🇳
+</div>
+</div>
+
+<div class="post" data-category="Business">
+
+<div class="user">
+<div class="avatar">N</div>
+<div>
+<div class="username">India Business</div>
+<small>Business Category</small>
+</div>
+</div>
+
+<div class="media" style="background:linear-gradient(140deg,#163b34,#111)">
+💼
+<div class="creator">Created by @indiabusiness</div>
+<div class="watermark">NEXOLY11 🇮🇳</div>
+</div>
+
+<div class="actions">
+<button onclick="like(this)">♡</button>
+<button onclick="comment()">💬</button>
+<button onclick="share()">↗</button>
+</div>
+
+<div class="caption">
+<b>Business</b><br>
+अपने विचार साझा करें और आगे बढ़ें।
+</div>
+</div>
+
+<div class="post" data-category="Bhakti">
+
+<div class="user">
+<div class="avatar">ॐ</div>
+<div>
+<div class="username">Bhakti India</div>
+<small>Bhakti Category</small>
+</div>
+</div>
+
+<div class="media" style="background:linear-gradient(140deg,#713b12,#17100a)">
+🙏
+<div class="creator">Created by @bhaktiindia</div>
+<div class="watermark">NEXOLY11 🇮🇳</div>
+</div>
+
+<div class="actions">
+<button onclick="like(this)">♡</button>
+<button onclick="comment()">💬</button>
+<button onclick="share()">↗</button>
+</div>
+
+<div class="caption">
+<b>Bhakti</b><br>
+जय श्री राम 🙏
+</div>
+</div>
+
+</div>
+
+<nav>
+<a href="index.html">🏠</a>
+<a href="reels.html">🎬</a>
+<a href="dashboard
