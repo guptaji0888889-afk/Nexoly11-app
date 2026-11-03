@@ -1,0 +1,16 @@
+{
+  "name": "NEXOLY11 - India's Social App",
+  "short_name": "NEXOLY11",
+  "start_url": "/Nexoly11-app/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "India's Own Social App - 60 Sec Reels",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1384/1384060.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
