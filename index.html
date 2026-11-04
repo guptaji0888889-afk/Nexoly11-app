@@ -207,7 +207,13 @@ function filter(button,category){
  document.querySelectorAll('.cat').forEach(b=>b.classList.remove('active'));button.classList.add('active');
  document.querySelectorAll('.post').forEach(p=>p.style.display=(category==='All'||p.dataset.category===category)?'block':'none');
 }
-function like(button){button.textContent=button.textContent==='♡'?'❤️':'♡'}
+function like(button){
+const reactions=['❤️','😂','😍','🔥','👍','😢','😮'];
+const choice=prompt('Choose Reaction: ❤️ 😂 😍 🔥 👍 😢 😮');
+if(reactions.includes(choice)){
+button.textContent=choice;
+}
+}
 function comment(){alert('Comments backend connection pending')}
 function share(){if(navigator.share){navigator.share({title:'Nexoly11',text:'Check out Nexoly11!'})}else{alert('Sharing not supported')}}
 </script>
