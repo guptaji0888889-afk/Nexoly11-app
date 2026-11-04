@@ -161,23 +161,51 @@ document.getElementById('cameraBox').style.display='none';
 }let mediaRecorder;
 let recordedChunks=[];
 
-function capturePhoto(){
-const video=document.getElementById('liveCamera');
-if(!video.srcObject){
-alert('पहले Camera खोलें');
-return;
+async function capturePhoto(){
+    const video = document.getElementById('liveCamera');
+
+    if(!video.srcObject){
+        alert('पहले Camera खोलें');
+        return;
+    }
+
+    if(video.readyState < 2){
+        await new Promise(resolve => {
+            video.addEventListener('loadeddata', resolve, {once:true});
+        });
+    }
+
+    if(!video.videoWidth || !video.videoHeight){
+        alert('Camera तैयार नहीं है, दोबारा कोशिश करें');
+        return;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    canvas.getContext('2d').drawImage(video, 0, 0);
+
+    canvas.toBlob(blob => {
+        if(!blob){
+            alert('Photo capture नहीं हुई');
+            return;
+        }
+
+        const file = new File(
+            [blob],
+            'Nexoly11-Photo.jpg',
+            {type:'image/jpeg'}
+        );
+
+        const dt = new DataTransfer();
+        dt.items.add(file);
+
+        fileInput.files = dt.files;
+        fileInput.dispatchEvent(new Event('change', {bubbles:true}));
+
+    }, 'image/jpeg', 0.9);
 }
-const canvas=document.createElement('canvas');
-canvas.width=video.videoWidth;
-canvas.height=video.videoHeight;
-canvas.getContext('2d').drawImage(video,0,0);
-canvas.toBlob(blob=>{
-const file=new File([blob],'Nexoly11-Photo.jpg',{type:'image/jpeg'});
-const dt=new DataTransfer();
-dt.items.add(file);
-fileInput.files=dt.files;
-fileInput.dispatchEvent(new Event('change'));
-},'image/jpeg',0.9);
 }
 
 function startRecording(){
