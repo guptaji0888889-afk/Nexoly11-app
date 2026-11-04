@@ -88,6 +88,11 @@ nav a{color:white;text-decoration:none;font-size:23px}
 
 <div id="cameraBox" style="display:none;margin:12px 0">
 <video id="liveCamera" autoplay playsinline muted style="width:100%;border-radius:15px"></video>
+  <div style="display:flex;gap:8px;margin:10px 0">
+<button class="btn" onclick="captureCameraPhoto()">📸 Photo</button>
+<button class="btn" onclick="startRecording()">🔴 Record</button>
+<button class="btn secondary" onclick="stopRecording()">⏹ Stop</button>
+  </div>
 <button class="btn" type="button" onclick="stopCamera()">Close Camera</button>
 </div>
 <label class="note">Photo / Video चुनें</label><input class="field" type="file" id="storyFile" accept="image/*,video/*">
@@ -153,6 +158,60 @@ video.srcObject.getTracks().forEach(track=>track.stop());
 video.srcObject=null;
 }
 document.getElementById('cameraBox').style.display='none';
+}let mediaRecorder;
+let recordedChunks=[];
+
+function capturePhoto(){
+const video=document.getElementById('liveCamera');
+if(!video.srcObject){
+alert('पहले Camera खोलें');
+return;
+}
+const canvas=document.createElement('canvas');
+canvas.width=video.videoWidth;
+canvas.height=video.videoHeight;
+canvas.getContext('2d').drawImage(video,0,0);
+canvas.toBlob(blob=>{
+const file=new File([blob],'Nexoly11-Photo.jpg',{type:'image/jpeg'});
+const dt=new DataTransfer();
+dt.items.add(file);
+fileInput.files=dt.files;
+fileInput.dispatchEvent(new Event('change'));
+},'image/jpeg',0.9);
+}
+
+function startRecording(){
+const video=document.getElementById('liveCamera');
+if(!video.srcObject){
+alert('पहले Camera खोलें');
+return;
+}
+if(!window.MediaRecorder){
+alert('Recording supported नहीं है');
+return;
+}
+recordedChunks=[];
+mediaRecorder=new MediaRecorder(video.srcObject);
+mediaRecorder.ondataavailable=e=>{
+if(e.data.size>0)recordedChunks.push(e.data);
+};
+mediaRecorder.onstop=()=>{
+const blob=new Blob(recordedChunks,{type:mediaRecorder.mimeType||'video/webm'});
+const file=new File([blob],'Nexoly11-Reel.webm',{type:blob.type});
+const dt=new DataTransfer();
+dt.items.add(file);
+fileInput.files=dt.files;
+fileInput.dispatchEvent(new Event('change'));
+alert('Video तैयार है! अब Story Preview करें।');
+};
+mediaRecorder.start();
+alert('🔴 Recording शुरू हो गई!');
+}
+
+function stopRecording(){
+if(mediaRecorder && mediaRecorder.state==='recording'){
+mediaRecorder.stop();
+}
 }
 function openEditor(){document.getElementById('editor').classList.add('show')}
 function closeEditor(){document.getElementById('editor').classList.remove('show');stopMusicPreview()}
