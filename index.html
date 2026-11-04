@@ -155,7 +155,14 @@ function showPreview(url,type){
  overlay.textContent=document.getElementById('storyText').value;box.appendChild(overlay);
 }
 function previewStory(){if(!selectedMedia){alert('Please select a photo or video');return}showPreview(previewURL,selectedMedia.type)}
-function addEmoji(){document.getElementById('storyText').value+=' ❤️';if(selectedMedia)showPreview(previewURL,selectedMedia.type)}
+function addEmoji(){
+const emojis=['❤️','😂','😍','🔥','👍','😢','😮','🥳','🙏','✨'];
+const choice=prompt('अपना Emoji चुनें:\n'+emojis.join(' '));
+if(!choice||!emojis.includes(choice))return;
+const input=document.getElementById('storyText');
+input.value+=(input.value?' ':'')+choice;
+if(selectedMedia)showPreview(previewURL,selectedMedia.type);
+}
 document.getElementById('storyText').addEventListener('input',()=>{if(selectedMedia)showPreview(previewURL,selectedMedia.type)});
 function setMusicCategory(category){musicCategory=category;document.getElementById('musicCategoryLabel').textContent=category+' — अपने licensed tracks जोड़ें';document.getElementById('musicSearch').value='';}
 function searchMusic(){const q=document.getElementById('musicSearch').value.trim();document.getElementById('musicCategoryLabel').textContent=musicCategory+' — '+(q?'No online catalogue connected; select a licensed audio file below.':'अपनी licensed audio file चुनें।')}
