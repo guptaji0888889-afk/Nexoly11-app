@@ -1,7 +1,6 @@
 /* =================================
    NEXOLY11 - MAIN APP SYSTEM
    Version 1.0
-================================= */
 
 "use strict";
 
@@ -95,3 +94,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // Global access
 window.Nexoly11 = Nexoly11;
+/* NEXOLY11
+   Core Application
+   Version 1.0
+*/
+
+'use strict';
+
+console.log('Nexoly11 Core Loaded');
