@@ -1,1 +1,145 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><link rel="stylesheet" href="css/reset.css"><link rel="stylesheet" href="css/style.css"><title>Nexoly11 | Home</title></head><body><header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> 🇮🇳</a><div class="toplinks"><a href="messages.html">✉</a><a href="dashboard.html">♙</a></div></header><main class="wrap"><div class="stories" id="stories"><div class="muted">Loading stories…</div></div><div class="categories"><button class="cat active" data-filter="All">All</button><button class="cat" data-filter="Motivation">Motivation</button><button class="cat" data-filter="Business">Business</button><button class="cat" data-filter="Bhakti">Bhakti</button><button class="cat" data-filter="Education">Education</button><button class="cat" data-filter="Bollywood">Bollywood</button><button class="cat" data-filter="Rajniti">Rajniti</button><button class="cat" data-filter="Entertainment">Entertainment</button></div><h3>🏠 Home Feed</h3><div id="feed"><div class="empty">Loading…</div></div><p id="status" class="status"></p></main><nav class="bottomnav"><a href="index.html">⌂</a><a href="reels.html">▶</a><a href="upload.html">＋</a><a href="messages.html">✉</a><a href="dashboard.html">♙</a></nav><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/app.js" defer></script><script>document.addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.post').forEach(p=>p.style.display=b.dataset.filter==='All'||p.dataset.category===b.dataset.filter?'block':'none')});</script></body></html>
+<!DOCTYPE html>
+<html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXOLY11 - V2 Camera Studio</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#000;color:#fff}
+header{position:sticky;top:0;z-index:10;background:#000;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #222}
+.logo{font-weight:900;font-size:22px} .logo span{color:#ff2d55}
+.tabs{display:flex;gap:6px;padding:10px} .tab{flex:1;padding:10px;border-radius:20px;border:1px solid #333;background:#111;color:#fff;font-weight:700}
+.tab.active{background:#ff2d55;border-color:#ff2d55}
+.card{background:#111;margin:10px;border-radius:16px;overflow:hidden;border:1px solid #222}
+.card img,.card video{width:100%;display:block;max-height:520px;object-fit:cover}
+.pad{padding:12px} .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{padding:9px 13px;border-radius:20px;border:1px solid #333;background:#1c1c1e;color:#fff;font-weight:700}
+.btn.liked{background:#ff2d55} input,textarea,select{width:100%;padding:12px;border-radius:12px;border:1px solid #333;background:#1c1c1e;color:#fff;margin-top:8px}
+.hash{color:#4da3ff;font-weight:700;cursor:pointer} .emojiBar{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.emojiBar button{font-size:20px;background:#222;border:0;border-radius:50%;width:38px;height:38px}
+.chip{padding:7px 10px;border-radius:20px;background:#222;border:1px solid #333;font-size:13px} .chip.on{background:#ff2d55}
+#camWrap{position:relative;background:#000;border-radius:16px;overflow:hidden;margin:10px}
+#camVideo{width:100%;height:480px;object-fit:cover;transform:scaleX(-1)}
+#overlay{position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:110px}
+.fx{position:absolute;inset:0;pointer-events:none;opacity:.7}
+.rain{background:repeating-linear-gradient(115deg,transparent 0 12px,rgba(255,255,255,.6) 12px 13px)}
+.fog{background:radial-gradient(circle,transparent 20%,rgba(255,255,255,.55) 80%)}
+.sea{background:linear-gradient(to top,#0077ff 0%,transparent 45%)}
+.jungle{border:18px solid #0a5c2a;box-shadow:inset 0 0 0 10px #0a7a35}
+.small{font-size:12px;color:#aaa}
+</style></head>
+<body>
+<header><div class="logo">NEXOLY<span>11 🇮🇳</span></div><div>👤 Guptaji ✅</div></header>
+<div class="tabs">
+<button class="tab active" onclick="show('feed',this)">🏠 Feed</button>
+<button class="tab" onclick="show('reels',this)">🎥 Reels</button>
+<button class="tab" onclick="show('camera',this)">📸 Camera</button>
+<button class="tab" onclick="show('tools',this)">🛠️ Tools</button>
+</div>
+
+<!-- FEED -->
+<div id="feed">
+<div class="pad"><h3>✍️ Nayi Post</h3>
+<input id="pTitle" placeholder="Caption likho... #motivation #nexoly11 😍">
+<input type="file" id="pFile" accept="image/*,video/*">
+<button class="btn" style="background:#ff2d55;width:100%;margin-top:8px" onclick="addPost()">🚀 Publish to Nexoly11</button>
+<div class="small">Hashtag apne aap blue hoga. Download pe watermark lagega.</div>
+</div>
+<div id="feedList"></div>
+</div>
+
+<!-- REELS -->
+<div id="reels" style="display:none"><div class="pad"><h3>🎥 Reels - Double Tap = Like</h3><div class="small">Reels bhi Feed wali post se hi bante hai.</div></div><div id="reelList"></div></div>
+
+<!-- CAMERA STUDIO -->
+<div id="camera" style="display:none">
+<div class="pad"><h3>📸 Nexoly11 Camera Studio</h3>
+<button class="btn" onclick="startCam()">📷 Camera On</button>
+<button class="btn" onclick="switchCam()">🔄 Front / Back</button>
+<button class="btn" onclick="takePhoto()">📸 Photo Lo</button>
+<button class="btn" onclick="downloadCam()">⬇️ Watermark Download</button>
+</div>
+<div id="camWrap"><video id="camVideo" autoplay playsinline muted></video><div id="fx" class="fx"></div><div id="overlay"></div></div>
+<div class="pad">
+<b>🌧️ Background:</b><div class="row" style="margin-top:8px">
+<button class="chip" onclick="setBG('none',this)">❌ Normal</button>
+<button class="chip" onclick="setBG('rain',this)">🌧️ Rain</button>
+<button class="chip" onclick="setBG('sea',this)">🌊 Sea</button>
+<button class="chip" onclick="setBG('fog',this)">🌫️ Fog</button>
+<button class="chip" onclick="setBG('jungle',this)">🌳 Jungle</button>
+</div>
+<b>😎 Desi Look:</b><div class="row" style="margin-top:8px">
+<button class="chip" onclick="setLook('',this)">❌ None</button>
+<button class="chip" onclick="setLook('😎',this)">😎 Sunglasses</button>
+<button class="chip" onclick="setLook('🧢',this)">🧢 Topi</button>
+<button class="chip" onclick="setLook('🧣',this)">🧣 Gamchha</button>
+<button class="chip" onclick="setLook('🐵🧢',this)">🐵 Manki Cap</button>
+<button class="chip" onclick="setLook('🥸',this)">🥸 Daadhi</button>
+</div>
+<b>✨ Smart Beauty: <span id="bVal">70</span></b>
+<input type="range" id="beauty" min="0" max="100" value="70" oninput="applyBeauty()">
+<b>💡 Brightness / Quality:</b>
+<input type="range" id="bright" min="80" max="140" value="110" oninput="applyBeauty()">
+<div class="small">Beauty = Chehra smooth + gora. Brightness = Andhere me bhi saaf.</div>
+<canvas id="snap" style="display:none"></canvas>
+<img id="snapImg" style="width:100%;border-radius:14px;margin-top:10px;display:none">
+</div></div>
+
+<!-- TOOLS -->
+<div id="tools" style="display:none"><div class="pad">
+<h3>🛠️ Effective Tools</h3>
+<button class="btn" onclick="genCaption()">✍️ Caption Generator</button>
+<button class="btn" onclick="genHash()">#️⃣ Hashtag Generator</button>
+<p id="toolOut" style="background:#111;padding:12px;border-radius:12px"></p>
+<input id="toolIn" placeholder="Topic likho - jaise Motivation / Gaon / Cricket">
+</div></div>
+
+<script>
+let posts = JSON.parse(localStorage.getItem('nexoly_posts')||'[]');
+if(posts.length==0){posts=[{id:1,title:'Mera Gaon Meri Shaan #motivation #nexoly11 🔥',img:'https://picsum.photos/600/700',likes:12,comments:[{t:'Bhai 🔥🔥',e:'❤️'}]}];save()}
+function save(){localStorage.setItem('nexoly_posts',JSON.stringify(posts))}
+function show(id,el){['feed','reels','camera','tools'].forEach(x=>document.getElementById(x).style.display=x==id?'block':'none');document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));el.classList.add('active');render()}
+function fmt(t){return t.replace(/#(\w+)/g,'<span class="hash" onclick="filterHash(\'$1\')">#$1</span>')}
+function filterHash(h){alert('#'+h+' wali saari post dikhai ja rahi hai');render()}
+function addPost(){
+let t=document.getElementById('pTitle').value||'Nexoly11 Post #nexoly11 ❤️';
+let f=document.getElementById('pFile').files[0];
+if(f){let r=new FileReader();r.onload=e=>{posts.unshift({id:Date.now(),title:t,img:e.target.result,likes:0,comments:[]});save();render();alert('✅ Publish Ho Gaya!')};r.readAsDataURL(f)}else{posts.unshift({id:Date.now(),title:t,img:'https://picsum.photos/600/700?'+Date.now(),likes:0,comments:[]});save();render()}
+}
+function render(){
+let html='';
+posts.forEach((p,i)=>{
+html+=`<div class="card"><img src="${p.img}" ondblclick="like(${i})"><div class="pad"><div class="row">
+<button class="btn ${p.liked?'liked':''}" onclick="like(${i})">❤️ ${p.likes} Like</button>
+<button class="btn" onclick="document.getElementById('c${i}').focus()">💬 ${p.comments.length} Comment</button>
+<button class="btn" onclick="sharePost(${i})">↗️ Share</button>
+<button class="btn" onclick="downloadPost(${i})">⬇️ Download</button></div>
+<p>${fmt(p.title)}</p>
+<div>${p.comments.map(c=>`<div>👤 ${c.t} ${c.e||''}</div>`).join('')}</div>
+<div class="emojiBar">${['❤️','🔥','😍','😂','👏','🙏'].map(e=>`<button onclick="quickComment(${i},'${e}')">${e}</button>`).join('')}</div>
+<input id="c${i}" placeholder="Comment likho... 😍"><button class="btn" onclick="addComment(${i})">Post Comment</button></div></div>`});
+document.getElementById('feedList').innerHTML=html;
+document.getElementById('reelList').innerHTML=html;
+}
+function like(i){posts[i].likes++;posts[i].liked=true;save();render()}
+function addComment(i){let v=document.getElementById('c'+i).value;if(!v)return;posts[i].comments.push({t:v});save();render()}
+function quickComment(i,e){posts[i].comments.push({t:'',e:e});posts[i].likes++;save();render()}
+function sharePost(i){let txt=posts[i].title+' - Nexoly11';if(navigator.share){navigator.share({text:txt,url:location.href})}else{prompt('Link Copy Karo:',location.href+' #nexoly11')}}
+function downloadPost(i){
+let img=new Image();img.crossOrigin='anonymous';img.onload=()=>{
+let c=document.createElement('canvas');c.width=img.width;c.height=img.height;let x=c.getContext('2d');x.drawImage(img,0,0);
+x.fillStyle='rgba(0,0,0,0.6)';x.fillRect(0,c.height-60,c.width,60);x.fillStyle='#fff';x.font='bold 28px Arial';x.fillText('NEXOLY11 🇮🇳 @Guptaji',20,c.height-18);
+let a=document.createElement('a');a.download='nexoly11.png';a.href=c.toDataURL();a.click();alert('✅ Watermark ke saath Download Ho Gaya!')
+};img.src=posts[i].img;
+}
+function genCaption(){let t=document.getElementById('toolIn').value||'Motivation';document.getElementById('toolOut').innerText=`🔥 ${t} - Haar mat maano, Nexoly11 pe chha jao! #nexoly11 #${t} #viral`}
+function genHash(){document.getElementById('toolOut').innerText='#nexoly11 #motivation #viral #trending #gaon #desi #reels #guptaji #india'}
+
+// CAMERA
+let stream=null, facing='user';
+async function startCam(){try{if(stream)stream.getTracks().forEach(t=>t.stop());stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:1280,height:720},audio:false});document.getElementById('camVideo').srcObject=stream;applyBeauty()}catch(e){alert('Camera permission do Boss!')}}
+function switchCam(){facing=facing=='user'?'environment':'user';startCam()}
+function setBG(type,el){let fx=document.getElementById('fx');fx.className='fx '+type;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on')}
+function setLook(emo,el){document.getElementById('overlay').innerText=emo}
+function applyBeauty(){let v=document.getElementById('camVideo');let b=document.getElementById('beauty').value;let br=document.getElementById('bright').value;document.getElementById('bVal').innerText=b;v.style.filter=`brightness(${br}%) contrast(105%) saturate(${100+Number(b)/2}%) blur(${b>80?0.2:0}px)`}
+function takePhoto(){let v=document.getElementById('camVideo');let c=document.getElementById('snap');c.width=v.videoWidth||640;c.height=v.videoHeight||480;let x=c.getContext('2d');x.drawImage(v,0,0,c.width,c.height);x.fillStyle='rgba(0,0,0,0.6)';x.fillRect(0,c.height-50,c.width,50);x.fillStyle='#fff';x.font='bold 24px Arial';x.fillText('NEXOLY11 @Guptaji',20,c.height-15);let im=document.getElementById('snapImg');im.src=c.toDataURL();im.style.display='block';alert('📸 Photo li gayi! Ab Download dabao')}
+function downloadCam(){let c=document.getElementById('snap');if(!c.width){alert('Pehle Photo Lo');return}let a=document.createElement('a');a.download='nexoly11-camera.png';a.href=c.toDataURL();a.click()}
+render();
+</script></body></html>
