@@ -2,7 +2,7 @@
 'use strict';
 (() => {
  const cfg=window.NEXOLY_CONFIG;
- const db=window.supabase?.createClient(cfg.url,cfg.key);
+ const db=(cfg?.url && cfg?.key && window.supabase?.createClient) ? window.supabase.createClient(cfg.url,cfg.key) : null;
  window.N11=db;
  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
