@@ -1,23 +1,6 @@
-# NEXOLY11 🇮🇳
+# NEXOLY11 🇮🇳 — Working MVP
+Mobile-first social app prototype built with HTML/CSS/JavaScript + Supabase.
 
-India's Social Media Platform.
+Core working modules: Auth, profiles, photo/video posts, feed, Reels, 24-hour stories, likes, comments, basic direct messages.
 
-Our Mission:
-To build a next-generation Indian social media platform.
-
-Features:
-- Reels
-- Stories
-- Posts
-- Music Library
-- Chat
-- Video Calling
-- Creator Rewards
-- Referral System
-
-Technology:
-Flutter
-Node.js
-PostgreSQL
-
-Founder: Nexoly11 Team
+See `BACKEND_SETUP.md` and run `SUPABASE_SETUP.sql` before testing. This is an MVP foundation, not a 100k-user production deployment.
