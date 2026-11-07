@@ -1,0 +1,2 @@
+// Public Supabase project settings. Publishable/anon keys are intended for browser use.
+window.NEXOLY_CONFIG={url:'https://qaexwsxxprvtkzidmwbx.supabase.co',key:'sb_publishable_LEvFzFYhxnenoBkPSwL1sA_EI-u9Htb',bucket:'nexoly-media'};
