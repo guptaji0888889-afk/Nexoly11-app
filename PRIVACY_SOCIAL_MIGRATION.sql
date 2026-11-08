@@ -1,5 +1,9 @@
 -- NEXOLY11 privacy, block and feed preference migration. Run AFTER SUPABASE_SETUP.sql.
 alter table public.profiles add column if not exists is_private boolean not null default false;
+-- Create engagement tables before notification triggers reference them.
+create table if not exists public.likes (post_id uuid not null references public.posts(id) on delete cascade,user_id uuid not null references auth.users(id) on delete cascade,created_at timestamptz not null default now(),primary key(post_id,user_id));
+create table if not exists public.comments (id uuid primary key default gen_random_uuid(),post_id uuid not null references public.posts(id) on delete cascade,user_id uuid not null references auth.users(id) on delete cascade,body text not null check(char_length(body) between 1 and 2000),created_at timestamptz not null default now());
+
 create table if not exists public.user_blocks (
  blocker_id uuid not null references auth.users(id) on delete cascade,
  blocked_id uuid not null references auth.users(id) on delete cascade,
@@ -120,3 +124,62 @@ begin
 end; $$;
 drop trigger if exists n11_accept_request_follow on public.follow_requests;
 create trigger n11_accept_request_follow after update of status on public.follow_requests for each row execute function public.n11_accept_follow_request();
+
+-- Core engagement tables: required by the Like and Comment buttons.
+create table if not exists public.likes (
+ post_id uuid not null references public.posts(id) on delete cascade,
+ user_id uuid not null references auth.users(id) on delete cascade,
+ created_at timestamptz not null default now(), primary key(post_id,user_id)
+);
+create table if not exists public.comments (
+ id uuid primary key default gen_random_uuid(),
+ post_id uuid not null references public.posts(id) on delete cascade,
+ user_id uuid not null references auth.users(id) on delete cascade,
+ body text not null check(char_length(body) between 1 and 2000),
+ created_at timestamptz not null default now()
+);
+create index if not exists comments_post_created_idx on public.comments(post_id,created_at);
+alter table public.likes enable row level security;
+alter table public.comments enable row level security;
+drop policy if exists likes_read_all on public.likes;
+create policy likes_read_all on public.likes for select to authenticated using(true);
+drop policy if exists likes_insert_self on public.likes;
+create policy likes_insert_self on public.likes for insert to authenticated with check(user_id=auth.uid());
+drop policy if exists likes_delete_self on public.likes;
+create policy likes_delete_self on public.likes for delete to authenticated using(user_id=auth.uid());
+drop policy if exists comments_read_all on public.comments;
+create policy comments_read_all on public.comments for select to authenticated using(true);
+drop policy if exists comments_insert_self on public.comments;
+create policy comments_insert_self on public.comments for insert to authenticated with check(user_id=auth.uid());
+drop policy if exists comments_delete_self on public.comments;
+create policy comments_delete_self on public.comments for delete to authenticated using(user_id=auth.uid());
+
+-- Post view analytics and permanent creator highlights.
+create table if not exists public.post_views (
+ post_id uuid not null references public.posts(id) on delete cascade,
+ viewer_id uuid references auth.users(id) on delete set null,
+ viewed_at timestamptz not null default now()
+);
+create index if not exists post_views_post_idx on public.post_views(post_id);
+alter table public.post_views enable row level security;
+drop policy if exists post_views_insert_viewer on public.post_views;
+create policy post_views_insert_viewer on public.post_views for insert to authenticated with check(viewer_id=auth.uid());
+drop policy if exists post_views_read_owner on public.post_views;
+create policy post_views_read_owner on public.post_views for select to authenticated using(exists(select 1 from public.posts p where p.id=post_id and p.user_id=auth.uid()));
+create table if not exists public.story_highlights (
+ id uuid primary key default gen_random_uuid(),
+ user_id uuid not null references auth.users(id) on delete cascade,
+ story_id uuid references public.stories(id) on delete set null,
+ title text not null default 'Highlights',
+ media_url text not null,
+ media_type text not null default 'image',
+ created_at timestamptz not null default now()
+);
+alter table public.story_highlights enable row level security;
+drop policy if exists highlights_read_all on public.story_highlights;
+create policy highlights_read_all on public.story_highlights for select to authenticated using(true);
+drop policy if exists highlights_manage_own on public.story_highlights;
+create policy highlights_manage_own on public.story_highlights for all to authenticated using(user_id=auth.uid()) with check(user_id=auth.uid());
+
+-- Refresh PostgREST's schema cache so newly-created tables are immediately visible.
+notify pgrst, 'reload schema';

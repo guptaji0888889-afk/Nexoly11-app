@@ -21,3 +21,13 @@ This is a functional early MVP, not a production Instagram-scale system. It has 
 
 ## Privacy / Block / Feed Preferences (required)
 Run `PRIVACY_SOCIAL_MIGRATION.sql` in Supabase SQL Editor AFTER `SUPABASE_SETUP.sql`. It adds private-account visibility rules, block lists, follow-request storage, and interested/not-interested category preferences. The dashboard privacy controls and block/unblock list require this migration. Private account protects post/story reads at the database policy level. Follow-request approval UI and workflow still need to be connected before treating private follow requests as fully production-ready.
+
+
+## NEXOLY11 social engagement and creator dashboard update
+1. Open Supabase Dashboard → SQL Editor.
+2. Run `SUPABASE_SETUP.sql` first if this is a fresh project.
+3. Run `PRIVACY_SOCIAL_MIGRATION.sql` after the base setup. This migration creates the missing `likes` and `comments` tables, post-view analytics and story highlights, enables row-level security, and asks PostgREST to reload its schema cache.
+4. Confirm the Storage bucket named `nexoly-media` exists and is public for this static MVP, or replace public URLs with signed URLs before using private media.
+5. Test with two separate accounts: publish, like, comment, share, download, follow, send a message, and create a story highlight.
+
+The upload path now resizes large images to a maximum 1920px edge and JPEG-optimizes them before upload. Videos are not transcoded in-browser; large video upload speed still depends on the user's network and Supabase Storage region. The NEXOLY11 AI panel currently provides local in-app help responses; it is not connected to a hosted generative-AI model.
