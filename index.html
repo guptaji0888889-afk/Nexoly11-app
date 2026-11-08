@@ -3,291 +3,281 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Nexoly11</title>
+<title>Nexoly11 Pro</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif;background:#080b14;color:#f8fafc;padding-bottom:80px;-webkit-tap-highlight-color:transparent;background-image:radial-gradient(circle at 10% 0%,rgba(124,58,237,.3),transparent 40%),radial-gradient(circle at 90% 0%,rgba(6,182,212,.2),transparent 40%)}
-button,input{font:inherit;cursor:pointer}
+body{font-family:system-ui,sans-serif;background:#080b14;color:#f8fafc;padding-bottom:80px;-webkit-tap-highlight-color:transparent;background-image:radial-gradient(circle at 10% 0%,rgba(124,58,237,.3),transparent 40%),radial-gradient(circle at 90% 0%,rgba(6,182,212,.2),transparent 40%);overflow-x:hidden}
+button,input{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .app{width:min(1180px,calc(100% - 20px));margin:0 auto}
 .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;padding:10px 0;backdrop-filter:blur(18px);background:linear-gradient(to bottom,rgba(8,11,20,.95),rgba(8,11,20,.6),transparent)}
 .brand{display:flex;align-items:center;gap:6px}
 .logo{width:40px;height:40px}
-.bt{font-size:18px;font-weight:900;letter-spacing:-.5px}
-.bt span{color:#06b6d4}
+.bt{font-size:18px;font-weight:900;letter-spacing:-.5px}.bt span{color:#06b6d4}
 .search{display:none}
-.top-actions{margin-left:auto;display:flex;gap:6px}
-.btn-i{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.1);background:rgba(15,23,42,.8);color:#fff;display:grid;place-items:center;font-size:16px}
+.top-actions{margin-left:auto;display:flex;gap:8px}
+.btn-i{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.1);background:rgba(15,23,42,.8);display:grid;place-items:center;font-size:18px;transition:0.2s}
 .btn-p{background:linear-gradient(135deg,#7c3aed,#06b6d4);border:none}
 .nav-tabs{display:none}
 .card{background:rgba(17,24,39,.82);border:1px solid rgba(255,255,255,.09);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.35);backdrop-filter:blur(12px)}
-.section{display:none;animation:f .3s ease}
-.section.active{display:block}
+.section{display:none;animation:f .3s ease}.section.active{display:block}
 @keyframes f{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .sh{display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px;font-weight:bold}
-.sr{display:flex;gap:12px;overflow-x:auto;padding-bottom:14px;scrollbar-width:none}
-.sr::-webkit-scrollbar{display:none}
-.si{flex:0 0 auto;width:70px;display:flex;flex-direction:column;align-items:center;gap:6px;border:none;background:transparent;color:#fff}
+.sr{display:flex;gap:12px;overflow-x:auto;padding-bottom:14px;scrollbar-width:none}.sr::-webkit-scrollbar{display:none}
+.si{flex:0 0 auto;width:70px;display:flex;flex-direction:column;align-items:center;gap:6px;color:#fff}
 .sing{width:66px;height:66px;padding:3px;border-radius:50%;background:linear-gradient(45deg,#7c3aed,#06b6d4,#ec4899)}
 .sa{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;font-size:24px;background:#0b1020;border:2px solid #080b14}
 .sn{font-size:10px;color:#94a3b8}
 .fl{display:grid;grid-template-columns:1fr;gap:16px}
 .comp{padding:14px;display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:bold;background:linear-gradient(135deg,#7c3aed,#06b6d4)}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:bold;background:linear-gradient(135deg,#7c3aed,#06b6d4);flex-shrink:0}
 .comp input{flex:1;border:1px solid rgba(255,255,255,.09);border-radius:999px;padding:10px 14px;background:rgba(2,6,23,.5);color:#fff;outline:none}
 .post{padding:14px;margin-bottom:14px}
-.ph{display:flex;align-items:center;gap:10px}
-.pi strong{font-size:13px;display:block}
-.pi span{font-size:10px;color:#94a3b8}
+.ph{display:flex;align-items:center;gap:10px}.pi strong{font-size:13px;display:block}.pi span{font-size:10px;color:#94a3b8}
 .pt{margin-top:10px;font-size:13px;color:#dbe4f0;line-height:1.5}
-.pm{margin-top:10px;height:240px;border-radius:16px;background:linear-gradient(135deg,#1e1b4b,#0e7490,#831843);display:grid;place-items:center;font-size:50px;position:relative;overflow:hidden}
+.pm{margin-top:10px;height:260px;border-radius:16px;background:linear-gradient(135deg,#1e1b4b,#0e7490,#831843);display:grid;place-items:center;font-size:50px;position:relative;overflow:hidden}
 .pm::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.2),transparent 20%)}
-.pa{display:flex;gap:16px;margin-top:10px}
-.ab{border:none;background:transparent;color:#94a3b8;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:bold}
-.ab.liked{color:#ec4899}
+.pa{display:flex;gap:20px;margin-top:12px}
+.ab{color:#94a3b8;display:flex;align-items:center;gap:5px;font-size:12px;font-weight:bold}.ab.liked{color:#ec4899}
 .sidebar{display:none}
-.rh{display:flex;justify-content:space-between;margin-bottom:10px}
-.rh h1{font-size:24px}
-.rw{display:flex;gap:16px;overflow-x:auto;padding-bottom:20px;scroll-snap-type:x mandatory;scrollbar-width:none}
-.rw::-webkit-scrollbar{display:none}
-.rc{flex:0 0 85vw;height:500px;border-radius:24px;position:relative;overflow:hidden;scroll-snap-align:center;border:1px solid rgba(255,255,255,.1)}
+.rh{display:flex;justify-content:space-between;margin-bottom:10px}.rh h1{font-size:24px}
+.rw{display:flex;gap:16px;overflow-x:auto;padding-bottom:20px;scroll-snap-type:x mandatory;scrollbar-width:none}.rw::-webkit-scrollbar{display:none}
+.rc{flex:0 0 85vw;height:550px;border-radius:24px;position:relative;overflow:hidden;scroll-snap-align:center;border:1px solid rgba(255,255,255,.1)}
 .rbg{position:absolute;inset:0;background:linear-gradient(145deg,#4c1d95,#0e7490,#be185d)}
-.rc.playing .rbg{animation:z 9s ease infinite alternate}
-@keyframes z{to{transform:scale(1.1)}}
+.rc.playing .rbg{animation:z 9s ease infinite alternate}@keyframes z{to{transform:scale(1.1)}}
 .rsh{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.3),transparent 30%,rgba(0,0,0,.8))}
 .rp{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:4px}
 .rp i{flex:1;height:3px;background:rgba(255,255,255,.3);border-radius:999px;position:relative;overflow:hidden}
 .rc.playing .rp i::after{content:"";position:absolute;inset:0;background:#fff;animation:fil 9s linear infinite}
 @keyframes fil{from{width:0}to{width:100%}}
-.ptg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.3);color:#fff;display:grid;place-items:center;font-size:20px;backdrop-filter:blur(5px)}
+.ptg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.3);display:grid;place-items:center;font-size:20px;backdrop-filter:blur(5px)}
 .rc.playing .ptg{opacity:0}
-.rcn{position:absolute;bottom:0;left:0;right:0;padding:16px;color:#fff}
-.rcn h3{font-size:14px}
-.rcn p{font-size:12px;margin-top:5px}
+.rcn{position:absolute;bottom:0;left:0;right:0;padding:16px}
+.rcn h3{font-size:14px}.rcn p{font-size:12px;margin-top:5px}
 .rs{position:absolute;right:10px;bottom:80px;display:flex;flex-direction:column;gap:15px;align-items:center}
-.rs button{border:none;background:transparent;color:#fff;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;font-weight:bold}
+.rs button{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;font-weight:bold}
 .dg{display:grid;grid-template-columns:1fr;gap:16px}
-.pc{overflow:hidden}
-.pcv{height:100px;background:linear-gradient(120deg,#4c1d95,#0e7490,#be185d)}
+.pc{overflow:hidden}.pcv{height:100px;background:linear-gradient(120deg,#4c1d95,#0e7490,#be185d)}
 .pcm{padding:0 16px 16px}
 .pav{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:grid;place-items:center;font-size:24px;font-weight:bold;margin-top:-35px;border:4px solid #111827}
-.pcm h2{font-size:20px;margin-top:10px}
-.pcm p{font-size:11px;color:#94a3b8}
+.pcm h2{font-size:20px;margin-top:10px}.pcm p{font-size:11px;color:#94a3b8}
 .st{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px}
 .s{background:rgba(2,6,23,.4);padding:10px;border-radius:12px;text-align:center}
-.s strong{display:block;font-size:14px}
-.s span{font-size:9px;color:#94a3b8;text-transform:uppercase}
+.s strong{display:block;font-size:14px}.s span{font-size:9px;color:#94a3b8;text-transform:uppercase}
 .sc{padding:14px}
 .sr2{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-.sr2:last-child{border:none}
-.si2{width:34px;height:34px;border-radius:10px;background:rgba(124,58,237,.2);display:grid;place-items:center}
-.sr2 strong{font-size:12px;display:block}
-.sr2 small{font-size:10px;color:#94a3b8}
-.sm{margin-left:auto;font-size:9px;color:#67e8f9;background:rgba(6,182,212,.1);padding:4px 8px;border-radius:999px;font-weight:bold}
-.bn{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:400px;background:rgba(15,23,42,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;display:grid;grid-template-columns:repeat(4,1fr);padding:6px;backdrop-filter:blur(10px);z-index:100}
-.bn button{border:none;background:transparent;color:#94a3b8;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;padding:8px 0;border-radius:14px;font-weight:bold}
+.sr2:last-child{border:none}.si2{width:34px;height:34px;border-radius:10px;background:rgba(124,58,237,.2);display:grid;place-items:center}
+.sr2 strong{font-size:12px;display:block}.sr2 small{font-size:10px;color:#94a3b8}
+.bn{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:400px;background:rgba(15,23,42,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;display:grid;grid-template-columns:repeat(5,1fr);padding:6px;backdrop-filter:blur(10px);z-index:100}
+.bn button{color:#94a3b8;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;padding:8px 0;border-radius:14px;font-weight:bold}
 .bn button.active{color:#fff;background:linear-gradient(135deg,#7c3aed,#06b6d4)}
 .bn span{font-size:16px}
-.modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);display:grid;place-items:center;opacity:0;pointer-events:none;transition:.3s;backdrop-filter:blur(10px)}
+.modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:.3s;backdrop-filter:blur(10px)}
 .modal.open{opacity:1;pointer-events:auto}
-.sv{width:90vw;max-width:380px;height:75vh;border-radius:20px;overflow:hidden;position:relative;transform:scale(.9);transition:.3s}
-.modal.open .sv{transform:scale(1)}
-.sbg{position:absolute;inset:0;background:linear-gradient(145deg,#4c1d95,#0e7490,#be185d)}
-.sp2{position:absolute;top:10px;left:10px;right:10px;height:3px;background:rgba(255,255,255,.3);border-radius:99px;overflow:hidden}
-.modal.open .sp2 span{display:block;height:100%;background:#fff;animation:g 5s linear forwards}
-@keyframes g{from{width:0}to{width:100%}}
-.shd{position:absolute;top:20px;left:15px;right:15px;display:flex;align-items:center;gap:10px;color:#fff}
-.shd .av{width:30px;height:30px;font-size:12px}
-.shd strong{font-size:12px;display:block}
-.shd span{font-size:9px;color:rgba(255,255,255,.7)}
-.cls{margin-left:auto;background:rgba(0,0,0,.3);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:16px}
+.sv{width:100%;max-width:400px;height:85vh;border-radius:24px 24px 0 0;background:#111827;transform:translateY(100%);transition:.3s;display:flex;flex-direction:column}
+.modal.open .sv{transform:translateY(0)}
+.mh{display:flex;align-items:center;justify-content:space-between;padding:15px;border-bottom:1px solid rgba(255,255,255,.1)}
+.mh h3{font-size:16px}.cls{font-size:20px;padding:5px}
+.cam-ui{position:fixed;inset:0;z-index:300;background:#000;display:none;flex-direction:column}
+.cam-ui.open{display:flex}
+.cam-top{display:flex;justify-content:space-between;padding:20px}
+.cam-view{flex:1;position:relative;background:#111;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:0.3s}
+.cam-overlay-text{position:absolute;top:20px;left:20px;display:flex;flex-direction:column;gap:5px;font-size:14px;font-weight:bold;text-shadow:0 2px 5px rgba(0,0,0,0.8);pointer-events:none;z-index:10}
+.cam-tools{display:flex;gap:10px;overflow-x:auto;padding:15px;background:#000;scrollbar-width:none}.cam-tools::-webkit-scrollbar{display:none}
+.tool{width:50px;height:50px;border-radius:12px;background:#222;display:grid;place-items:center;font-size:11px;flex-shrink:0;flex-direction:column;gap:3px}
+.tool span{font-size:18px}
+.tool.active{border:2px solid #06b6d4;background:rgba(6,182,212,.2)}
+.cam-bottom{display:flex;justify-content:space-around;align-items:center;padding:20px;background:#000}
+.rec-btn{width:70px;height:70px;border-radius:50%;border:4px solid #fff;background:rgba(255,0,0,.5)}
+.gal{width:40px;height:40px;border-radius:8px;background:#333;display:grid;place-items:center;font-size:18px}
+/* CSS Visual Effects */
+.eff-rain::after{content:"";position:absolute;inset:0;background-image:linear-gradient(transparent 90%,rgba(255,255,255,0.4) 90%);background-size:100% 20px;animation:rain 0.5s linear infinite;opacity:0.6;z-index:5}
+@keyframes rain{from{background-position:0 0}to{background-position:0 100px}}
+.eff-fog::after{content:"";position:absolute;inset:0;backdrop-filter:blur(5px);background:rgba(255,255,255,0.2);z-index:5}
+.eff-beauty::after{content:"";position:absolute;inset:0;background:rgba(255,200,200,0.15);backdrop-filter:blur(2px) brightness(1.1);z-index:5}
+.chat-item{display:flex;align-items:center;gap:12px;padding:12px 15px;border-bottom:1px solid rgba(255,255,255,.05)}
+.chat-item .av{width:45px;height:45px}.chat-txt{flex:1}.chat-txt h4{font-size:14px}.chat-txt p{font-size:12px;color:#94a3b8;margin-top:2px}
+.ai-btn{position:fixed;bottom:90px;right:20px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#7c3aed);display:grid;place-items:center;font-size:24px;box-shadow:0 10px 25px rgba(236,72,153,.4);z-index:90}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:#22c55e;padding:10px 20px;border-radius:99px;font-size:13px;font-weight:bold;z-index:999;transition:.3s}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.song-list div{padding:15px;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:center}
+.song-list div:active{background:#222}
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding:15px;overflow-y:auto}
+.gal-grid div{aspect-ratio:1;background:#333;border-radius:8px;display:grid;place-items:center;font-size:24px}
+.emoji-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:20px;font-size:24px;text-align:center;overflow-y:auto}
 @media(min-width:768px){
-.rc{flex:0 0 340px;height:550px}
-.search{display:block;flex:1;max-width:400px;position:relative}
-.search input{width:100%;padding:10px 15px 10px 40px;border-radius:999px;border:none;background:rgba(255,255,255,.1);color:#fff}
-.search::before{content:"⌕";position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:18px}
+.rc{flex:0 0 340px}.search{display:block;flex:1;max-width:400px;position:relative}
+.search input{width:100%;padding:10px 15px 10px 40px;border-radius:999px;background:rgba(255,255,255,.1)}
 .nav-tabs{display:flex;gap:6px;margin:10px 0 20px}
-.nav-tabs button{border:none;background:rgba(255,255,255,.05);color:#94a3b8;padding:10px 16px;border-radius:999px;font-weight:bold}
-.nav-tabs button.active{background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff}
-.bn{display:none!important}
-.fl{grid-template-columns:1fr 300px}
-.sidebar{display:block}
-.dg{grid-template-columns:1fr 1fr}
-.sidebar .card{padding:14px;margin-bottom:14px}
-.pm{height:300px}
+.nav-tabs button{background:rgba(255,255,255,.05);color:#94a3b8;padding:10px 16px;border-radius:999px;font-weight:bold}
+.nav-tabs button.active{background:linear-gradient(135deg,#7c3aed,#06b6d4)}
+.bn{display:none!important}.fl{grid-template-columns:1fr 300px}.sidebar{display:block}.dg{grid-template-columns:1fr 1fr}
+.sidebar .card{padding:14px;margin-bottom:14px}.sv{height:70vh;border-radius:24px;margin-bottom:5vh}.modal{align-items:center}
 }
 </style>
 </head> <body>
 <div class="app">
 <header class="topbar">
 <div class="brand">
-<svg class="logo" viewBox="0 0 64 64">
-<defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
-<path d="M32 3 55 16v32L32 61 9 48V16Z" fill="url(#g1)"/>
-<path d="M32 9 50 19v26L32 55 14 45V19Z" fill="#080b14"/>
-<path d="M22 41V23l20 18V23" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
-<circle cx="50" cy="14" r="4" fill="#06b6d4"/>
-</svg>
+<svg class="logo" viewBox="0 0 64 64"><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs><path d="M32 3 55 16v32L32 61 9 48V16Z" fill="url(#g1)"/><path d="M32 9 50 19v26L32 55 14 45V19Z" fill="#080b14"/><path d="M22 41V23l20 18V23" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="14" r="4" fill="#06b6d4"/></svg>
 <div class="bt">NEXOLY<span>11</span></div>
 </div>
 <label class="search"><input type="text" placeholder="Search..."></label>
-<div class="top-actions">
-<button class="btn-i">💬</button>
-<button class="btn-i btn-p">＋</button>
-</div>
+<div class="top-actions"><button class="btn-i" onclick="openModal('chatModal')">💬</button><button class="btn-i btn-p" onclick="openCam()">＋</button></div>
 </header>
-<nav class="nav-tabs">
-<button data-tab="feed" class="active">Home</button>
-<button data-tab="reels">Reels</button>
-<button data-tab="dash">Dashboard</button>
-<button data-tab="stories">Stories</button>
-</nav>
+<nav class="nav-tabs"><button data-tab="feed" class="active">Home</button><button data-tab="reels">Reels</button><button data-tab="dash">Dashboard</button></nav>
 <main>
 <section class="section active" id="tab-feed">
-<div class="sh"><span>Stories</span><span style="font-size:11px;color:#94a3b8">24h</span></div>
+<div class="sh"><span>Stories</span><span style="font-size:11px" onclick="openModal('notifModal')">🔔 Alerts</span></div>
 <div class="sr">
-<button class="si"><div class="sing"><div class="sa">＋</div></div><div class="sn">Your Story</div></button>
+<button class="si" onclick="openCam()"><div class="sing"><div class="sa">＋</div></div><div class="sn">Your Story</div></button>
 <button class="si" onclick="openStory('Aarav','🧑‍💻')"><div class="sing"><div class="sa">🧑‍💻</div></div><div class="sn">Aarav</div></button>
 <button class="si" onclick="openStory('Mira','🌸')"><div class="sing"><div class="sa">🌸</div></div><div class="sn">Mira</div></button>
-<button class="si" onclick="openStory('Dev','🎧')"><div class="sing"><div class="sa">🎧</div></div><div class="sn">Dev</div></button>
 </div>
-<div class="fl">
-<div>
-<div class="card comp">
-<div class="av">N</div>
-<input type="text" placeholder="What's happening?">
-</div>
-<div class="card post">
-<div class="ph">
-<div class="av">A</div>
-<div class="pi"><strong>Aarav Mehta</strong><span>@aarav • 12m</span></div>
-</div>
-<p class="pt">Nexoly11 ka naya UI test kar raha hoon. Smooth aur fast ⚡</p>
-<div class="pm">🎬</div>
-<div class="pa">
-<button class="ab like-btn" onclick="like(this)">🤍 <span>1.2k</span></button>
-<button class="ab">💬 248</button>
-<button class="ab">↗ Share</button>
-</div>
-</div>
-</div>
-<aside class="sidebar">
-<div class="card">
-<div class="sh">Trending</div>
-<p style="font-size:12px;margin-top:10px;color:#94a3b8">#Nexoly11</p>
-<p style="font-size:12px;margin-top:5px;color:#94a3b8">#ReelsDemo</p>
-</div>
-</aside>
-</div>
+<div class="fl"><div>
+<div class="card comp"><div class="av">N</div><input type="text" placeholder="What's happening?"></div>
+<div class="card post"><div class="ph"><div class="av">A</div><div class="pi"><strong>Aarav Mehta</strong><span>@aarav • 12m</span></div></div><p class="pt">Nexoly11 Pro Camera test kar raha hoon! Filters aur Effects mast hain ⚡</p><div class="pm" onclick="play(this)">🎬</div><div class="pa"><button class="ab like-btn" onclick="like(this)">🤍 <span>1.2k</span></button><button class="ab" onclick="openModal('commentModal')">💬 248</button><button class="ab" onclick="showToast('Downloaded with Watermark!')">⬇ Download</button></div></div>
+</div><aside class="sidebar"><div class="card"><div class="sh">Trending</div><p style="font-size:12px;margin-top:10px;color:#94a3b8">#ProCamera</p><p style="font-size:12px;margin-top:5px;color:#94a3b8">#NexolyEffects</p></div></aside></div>
 </section>
 <section class="section" id="tab-reels">
-<div class="rh"><h1>Reels</h1></div>
+<div class="rh"><h1>Reels</h1><span style="font-size:20px" onclick="openCam()">📷</span></div>
 <div class="rw">
-<div class="rc" onclick="play(this)">
-<div class="rbg"></div><div class="rsh"></div>
-<div class="rp"><i></i><i></i><i></i></div>
-<button class="ptg">▶</button>
-<div class="rcn"><h3>@aarav</h3><p>Nexoly11 reels demo ⚡</p></div>
-<div class="rs"><button>❤️ 12k</button><button>💬 482</button></div>
-</div>
-<div class="rc" onclick="play(this)">
-<div class="rbg" style="background:linear-gradient(145deg,#831843,#7c3aed)"></div><div class="rsh"></div>
-<div class="rp"><i></i><i></i><i></i></div>
-<button class="ptg">▶</button>
-<div class="rcn"><h3>@mira.k</h3><p>Story ring + reel ✨</p></div>
-<div class="rs"><button>❤️ 8.4k</button><button>💬 214</button></div>
-</div>
+<div class="rc" onclick="play(this)"><div class="rbg"></div><div class="rsh"></div><div class="rp"><i></i><i></i><i></i></div><button class="ptg">▶</button><div class="rcn"><h3>@aarav</h3><p>Fog effect looks 🔥</p></div><div class="rs"><button>❤️ 12k</button><button onclick="event.stopPropagation();openModal('commentModal')">💬 482</button></div></div>
 </div>
 </section>
 <section class="section" id="tab-dash">
 <div class="dg">
-<div class="card pc">
-<div class="pcv"></div>
-<div class="pcm">
-<div class="pav">N</div>
-<h2>Nexoly11</h2>
-<p>@nexoly11</p>
-<div class="st">
-<div class="s"><strong>12.4K</strong><span>Followers</span></div>
-<div class="s"><strong>86</strong><span>Reels</span></div>
+<div class="card pc"><div class="pcv"></div><div class="pcm"><div class="pav">N</div><h2>Nexoly11</h2><p>@nexoly11</p><div class="st"><div class="s"><strong>12.4K</strong><span>Followers</span></div><div class="s"><strong>86</strong><span>Reels</span></div></div></div></div>
+<div class="card sc"><div class="sh">Dashboard</div><div class="sr2"><div class="si2">🤖</div><div><strong>Nexoly11 AI</strong><small>Chat with AI</small></div><button style="margin-left:auto;color:#06b6d4" onclick="openModal('aiModal')">Open</button></div><div class="sr2"><div class="si2">📊</div><div><strong>Analytics</strong><small>Views & Reach</small></div></div></div>
 </div>
-</div>
-</div>
-<div class="card sc">
-<div class="sh">Dashboard</div>
-<div class="sr2">
-<div class="si2">📊</div>
-<div><strong>Analytics</strong><small>Views & Reach</small></div>
-</div>
-<div class="sr2">
-<div class="si2">🎬</div>
-<div><strong>My Reels</strong><small>86 Posts</small></div>
-</div>
-<div class="sr2">
-<div class="si2">⚙️</div>
-<div><strong>Settings</strong><small>Privacy & Theme</small></div>
-</div>
-</div>
-</div>
-</section>
-<section class="section" id="tab-stories">
-<div class="sh"><span>Stories Feature</span></div>
-<p style="font-size:13px;color:#94a3b8;margin-bottom:15px">Tap on any story in the Home tab to open viewer.</p>
 </section>
 </main>
 </div>
+
+<div class="ai-btn" onclick="openModal('aiModal')">🤖</div>
 <nav class="bn">
 <button data-tab="feed" class="active"><span>🏠</span>Home</button>
 <button data-tab="reels"><span>▶</span>Reels</button>
+<button onclick="openCam()"><span>＋</span>Create</button>
 <button data-tab="dash"><span>📊</span>Dash</button>
-<button data-tab="stories"><span>✨</span>Stories</button>
+<button onclick="openModal('chatModal')"><span>💬</span>Chat</button>
 </nav>
-<div class="modal" id="sm">
-<div class="sv">
-<div class="sbg" id="sbg"></div>
-<div class="sp2"><span></span></div>
-<div class="shd">
-<div class="av" id="sav">A</div>
-<div><strong id="sn">Aarav</strong><span>Just now</span></div>
-<button class="cls" onclick="closeStory()">✕</button>
+
+<!-- Modals for Comments, Chat, etc. -->
+<div class="modal" id="commentModal"><div class="sv"><div class="mh"><h3>Comments</h3><button class="cls" onclick="closeModal('commentModal')">✕</button></div><div style="padding:15px;overflow-y:auto;flex:1"><div class="chat-item"><div class="av" style="width:35px;height:35px;font-size:12px">R</div><div class="chat-txt"><h4>Rohit</h4><p>UI toh next level hai! 🔥</p></div></div></div><div style="padding:15px;border-top:1px solid #333;display:flex;gap:10px"><input type="text" placeholder="Add comment..." style="flex:1;background:#222;border-radius:99px;padding:10px 15px"><button style="color:#06b6d4;font-weight:bold">Post</button></div></div></div>
+<div class="modal" id="chatModal"><div class="sv"><div class="mh"><h3>Messages</h3><button class="cls" onclick="closeModal('chatModal')">✕</button></div><div class="chat-item"><div class="av" style="background:#ec4899">S</div><div class="chat-txt"><h4>Simran</h4><p>Maine naya reel upload kiya hai!</p></div></div></div></div>
+<div class="modal" id="notifModal"><div class="sv"><div class="mh"><h3>Alerts</h3><button class="cls" onclick="closeModal('notifModal')">✕</button></div><div class="chat-item"><div class="av">A</div><div class="chat-txt"><h4>Aarav liked your reel</h4><p>2m ago</p></div></div></div></div>
+<div class="modal" id="aiModal"><div class="sv"><div class="mh"><h3>Nexoly11 AI ✨</h3><button class="cls" onclick="closeModal('aiModal')">✕</button></div><div style="padding:15px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px" id="aiChat"><div style="background:#222;padding:10px;border-radius:12px;align-self:flex-start;font-size:13px">Hi! Main Nexoly11 AI hoon. Kaise help karu?</div></div><div style="padding:15px;border-top:1px solid #333;display:flex;gap:10px"><input type="text" id="aiInput" placeholder="Ask AI..." style="flex:1;background:#222;border-radius:99px;padding:10px 15px"><button onclick="sendAI()" style="color:#06b6d4;font-weight:bold">Send</button></div></div></div>
+
+<!-- PRO CAMERA UI -->
+<div class="cam-ui" id="camUI">
+<div class="cam-top"><button onclick="closeCam()" style="color:#fff;font-size:20px">✕</button><div style="font-weight:bold">Create Reel</div><button style="color:#fff">⚡</button></div>
+<div class="cam-view" id="camView">
+<div class="cam-overlay-text" id="camTextOverlay"></div>
+<div id="camBg" style="position:absolute;inset:0;background:#222;z-index:0"></div>
+<div style="z-index:1;font-size:12px;color:rgba(255,255,255,0.5);position:absolute;bottom:20px">Demo Preview</div>
 </div>
+<div class="cam-tools">
+<div class="tool" onclick="openModal('bgModal')"><span>🎨</span>Bg</div>
+<div class="tool" onclick="toggleEffect('eff-beauty', this)"><span>✨</span>Beauty</div>
+<div class="tool" onclick="toggleEffect('eff-rain', this)"><span>🌧️</span>Rain</div>
+<div class="tool" onclick="toggleEffect('eff-fog', this)"><span>🌫️</span>Fog</div>
+<div class="tool" onclick="openModal('musicModal')"><span>🎵</span>Music</div>
+<div class="tool" onclick="openModal('galModal')"><span>🖼️</span>Gallery</div>
+<div class="tool" onclick="addTag()"><span>#</span>Tag</div>
+<div class="tool" onclick="addLoc()"><span>📍</span>Loc</div>
+<div class="tool" onclick="openModal('emojiModal')"><span>😊</span>Emoji</div>
 </div>
-</div> <script>
-document.querySelectorAll('[data-tab]').forEach(b=>{
-b.addEventListener('click',()=>{
-document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-document.getElementById('tab-'+b.dataset.tab).classList.add('active');
-document.querySelectorAll('[data-tab]').forEach(x=>x.classList.remove('active'));
-document.querySelectorAll(`[data-tab="${b.dataset.tab}"]`).forEach(x=>x.classList.add('active'));
-window.scrollTo(0,0);
-});
-});
-function like(b){
-b.classList.toggle('liked');
-let s=b.querySelector('span');
-let n=parseFloat(s.textContent)||1200;
-if(b.classList.contains('liked')){n++;s.textContent=n>=1000?(n/1000).toFixed(1)+'k':n;}
-else{n--;s.textContent=n>=1000?(n/1000).toFixed(1)+'k':n;}
+<div class="cam-bottom"><div class="gal" onclick="openModal('galModal')">🖼️</div><div class="rec-btn" onclick="showToast('Recording started...')"></div><div style="width:40px"></div></div>
+</div>
+
+<!-- Camera Modals -->
+<div class="modal" id="bgModal"><div class="sv"><div class="mh"><h3>Change Background</h3><button class="cls" onclick="closeModal('bgModal')">✕</button></div><div class="gal-grid">
+<div onclick="setBg('linear-gradient(145deg,#4c1d95,#0e7490)')">🔮</div>
+<div onclick="setBg('linear-gradient(145deg,#831843,#7c3aed)')">🌸</div>
+<div onclick="setBg('linear-gradient(145deg,#0f766e,#1e1b4b)')">🌌</div>
+<div onclick="setBg('#111')">⬛</div>
+<div onclick="setBg('#f8fafc')">⬜</div>
+</div></div></div>
+
+<div class="modal" id="musicModal"><div class="sv"><div class="mh"><h3>Select Song</h3><button class="cls" onclick="closeModal('musicModal')">✕</button></div><div class="song-list" style="overflow-y:auto;flex:1">
+<div onclick="setMusic('Neon Nights - Nexoly Sound')">🎵 Neon Nights <span>+</span></div>
+<div onclick="setMusic('Pastel Dreams - Mira')">🎵 Pastel Dreams <span>+</span></div>
+<div onclick="setMusic('Night Drive - Dev')">🎵 Night Drive <span>+</span></div>
+</div></div></div>
+
+<div class="modal" id="galModal"><div class="sv"><div class="mh"><h3>Gallery</h3><button class="cls" onclick="closeModal('galModal')">✕</button></div><div class="gal-grid">
+<div>🖼️</div><div>📸</div><div>🌄</div><div>🎬</div><div>🏞️</div><div>🌃</div>
+</div></div></div>
+
+<div class="modal" id="emojiModal"><div class="sv"><div class="mh"><h3>Add Emoji</h3><button class="cls" onclick="closeModal('emojiModal')">✕</button></div><div class="emoji-grid">
+<div onclick="addEmoji('😍')">😍</div><div onclick="addEmoji('🔥')">🔥</div><div onclick="addEmoji('💯')">💯</div><div onclick="addEmoji('😂')">😂</div><div onclick="addEmoji('✨')">✨</div><div onclick="addEmoji('💖')">💖</div>
+</div></div></div>
+
+<div class="toast" id="toast">Action Successful!</div>
+<div class="modal" id="sm"><div class="sv" style="height:80vh;border-radius:24px;background:linear-gradient(145deg,#4c1d95,#0e7490);position:relative"><div class="sp2" style="position:absolute;top:10px;left:10px;right:10px;height:3px;background:rgba(255,255,255,.3)"><span style="display:block;height:100%;background:#fff;animation:fil 5s linear forwards"></span></div><div class="shd" style="position:absolute;top:20px;left:15px;right:15px;display:flex;align-items:center;gap:10px"><div class="av" id="sav">A</div><div><strong id="sn">Aarav</strong><br><span>Just now</span></div><button class="cls" style="margin-left:auto" onclick="closeStory()">✕</button></div></div></div>
+
+<script>
+// Navigation
+document.querySelectorAll('[data-tab]').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById('tab-'+b.dataset.tab).classList.add('active');document.querySelectorAll('[data-tab]').forEach(x=>x.classList.remove('active'));document.querySelectorAll(`[data-tab="${b.dataset.tab}"]`).forEach(x=>x.classList.add('active'));window.scrollTo(0,0);});});
+
+// Basic Interactions
+function like(b){b.classList.toggle('liked');let s=b.querySelector('span');let n=parseFloat(s.textContent)||1200;if(b.classList.contains('liked')){n++;s.textContent=n>=1000?(n/1000).toFixed(1)+'k':n;}else{n--;s.textContent=n>=1000?(n/1000).toFixed(1)+'k':n;}}
+function play(el){if(el.classList.contains('rc')||el.classList.contains('pm')){el.classList.toggle('playing');let p=el.querySelector('.ptg');if(p)p.textContent=el.classList.contains('playing')?'⏸':'▶';}}
+const m=document.getElementById('sm');let tm;
+function openStory(n,e){document.getElementById('sn').textContent=n;document.getElementById('sav').textContent=e;m.classList.add('open');clearTimeout(tm);tm=setTimeout(closeStory,5000);}
+function closeStory(){m.classList.remove('open');clearTimeout(tm);}
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function showToast(msg){let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>{t.classList.remove('show')},3000);}
+function openCam(){document.getElementById('camUI').classList.add('open')}
+function closeCam(){document.getElementById('camUI').classList.remove('open')}
+
+// Camera Features
+let activeEffects = [];
+function toggleEffect(effClass, btn) {
+    let view = document.getElementById('camView');
+    if(view.classList.contains(effClass)) {
+        view.classList.remove(effClass);
+        btn.classList.remove('active');
+    } else {
+        view.classList.add(effClass);
+        btn.classList.add('active');
+    }
 }
-function play(el){
-el.classList.toggle('playing');
-el.querySelector('.ptg').textContent=el.classList.contains('playing')?'⏸':'▶';
+function setBg(gradient) {
+    document.getElementById('camBg').style.background = gradient;
+    closeModal('bgModal');
+    showToast('Background Changed!');
 }
-const m=document.getElementById('sm');
-let tm;
-function openStory(n,e){
-document.getElementById('sn').textContent=n;
-document.getElementById('sav').textContent=e;
-document.getElementById('sbg').style.background='linear-gradient(145deg,#7c3aed,#06b6d4)';
-m.classList.remove('open');
-void m.offsetWidth;
-m.classList.add('open');
-clearTimeout(tm);
-tm=setTimeout(closeStory,5000);
+let currentMusic = '';
+function setMusic(song) {
+    currentMusic = song;
+    closeModal('musicModal');
+    updateOverlay();
+    showToast('Music Added: ' + song);
 }
-function closeStory(){
-m.classList.remove('open');
-clearTimeout(tm);
+function addTag() {
+    let tag = prompt("Enter Hashtag (e.g., Nexoly11):");
+    if(tag) { updateOverlay('#'+tag); }
 }
+function addLoc() {
+    let loc = prompt("Enter Location:");
+    if(loc) { updateOverlay('📍 '+loc); }
+}
+function addEmoji(emoji) {
+    closeModal('emojiModal');
+    updateOverlay(emoji);
+}
+let overlayItems = [];
+function updateOverlay(newItem) {
+    if(newItem) overlayItems.push(newItem);
+    let html = overlayItems.map(i => `<div>${i}</div>`).join('');
+    if(currentMusic) html += `<div>🎵 ${currentMusic}</div>`;
+    document.getElementById('camTextOverlay').innerHTML = html;
+}
+
+// AI
+function sendAI(){let i=document.getElementById('aiInput');let c=document.getElementById('aiChat');if(i.value.trim()==='')return;c.innerHTML+=`<div style="background:#7c3aed;padding:10px;border-radius:12px;align-self:flex-end;max-width:80%;font-size:13px">${i.value}</div>`;let q=i.value;i.value='';c.scrollTop=c.scrollHeight;setTimeout(()=>{c.innerHTML+=`<div style="background:#222;padding:10px;border-radius:12px;align-self:flex-start;max-width:80%;font-size:13px">Backend connect karne ke baad main sahi jawab dunga! 😉</div>`;c.scrollTop=c.scrollHeight;},1000);}
 </script>
 </body>
 </html>
