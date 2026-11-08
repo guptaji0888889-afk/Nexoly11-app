@@ -33,3 +33,8 @@ If the database/storage setup has not been run, follow `BACKEND_SETUP.md` and ru
 - Reels publish as video posts and appear in the Reels feed
 
 Note: advanced face-tracking AR filters and permanently baking video filters/watermarks into exported video require a dedicated video/AR processing pipeline.
+
+## Creator Studio update (Nov 2026)
+- Camera Studio controls: beauty-softening preview, brightness, warmth, zoom, composition grid, mirror preview, and 3-second timer.
+- Multi-select post uploads are supported; each selected file is published as its own post entry using the existing `posts` table schema. Stories remain single-media.
+- Camera capture requires a secure HTTPS context and browser camera permission. Beauty controls are visual filters, not AI face retouching or face-tracking AR.
