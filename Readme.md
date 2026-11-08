@@ -21,3 +21,15 @@ If the database/storage setup has not been run, follow `BACKEND_SETUP.md` and ru
 - Feed, auth, photo/video posts, stories, likes, comments, basic messages and profile depend on the Supabase schema, RLS policies and Storage bucket being configured correctly.
 - The filter controls and selected audio currently affect local preview only. They are **not** rendered into the uploaded video and audio is **not** attached to the published post.
 - This is an early MVP, not a production or 100,000-active-user-ready service. No load test, security audit, video transcoding, licensed music catalog, push notifications, content moderation/reporting, or production observability is included.
+
+
+## Creator Studio update
+- Create tabs: Post, Reel, Story
+- Camera capture for photo and video recording (HTTPS required)
+- Front/back camera switch
+- Gallery media selection
+- Preview filters, emoji stickers and text overlay
+- Stories expire after 24 hours using the existing stories table
+- Reels publish as video posts and appear in the Reels feed
+
+Note: advanced face-tracking AR filters and permanently baking video filters/watermarks into exported video require a dedicated video/AR processing pipeline.
