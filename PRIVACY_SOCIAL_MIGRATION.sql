@@ -183,3 +183,57 @@ create policy highlights_manage_own on public.story_highlights for all to authen
 
 -- Refresh PostgREST's schema cache so newly-created tables are immediately visible.
 notify pgrst, 'reload schema';
+
+-- Story interactions: unique views/likes, comments, and @mentions.
+create table if not exists public.story_views (
+ story_id uuid not null references public.stories(id) on delete cascade,
+ viewer_id uuid not null references auth.users(id) on delete cascade,
+ viewed_at timestamptz not null default now(),
+ primary key(story_id, viewer_id)
+);
+create table if not exists public.story_likes (
+ story_id uuid not null references public.stories(id) on delete cascade,
+ viewer_id uuid not null references auth.users(id) on delete cascade,
+ created_at timestamptz not null default now(),
+ primary key(story_id, viewer_id)
+);
+create table if not exists public.story_comments (
+ id uuid primary key default gen_random_uuid(),
+ story_id uuid not null references public.stories(id) on delete cascade,
+ user_id uuid not null references auth.users(id) on delete cascade,
+ body text not null check (char_length(body) between 1 and 1000),
+ created_at timestamptz not null default now()
+);
+create table if not exists public.story_mentions (
+ id uuid primary key default gen_random_uuid(),
+ story_id uuid not null references public.stories(id) on delete cascade,
+ mentioner_id uuid not null references auth.users(id) on delete cascade,
+ mentioned_username text not null check (char_length(mentioned_username) between 1 and 30),
+ created_at timestamptz not null default now()
+);
+create index if not exists story_comments_story_idx on public.story_comments(story_id,created_at);
+create index if not exists story_views_story_idx on public.story_views(story_id);
+
+alter table public.story_views enable row level security;
+alter table public.story_likes enable row level security;
+alter table public.story_comments enable row level security;
+alter table public.story_mentions enable row level security;
+drop policy if exists story_views_insert_own on public.story_views;
+create policy story_views_insert_own on public.story_views for insert to authenticated with check(viewer_id=auth.uid());
+drop policy if exists story_views_update_own on public.story_views;
+create policy story_views_update_own on public.story_views for update to authenticated using(viewer_id=auth.uid()) with check(viewer_id=auth.uid());
+drop policy if exists story_views_read_story_owner on public.story_views;
+create policy story_views_read_story_owner on public.story_views for select to authenticated using(exists(select 1 from public.stories s where s.id=story_id and s.user_id=auth.uid()) or viewer_id=auth.uid());
+drop policy if exists story_likes_read_all on public.story_likes;
+create policy story_likes_read_all on public.story_likes for select to authenticated using(true);
+drop policy if exists story_likes_manage_own on public.story_likes;
+create policy story_likes_manage_own on public.story_likes for all to authenticated using(viewer_id=auth.uid()) with check(viewer_id=auth.uid());
+drop policy if exists story_comments_read_all on public.story_comments;
+create policy story_comments_read_all on public.story_comments for select to authenticated using(true);
+drop policy if exists story_comments_insert_own on public.story_comments;
+create policy story_comments_insert_own on public.story_comments for insert to authenticated with check(user_id=auth.uid());
+drop policy if exists story_mentions_read_all on public.story_mentions;
+create policy story_mentions_read_all on public.story_mentions for select to authenticated using(true);
+drop policy if exists story_mentions_insert_own on public.story_mentions;
+create policy story_mentions_insert_own on public.story_mentions for insert to authenticated with check(mentioner_id=auth.uid());
+notify pgrst, 'reload schema';
