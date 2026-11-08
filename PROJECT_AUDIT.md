@@ -2,8 +2,8 @@
 
 ## Changes in this package
 - Added account-level block/unblock, private-account follow requests with accept/reject, feed category preferences, persistent notification centre and notification triggers, plus story view/reaction tables in `PRIVACY_SOCIAL_MIGRATION.sql`.
-- Added missing `js/privacy-controls.js` and `js/profile-settings.js` referenced by the profile page, plus `js/notifications.js`; previously those referenced files were absent.
-- Added 7 appearance choices (Classic Dark, Clean Light, Auto, Ocean, Forest, Sunset, AMOLED), persistent device settings, and a feed media download control (browser/storage permissions may still restrict downloads).
+- Added `js/privacy-controls.js`, `js/profile-settings.js`, `js/notifications.js`, and `js/nexoly-ai.js` to implement the page references for privacy controls, follow-request decisions, unblock actions, local settings, notification rendering, and in-app help.
+- Added 7 appearance choices (Classic Dark, Clean Light, Auto, Ocean, Forest, Sunset, AMOLED) with palette application and persistent device settings.
 - Added backend notification events for likes, comments, follows, follow requests and messages.
 - Promoted the newer Camera Studio page to the live `upload.html` route. It includes the timer, grid, mirror, beauty-softening, brightness, warmth, zoom, and multi-select post controls.
 - Removed stale duplicate root-level `app.js`, `config.js`, `Upload.html`, and the now-promoted `upload (1).html`. The active JavaScript/configuration remain in `js/` and all page references use those paths.
