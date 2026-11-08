@@ -1,27 +1,12 @@
 <!doctype html>
-<html lang="hi">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808">
-<title>Nexoly11 | Home</title><link rel="stylesheet" href="css/reset.css"><link rel="stylesheet" href="css/style.css">
-<style>
-.home-hero{padding:18px 16px;border:1px solid #343044;border-radius:16px;background:radial-gradient(circle at 90% 10%,#622b7544,transparent 40%),linear-gradient(135deg,#171324,#101016);margin:12px 0}.home-hero h1{font-size:25px;margin:0 0 6px}.home-hero p{color:#bbb;margin:0 0 12px}.home-actions{display:flex;gap:8px;flex-wrap:wrap}.home-actions .btn{margin:0}.section-title{font-size:16px;font-weight:800;margin:18px 0 2px}.searchbar{display:flex;gap:8px}.searchbar input{flex:1;min-width:0}.post{overflow:hidden}.postmedia{max-height:75vh}.empty a{margin-top:12px}
-</style></head>
-<body>
-<header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> 🇮🇳</a><div class="toplinks"><a href="messages.html" aria-label="Messages">✉</a><a href="dashboard.html" aria-label="Profile">♙</a></div></header>
-<main class="wrap">
-<section class="home-hero"><h1>Apni duniya, apni awaaz. 🇮🇳</h1><p>Share photos, videos aur stories with Nexoly11 community.</p><div class="home-actions"><a class="btn" href="upload.html">＋ Create Post</a><a class="btn secondary" href="upload.html?type=story">＋ Add Story</a><a class="btn secondary" href="reels.html">▶ Explore Reels</a></div></section>
-<div class="searchbar"><input class="field" id="feedSearch" placeholder="Search captions / hashtags"><button class="btn" id="searchBtn">Search</button></div>
-<div class="section-title">Stories</div><div id="stories" class="stories"><div class="empty">Stories loading…</div></div>
-<div class="section-title">Explore categories</div><div class="categories" id="categories"><button class="cat active" data-category="all">For You</button><button class="cat" data-category="Motivation">Motivation</button><button class="cat" data-category="Business">Business</button><button class="cat" data-category="Bhakti">Bhakti</button><button class="cat" data-category="Education">Education</button><button class="cat" data-category="Bollywood">Bollywood</button><button class="cat" data-category="Politics">Rajniti</button></div>
-<div class="section-title">Latest posts</div><div id="feed"><div class="empty">Feed loading…</div></div><p id="status" class="status" role="status"></p>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="theme-color" content="#080808"><title>Nexoly11 — Home</title><link rel="stylesheet" href="css/reset.css"><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/home.css"></head>
+<body class="home-page">
+<header class="home-header"><a class="brand" href="index.html">NEXOLY<span>11</span> 🇮🇳</a><div class="home-actions"><a aria-label="Messages" href="messages.html">✉</a><a aria-label="Profile" href="dashboard.html">♙</a></div></header>
+<main class="home-wrap">
+<section class="stories-panel"><div class="stories-head"><h2>Stories</h2><a href="upload.html?type=story">Your story +</a></div><div id="stories" class="stories"></div></section>
+<section class="feed-heading"><div><p class="eyebrow">YOUR COMMUNITY</p><h1>Discover</h1></div><a class="create-quick" href="upload.html">＋ Create</a></section>
+<section id="feed" class="feed-list"><div class="empty">Loading posts…</div></section>
 </main>
 <nav class="bottomnav"><a class="active" href="index.html" aria-label="Home">⌂</a><a href="reels.html" aria-label="Reels">▶</a><a href="upload.html" aria-label="Create">＋</a><a href="messages.html" aria-label="Messages">✉</a><a href="dashboard.html" aria-label="Profile">♙</a></nav>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/app.js" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
- const cats=document.getElementById('categories');let active='all';
- cats.addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;active=b.dataset.category;cats.querySelectorAll('.cat').forEach(x=>x.classList.toggle('active',x===b));filterFeed()});
- document.getElementById('searchBtn').addEventListener('click',filterFeed);document.getElementById('feedSearch').addEventListener('keydown',e=>{if(e.key==='Enter')filterFeed()});
- function filterFeed(){const q=document.getElementById('feedSearch').value.trim().toLowerCase();document.querySelectorAll('#feed .post').forEach(p=>{const category=(p.dataset.category||'').toLowerCase();const matchCat=active==='all'||category===active.toLowerCase();p.hidden=!(matchCat&&(!q||p.textContent.toLowerCase().includes(q)))})}
-});
-</script></body></html>
+<script src="js/theme.js"></script></body></html>
