@@ -52,3 +52,71 @@ create policy stories_read on public.stories for select using (expires_at>now() 
  and (auth.uid()=stories.user_id or coalesce((select p.is_private from public.profiles p where p.id=stories.user_id),false)=false
  or exists(select 1 from public.follows f where f.follower_id=auth.uid() and f.following_id=stories.user_id))
 );
+
+-- Notifications, story insights and safe private-follow workflow.
+create table if not exists public.notifications (
+ id uuid primary key default gen_random_uuid(), user_id uuid not null references auth.users(id) on delete cascade,
+ actor_id uuid references auth.users(id) on delete set null, type text not null check(type in ('like','comment','follow','follow_request','message','story_view','story_reply','mention')),
+ entity_id uuid, body text not null default '', is_read boolean not null default false, created_at timestamptz not null default now()
+);
+create index if not exists notifications_user_created_idx on public.notifications(user_id,created_at desc);
+alter table public.notifications enable row level security;
+drop policy if exists notifications_read_own on public.notifications;
+create policy notifications_read_own on public.notifications for select to authenticated using(user_id=auth.uid());
+drop policy if exists notifications_update_own on public.notifications;
+create policy notifications_update_own on public.notifications for update to authenticated using(user_id=auth.uid()) with check(user_id=auth.uid());
+drop policy if exists notifications_insert_actor on public.notifications;
+create policy notifications_insert_actor on public.notifications for insert to authenticated with check(actor_id=auth.uid());
+create table if not exists public.story_views (
+ story_id uuid not null references public.stories(id) on delete cascade, viewer_id uuid not null references auth.users(id) on delete cascade,
+ viewed_at timestamptz not null default now(), primary key(story_id,viewer_id)
+);
+create table if not exists public.story_reactions (
+ story_id uuid not null references public.stories(id) on delete cascade, user_id uuid not null references auth.users(id) on delete cascade,
+ reaction text not null default '❤️', created_at timestamptz not null default now(), primary key(story_id,user_id)
+);
+alter table public.story_views enable row level security;
+alter table public.story_reactions enable row level security;
+drop policy if exists story_views_read_related on public.story_views;
+create policy story_views_read_related on public.story_views for select to authenticated using(viewer_id=auth.uid() or exists(select 1 from public.stories s where s.id=story_id and s.user_id=auth.uid()));
+drop policy if exists story_views_insert_self on public.story_views;
+create policy story_views_insert_self on public.story_views for insert to authenticated with check(viewer_id=auth.uid());
+drop policy if exists story_reactions_read on public.story_reactions;
+create policy story_reactions_read on public.story_reactions for select to authenticated using(true);
+drop policy if exists story_reactions_write_self on public.story_reactions;
+create policy story_reactions_write_self on public.story_reactions for all to authenticated using(user_id=auth.uid()) with check(user_id=auth.uid());
+
+create or replace function public.n11_notify_activity() returns trigger language plpgsql security definer set search_path=public as $$
+declare target uuid; actor uuid; kind text; entity uuid; bodytext text;
+begin
+ actor := auth.uid();
+ if tg_table_name='likes' then select user_id into target from posts where id=new.post_id; kind:='like'; entity:=new.post_id; bodytext:='liked your post';
+ elsif tg_table_name='comments' then select user_id into target from posts where id=new.post_id; kind:='comment'; entity:=new.post_id; bodytext:='commented on your post';
+ elsif tg_table_name='follows' then target:=new.following_id; actor:=new.follower_id; kind:='follow'; entity:=new.following_id; bodytext:='started following you';
+ elsif tg_table_name='follow_requests' then target:=new.target_id; actor:=new.requester_id; kind:='follow_request'; entity:=new.requester_id; bodytext:='requested to follow you';
+ elsif tg_table_name='messages' then target:=new.recipient_id; actor:=new.sender_id; kind:='message'; entity:=new.id; bodytext:='sent you a message';
+ end if;
+ if target is not null and actor is distinct from target then insert into notifications(user_id,actor_id,type,entity_id,body) values(target,actor,kind,entity,bodytext); end if;
+ return new;
+end; $$;
+drop trigger if exists n11_like_notify on public.likes;
+create trigger n11_like_notify after insert on public.likes for each row execute function public.n11_notify_activity();
+drop trigger if exists n11_comment_notify on public.comments;
+create trigger n11_comment_notify after insert on public.comments for each row execute function public.n11_notify_activity();
+drop trigger if exists n11_follow_notify on public.follows;
+create trigger n11_follow_notify after insert on public.follows for each row execute function public.n11_notify_activity();
+drop trigger if exists n11_request_notify on public.follow_requests;
+create trigger n11_request_notify after insert on public.follow_requests for each row execute function public.n11_notify_activity();
+drop trigger if exists n11_message_notify on public.messages;
+create trigger n11_message_notify after insert on public.messages for each row execute function public.n11_notify_activity();
+
+-- Accepting a private follow request creates the actual follow relationship.
+create or replace function public.n11_accept_follow_request() returns trigger language plpgsql security definer set search_path=public as $$
+begin
+ if new.status='accepted' and old.status is distinct from 'accepted' then
+  insert into public.follows(follower_id,following_id) values(new.requester_id,new.target_id) on conflict do nothing;
+ end if;
+ return new;
+end; $$;
+drop trigger if exists n11_accept_request_follow on public.follow_requests;
+create trigger n11_accept_request_follow after update of status on public.follow_requests for each row execute function public.n11_accept_follow_request();
