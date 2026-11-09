@@ -4,13 +4,28 @@
  const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  let me=null,posts=[];const cfg=window.NEXOLY_CONFIG||{};const bucket=cfg.bucket||'nexoly-media';
  const status=(msg,id='profileUiStatus')=>{let el=$('#'+id)||$('#status');if(el)el.textContent=msg;else console.info(msg)};
- const showSettings=(target)=>{const area=$('#settingsArea');if(!area)return;area.hidden=false;document.querySelector('.ig-profile-head')?.setAttribute('hidden','');document.querySelector('.ig-discover')?.setAttribute('hidden','');$('.ig-tabs')?.setAttribute('hidden','');$('#myPosts')?.setAttribute('hidden','');area.scrollIntoView({behavior:'smooth',block:'start'});if(target)setTimeout(()=>$('#'+target)?.scrollIntoView({behavior:'smooth',block:'center'}),150)};
+ const showSettings=(target)=>{const area=$('#settingsArea');if(!area)return;area.hidden=false;closeSettingsPanel();document.querySelector('.ig-profile-head')?.setAttribute('hidden','');document.querySelector('.ig-discover')?.setAttribute('hidden','');$('.ig-tabs')?.setAttribute('hidden','');$('#myPosts')?.setAttribute('hidden','');area.scrollIntoView({behavior:'smooth',block:'start'});if(target)setTimeout(()=>$('#'+target)?.scrollIntoView({behavior:'smooth',block:'center'}),150)};
  const hideSettings=()=>{const area=$('#settingsArea');if(area)area.hidden=true;['.ig-profile-head','.ig-discover','.ig-tabs','#myPosts'].forEach(s=>$(s)?.removeAttribute('hidden'));window.scrollTo({top:0,behavior:'smooth'})};
- async function start(){const {data:{session}}=await db.auth.getSession();me=session?.user;if(!me)return;
+ function openSettingsPanel(id){
+  const list=$('#settingsList'), panels=document.querySelector('.n11-settings-panels');
+  if(list)list.hidden=true;
+  document.querySelectorAll('.n11-subpanel').forEach(p=>p.hidden=p.id!==id);
+  const target=$('#'+id); if(target){target.hidden=false;target.scrollIntoView({behavior:'smooth',block:'start'});}
+ }
+ function closeSettingsPanel(){
+  document.querySelectorAll('.n11-subpanel').forEach(p=>p.hidden=true);
+  const list=$('#settingsList'); if(list)list.hidden=false;
+ }
+ function bindSettingsNavigation(){
+  document.querySelectorAll('[data-open-panel]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();openSettingsPanel(b.dataset.openPanel)}));
+  document.querySelectorAll('[data-settings-back]').forEach(b=>b.addEventListener('click',closeSettingsPanel));
+ }
+ async function start(){const {data:{session}}=await db.auth.getSession();me=session?.user;if(!me)return;bindSettingsNavigation();
   const {data:p,error}=await db.from('profiles').select('username,full_name,avatar_url,bio').eq('id',me.id).maybeSingle();
   if(error)console.warn('profile fetch',error.message);
   if(p){$('#profileName')&&($('#profileName').textContent='@'+(p.username||me.email?.split('@')[0]||'user'));$('#profileFullName')&&($('#profileFullName').textContent=p.full_name||'');$('#profileBio')&&($('#profileBio').textContent=p.bio||'');if(p.username)$('#username')&&($('#username').value=p.username);if(p.full_name)$('#fullName')&&($('#fullName').value=p.full_name);if(p.bio)$('#bio')&&($('#bio').value=p.bio);if(p.avatar_url)setAvatar(p.avatar_url)}
   else if($('#profileName'))$('#profileName').textContent='@'+(me.email?.split('@')[0]||'user');
+  if(!p?.avatar_url){const av=$('#profileAvatar');if(av){av.removeAttribute('src');av.classList.add('n11-avatar-fallback');av.alt='Add profile photo';}}
   await Promise.all([loadPosts(),loadHighlights()]);
   $('#openEdit')?.addEventListener('click',()=>showSettings('username'));
   $('#openSettings')?.addEventListener('click',()=>showSettings());$('#topSettings')?.addEventListener('click',()=>showSettings());$('#closeSettings')?.addEventListener('click',hideSettings);
@@ -21,7 +36,7 @@
   document.addEventListener('click',handleDelete);
   document.querySelectorAll('[data-setting-info]').forEach(b=>b.addEventListener('click',()=>status(b.dataset.settingInfo)));
  }
- function setAvatar(url){const img=$('#profileAvatar');if(img){img.src=url;img.alt='Profile photo';img.onerror=()=>{img.style.opacity='.35'}}}
+ function setAvatar(url){const img=$('#profileAvatar');if(img){img.onerror=()=>{img.removeAttribute('src');img.classList.add('n11-avatar-fallback');img.alt='Profile photo unavailable';img.parentElement?.classList.add('has-avatar-fallback')};if(url){img.classList.remove('n11-avatar-fallback');img.src=url;img.alt='Profile photo'}}}
  function chooseAvatar(){if(!me)return;let input=$('#n11AvatarInput');if(!input){input=document.createElement('input');input.id='n11AvatarInput';input.type='file';input.accept='image/jpeg,image/png,image/webp';input.hidden=true;document.body.append(input);input.addEventListener('change',uploadAvatar)}input.click()}
  async function uploadAvatar(e){const file=e.target.files?.[0];e.target.value='';if(!file)return;if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>5*1024*1024){status('Profile photo JPG, PNG ya WEBP aur 5 MB se chhoti honi chahiye.');return}status('Profile photo upload ho rahi hai…');const ext=file.type==='image/png'?'png':file.type==='image/webp'?'webp':'jpg';const path=`${me.id}/avatars/${Date.now()}.${ext}`;const {data,error}=await db.storage.from(bucket).upload(path,file,{upsert:true,contentType:file.type,cacheControl:'3600'});if(error){status('Photo upload failed: '+error.message);return}const {data:pub}=db.storage.from(bucket).getPublicUrl(data.path);const {error:pe}=await db.from('profiles').update({avatar_url:pub.publicUrl,updated_at:new Date().toISOString()}).eq('id',me.id);if(pe){status('Photo uploaded but profile save failed: '+pe.message);return}setAvatar(pub.publicUrl);status('Profile photo update ho gayi!')}
  async function loadPosts(){const box=$('#myPosts');if(!box)return;box.innerHTML='<p class="muted">Loading posts…</p>';const {data,error}=await db.from('posts').select('id,media_url,media_path,media_type,caption,created_at').eq('user_id',me.id).order('created_at',{ascending:false}).limit(100);if(error){box.innerHTML='<p class="muted">Posts load nahi hue: '+esc(error.message)+'</p>';return}posts=data||[];if($('#postCount'))$('#postCount').textContent=posts.length;renderPosts('grid')}
