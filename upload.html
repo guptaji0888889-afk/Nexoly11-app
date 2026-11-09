@@ -3,101 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Nexoly11 - ORIGINAL Realistic</title>
+<title>Nexoly11 - Attractive</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:system-ui,Arial;overflow:hidden;height:100dvh;width:100vw;position:fixed}
 .page{position:fixed;inset:0;display:none;flex-direction:column;background:#000}
 .page.active{display:flex}
-#video{width:100%;flex:1;object-fit:cover;background:#111;display:block}
+/* CAMERA FULL SCREEN - KOI KAALA GAP NAHI */
+#video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#111;display:block}
 #canvas{display:none}
-.topBar{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#000}
-.logo{font-weight:900;font-size:20px}.logo span{color:#ff5fa2}
-.iconBtn{width:42px;height:42px;border-radius:50%;background:#222;border:1px solid #555;display:flex;align-items:center;justify-content:center;font-size:20px}
-#camMsg{text-align:center;background:#ff5fa2;padding:10px;font-size:13px;font-weight:700;display:none}
-#camBtn{margin:10px 14px;padding:16px;border:0;border-radius:14px;background:#ff5fa2;color:#fff;font-weight:800;font-size:16px}
-.ctrl{padding:8px 14px}
-.ctrl label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;color:#ccc}
-.ctrl label span:last-child{color:#ff5fa2;font-weight:700}
-input[type=range]{width:100%;accent-color:#ff5fa2}
-.filterBar{display:flex;gap:10px;overflow-x:auto;padding:8px 10px;scrollbar-width:none}
-.fItem{flex-shrink:0;width:66px;text-align:center}
-.fItem .fc{width:60px;height:60px;border-radius:50%;border:3px solid #333;display:flex;align-items:center;justify-content:center;font-size:22px;background:#222}
-.fItem.active .fc{border-color:#fff;box-shadow:0 0 10px rgba(255,255,255,.6)}
-.fItem span{font-size:11px}
-.fItem small{display:block;font-size:9px;color:#aaa}
-.shutterRow{display:flex;align-items:center;justify-content:space-between;padding:8px 16px}
-.thumbS{width:52px;height:52px;border-radius:12px;overflow:hidden;border:2px solid #fff;background:#222}
+.camUI{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.topBar{display:flex;justify-content:space-between;align-items:center;padding:10px 12px}
+.logo{font-weight:900;font-size:17px;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);padding:6px 10px;border-radius:20px}
+.logo span{color:#ff5fa2}
+.topBtns{display:flex;gap:6px}
+.iconBtn{width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:16px}
+#camMsg{text-align:center;background:#ff5fa2;padding:7px;font-size:12px;font-weight:700;display:none;margin:0 12px;border-radius:20px}
+#camBtn{margin:10px 14px;padding:11px;border:0;border-radius:20px;background:linear-gradient(90deg,#ff5fa2,#a855f7);color:#fff;font-weight:800;font-size:13px;box-shadow:0 4px 15px rgba(255,95,162,.6)}
+/* CHHOTE ATTRACTIVE FILTERS - PILL */
+.filterBar{display:flex;gap:6px;overflow-x:auto;padding:6px 10px;scrollbar-width:none}
+.filterBar::-webkit-scrollbar{display:none}
+.fItem{flex-shrink:0;text-align:center;cursor:pointer}
+.fItem .fc{width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(0,0,0,.45);backdrop-filter:blur(8px)}
+.fItem.active .fc{border-color:#fff;background:linear-gradient(135deg,#ff5fa2,#a855f7);transform:scale(1.12);box-shadow:0 0 10px #ff5fa2}
+.fItem span{font-size:10px;background:rgba(0,0,0,.5);padding:2px 6px;border-radius:10px;display:inline-block;margin-top:3px}
+.fItem.active span{background:#ff5fa2;color:#fff}
+/* INTENSITY CHHOTA */
+.intRow{display:flex;align-items:center;gap:8px;margin:0 12px;padding:6px 10px;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);border-radius:20px}
+.intRow span{font-size:10px;white-space:nowrap}
+.intRow input{flex:1;accent-color:#ff5fa2;height:18px}
+/* SHUTTER CHHOTA ATTRACTIVE */
+.shutterRow{display:flex;align-items:center;justify-content:space-between;padding:8px 16px 6px}
+.thumbS{width:40px;height:40px;border-radius:10px;overflow:hidden;border:2px solid #fff;background:#222}
 .thumbS img{width:100%;height:100%;object-fit:cover}
-.shutter{width:72px;height:72px;border-radius:50%;background:#fff;border:5px solid #ff5fa2;font-size:28px}
-.capBtn{margin:0 10px 6px;padding:14px;border:0;border-radius:20px;background:linear-gradient(90deg,#ff5fa2,#a855f7);color:#fff;font-weight:800}
-.recBtn{margin:0 10px 6px;padding:14px;border:0;border-radius:20px;background:#fff;color:#000;font-weight:800}
-.gHead{padding:14px;display:flex;justify-content:space-between;align-items:center;background:#111}
-.gHead b{font-size:18px;color:#ff5fa2}
-.gGrid{flex:1;overflow-y:auto;padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.gCard{border-radius:12px;overflow:hidden;background:#222;border:1px solid #333}
-.gCard img,.gCard video{width:100%;height:170px;object-fit:cover;display:block}
-.gCard p{padding:6px;font-size:11px;color:#aaa}
-.empty{text-align:center;color:#888;padding:40px 10px;grid-column:1/3}
+.shutter{width:58px;height:58px;border-radius:50%;background:#fff;border:4px solid #ff5fa2;font-size:22px;box-shadow:0 0 12px rgba(255,95,162,.7)}
+.miniBtn{width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:16px}
+.capRow{display:flex;gap:6px;padding:0 10px 8px}
+.capBtn{flex:1;padding:10px;border:0;border-radius:16px;background:linear-gradient(90deg,#ff5fa2,#a855f7);color:#fff;font-weight:800;font-size:12px}
+.recBtn{flex:1;padding:10px;border:0;border-radius:16px;background:#fff;color:#000;font-weight:800;font-size:12px}
+#camStatus{text-align:center;font-size:10px;color:#ddd;padding-bottom:4px;text-shadow:0 1px 3px #000}
+/* GALLERY CHHOTA ATTRACTIVE */
+.gHead{padding:12px;display:flex;justify-content:space-between;align-items:center;background:#111}
+.gHead b{font-size:15px;color:#ff5fa2}
+.gGrid{flex:1;overflow-y:auto;padding:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.gCard{border-radius:10px;overflow:hidden;background:#222;position:relative}
+.gCard img,.gCard video{width:100%;height:120px;object-fit:cover;display:block}
+.gCard p{padding:4px;font-size:9px;color:#aaa}
+.empty{text-align:center;color:#888;padding:30px 10px;grid-column:1/4;font-size:13px}
 #detail{position:fixed;inset:0;background:#000;z-index:50;display:none;flex-direction:column}
 #detail img,#detail video{width:100%;flex:1;object-fit:contain;background:#000}
-.dTop{display:flex;justify-content:space-between;padding:12px;background:#111}
-.dTop button{border:0;background:#222;color:#fff;padding:8px 14px;border-radius:20px}
-.dTools{display:flex;gap:8px;overflow-x:auto;padding:10px;background:#111}
-.dTools button{white-space:nowrap;border:0;background:#222;color:#fff;padding:9px 14px;border-radius:20px}
+.dTop{display:flex;justify-content:space-between;padding:10px;background:#111}
+.dTop button{border:0;background:#222;color:#fff;padding:7px 12px;border-radius:20px;font-size:12px}
+.dTools{display:flex;gap:6px;overflow-x:auto;padding:8px;background:#111}
+.dTools button{white-space:nowrap;border:0;background:#222;color:#fff;padding:7px 12px;border-radius:20px;font-size:12px}
 .dTools button.active{background:#ff5fa2}
-.dRange{padding:10px 14px;background:#111}
+.dRange{padding:8px 12px;background:#111}
 .dRange input{width:100%;accent-color:#ff5fa2}
-.dBtns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px;background:#111}
-.dBtns button{padding:12px;border:0;border-radius:12px;font-weight:800;font-size:12px}
+.dBtns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:10px;background:#111}
+.dBtns button{padding:10px;border:0;border-radius:12px;font-weight:800;font-size:11px}
 .bEdit{background:#a855f7;color:#fff}.bSave{background:#00c853;color:#fff}.bDel{background:#ff3b30;color:#fff}.bStory{background:#ff5fa2;color:#fff}.bReel{background:#fff;color:#000}.bPost{background:#0095f6;color:#fff}
-.reelBox{flex:1;overflow-y:auto;padding:10px}
-.reelCard{background:#222;border-radius:14px;overflow:hidden;margin-bottom:14px}
-.reelCard video{width:100%;max-height:380px;display:block}
-.reelCard .rc{padding:10px}
-.musicBox{flex:1;overflow-y:auto;padding:14px}
-.songCard{background:#222;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-.songCard button{border:0;background:#ff5fa2;color:#fff;padding:8px 14px;border-radius:20px;font-weight:700}
-.uploadBox{background:#1a0f1a;border:2px dashed #ff5fa2;border-radius:14px;padding:16px;text-align:center;margin-bottom:14px}
-.profileBox{flex:1;overflow-y:auto;padding:14px;text-align:center}
-.pPic{width:100px;height:100px;border-radius:50%;background:#333;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:40px;overflow:hidden;border:3px solid #ff5fa2}
+.reelBox{flex:1;overflow-y:auto;padding:8px}
+.reelCard{background:#222;border-radius:12px;overflow:hidden;margin-bottom:10px}
+.reelCard video{width:100%;max-height:320px;display:block}
+.reelCard .rc{padding:8px}
+.musicBox{flex:1;overflow-y:auto;padding:12px}
+.songCard{background:#222;border-radius:12px;padding:10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.songCard button{border:0;background:#ff5fa2;color:#fff;padding:7px 12px;border-radius:20px;font-weight:700;font-size:12px}
+.uploadBox{background:#1a0f1a;border:2px dashed #ff5fa2;border-radius:14px;padding:14px;text-align:center;margin-bottom:12px}
+.profileBox{flex:1;overflow-y:auto;padding:12px;text-align:center}
+.pPic{width:80px;height:80px;border-radius:50%;background:#333;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:32px;overflow:hidden;border:3px solid #ff5fa2}
 .pPic img{width:100%;height:100%;object-fit:cover}
-.pBtn{padding:10px 16px;border:0;border-radius:20px;background:#ff5fa2;color:#fff;font-weight:700;margin:6px}
-.nav{position:fixed;bottom:0;left:0;right:0;z-index:60;background:#111;display:flex;justify-content:space-around;padding:10px 0 14px;border-top:1px solid #333}
-.nav button{border:0;background:transparent;color:#aaa;font-size:11px}
+.pBtn{padding:8px 14px;border:0;border-radius:20px;background:#ff5fa2;color:#fff;font-weight:700;margin:5px;font-size:12px}
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(17,17,17,.95);backdrop-filter:blur(10px);display:flex;justify-content:space-around;padding:6px 0 10px;border-top:1px solid #222}
+.nav button{border:0;background:transparent;color:#aaa;font-size:10px}
 .nav button.active{color:#ff5fa2}
-.nav button div{font-size:22px}
-#msg{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);padding:10px 16px;border-radius:20px;z-index:100;font-size:13px;display:none;white-space:nowrap}
+.nav button div{font-size:19px}
+#msg{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);padding:8px 14px;border-radius:20px;z-index:100;font-size:12px;display:none;white-space:nowrap}
 </style>
 </head>
 <body>
 <div class="page active" id="page-camera">
-<div class="topBar"><div class="logo">Nexoly11 <span>ORIGINAL</span></div><div style="display:flex;gap:8px"><div class="iconBtn" onclick="toggleFlip()">🔄</div><div class="iconBtn" onclick="toggleFlash()">⚡</div></div></div>
-<div id="camMsg"></div>
 <video id="video" autoplay playsinline muted></video><canvas id="canvas"></canvas>
-<button id="camBtn" onclick="startCam()">📸 CAMERA ON KARO - CLICK KARO</button>
-<div class="ctrl"><label><span>Realistic Intensity - Kitna Filter Chahiye</span><span id="vInt">65%</span></label><input type="range" id="intensity" min="0" max="100" value="65"></div>
+<div class="camUI">
+<div class="topBar"><div class="logo">Nexoly11 <span>✨</span></div><div class="topBtns"><div class="iconBtn" onclick="toggleFlip()">🔄</div><div class="iconBtn" onclick="toggleFlash()">⚡</div></div></div>
+<div id="camMsg"></div>
+<button id="camBtn" onclick="startCam()">📸 Camera ON Karo - Click Karo</button>
+<div style="flex:1"></div>
+<div class="intRow"><span>✨ Intensity</span><input type="range" id="intensity" min="0" max="100" value="60"><span id="vInt">60%</span></div>
 <div class="filterBar" id="filterBar">
-<div class="fItem active" data-f="Original"><div class="fc">📷</div><span>Original</span><small>Natural</small></div>
-<div class="fItem" data-f="B612"><div class="fc">💖</div><span>B612</span><small>Soft Glow</small></div>
-<div class="fItem" data-f="Fog"><div class="fc">🌫️</div><span>Fog</span><small>Real Dhuan</small></div>
-<div class="fItem" data-f="Rain"><div class="fc">🌧️</div><span>Rain</span><small>Real Barish</small></div>
-<div class="fItem" data-f="Sea"><div class="fc">🌊</div><span>Sea</span><small>Real Samundar</small></div>
-<div class="fItem" data-f="Golden"><div class="fc">☀️</div><span>Golden</span><small>Sunset Real</small></div>
-<div class="fItem" data-f="Night"><div class="fc">🌙</div><span>Night</span><small>Clear Raat</small></div>
-<div class="fItem" data-f="Cinematic"><div class="fc">🎬</div><span>Cinematic</span><small>Movie</small></div>
-<div class="fItem" data-f="Portrait"><div class="fc">👤</div><span>Portrait</span><small>Blur BG</small></div>
-<div class="fItem" data-f="Vintage"><div class="fc">📽️</div><span>Vintage</span><small>Old Film</small></div>
+<div class="fItem active" data-f="Original"><div class="fc">📷</div><span>Original</span></div>
+<div class="fItem" data-f="B612"><div class="fc">💖</div><span>B612</span></div>
+<div class="fItem" data-f="Fog"><div class="fc">🌫️</div><span>Fog</span></div>
+<div class="fItem" data-f="Rain"><div class="fc">🌧️</div><span>Rain</span></div>
+<div class="fItem" data-f="Sea"><div class="fc">🌊</div><span>Sea</span></div>
+<div class="fItem" data-f="Golden"><div class="fc">☀️</div><span>Golden</span></div>
+<div class="fItem" data-f="Night"><div class="fc">🌙</div><span>Night</span></div>
+<div class="fItem" data-f="Cinematic"><div class="fc">🎬</div><span>Cine</span></div>
+<div class="fItem" data-f="Portrait"><div class="fc">👤</div><span>Portrait</span></div>
+<div class="fItem" data-f="Vintage"><div class="fc">📽️</div><span>Vintage</span></div>
 </div>
-<div class="shutterRow"><div class="thumbS" onclick="goPage('gallery')"><img id="lastImg"></div><div class="shutter" onclick="capture()">📸</div><div class="iconBtn" onclick="toggleFlip()">🔄</div></div>
-<button class="capBtn" onclick="capture()">📸 CAPTURE - ORIGINAL</button>
-<button class="recBtn" id="recBtn" onclick="toggleRec()">🔴 START REEL</button>
-<p style="text-align:center;font-size:12px;color:#aaa;padding-bottom:6px" id="camStatus">Camera Allow karo</p>
+<div class="shutterRow"><div class="thumbS" onclick="goPage('gallery')"><img id="lastImg"></div><div class="shutter" onclick="capture()">📸</div><div class="miniBtn" onclick="toggleFlip()">🔄</div></div>
+<div class="capRow"><button class="capBtn" onclick="capture()">📸 CAPTURE</button><button class="recBtn" id="recBtn" onclick="toggleRec()">🔴 REEL</button></div>
+<p id="camStatus">Original • Natural • Attractive</p>
+</div>
 </div>
 
 <div class="page" id="page-gallery">
-<div class="gHead"><b>🖼️ Gallery - Original Pics</b><span id="gCount">0</span></div>
-<div class="gGrid" id="galleryGrid"><div class="empty">Abhi koi photo nahi<br>Camera se photo lo<br>Wo yahan ORIGINAL dikhegi</div></div>
+<div class="gHead"><b>🖼️ Gallery</b><span id="gCount">0</span></div>
+<div class="gGrid" id="galleryGrid"><div class="empty">Abhi koi photo nahi<br>Camera se photo lo</div></div>
 </div>
 <div class="page" id="page-reels">
 <div class="gHead"><b>🎬 Reels</b><span>🔥</span></div>
@@ -105,30 +118,30 @@ input[type=range]{width:100%;accent-color:#ff5fa2}
 </div>
 <div class="page" id="page-music">
 <div class="gHead"><b>🎵 Music</b></div>
-<div class="musicBox"><div class="uploadBox"><b>🎵 Apna Song Upload Karo</b><p style="font-size:12px;color:#aaa;margin-top:6px">MP3 select karo</p><input type="file" accept="audio/*" onchange="uploadSong(this)"><br><br><audio id="audioPlayer" controls style="width:100%"></audio></div><div id="songList"></div></div>
+<div class="musicBox"><div class="uploadBox"><b>🎵 Song Upload Karo</b><p style="font-size:11px;color:#aaa;margin-top:4px">MP3 select karo</p><input type="file" accept="audio/*" onchange="uploadSong(this)"><br><br><audio id="audioPlayer" controls style="width:100%"></audio></div><div id="songList"></div></div>
 </div>
 <div class="page" id="page-profile">
 <div class="gHead"><b>👤 Profile</b></div>
-<div class="profileBox"><div class="pPic" id="pPic">👤</div><br><input type="file" accept="image/*" onchange="setProfilePic(this)" style="display:none" id="profilePic"><button class="pBtn" onclick="document.getElementById('profilePic').click()">📸 Photo Badlo</button><br><h2 id="pName">Nexoly11 User</h2><p style="color:#aaa;font-size:13px">@nexoly11 • Bhopal</p><br><input id="nameInput" placeholder="Apna Naam" style="width:80%;padding:10px;border-radius:10px;background:#222;color:#fff;border:1px solid #333"><br><br><button class="pBtn" onclick="saveProfile()">💾 Save</button><br><br><div style="background:#222;padding:14px;border-radius:14px;text-align:left"><b>🎵 Profile Song</b><p id="pSong" style="font-size:12px;color:#aaa">No Song - Music se upload karo</p></div><br><div style="background:#222;padding:14px;border-radius:14px"><b>📊 Hisab</b><p id="pStats" style="font-size:13px;color:#aaa">0 Photo • 0 Video</p></div></div>
+<div class="profileBox"><div class="pPic" id="pPic">👤</div><br><input type="file" accept="image/*" onchange="setProfilePic(this)" style="display:none" id="profilePic"><button class="pBtn" onclick="document.getElementById('profilePic').click()">📸 Photo Badlo</button><br><h2 id="pName" style="font-size:18px">Nexoly11 User</h2><p style="color:#aaa;font-size:12px">@nexoly11 • Bhopal</p><br><input id="nameInput" placeholder="Apna Naam" style="width:80%;padding:9px;border-radius:10px;background:#222;color:#fff;border:1px solid #333"><br><br><button class="pBtn" onclick="saveProfile()">💾 Save</button><br><br><div style="background:#222;padding:12px;border-radius:12px;text-align:left"><b style="font-size:13px">🎵 Profile Song</b><p id="pSong" style="font-size:11px;color:#aaa">No Song</p></div><br><div style="background:#222;padding:12px;border-radius:12px"><b style="font-size:13px">📊 Hisab</b><p id="pStats" style="font-size:12px;color:#aaa">0 Photo • 0 Video</p></div></div>
 </div>
 
 <div id="detail">
-<div class="dTop"><button onclick="closeDetail()">✕ Back</button><b id="dTitle">Photo</b><button onclick="saveDetail()">💾 Save</button></div>
+<div class="dTop"><button onclick="closeDetail()">✕ Back</button><b id="dTitle" style="font-size:13px">Photo</b><button onclick="saveDetail()">💾 Save</button></div>
 <img id="dImg" src=""><video id="dVideo" controls style="display:none"></video>
 <div class="dTools" id="dTools">
 <button data-f="Original" class="active" onclick="applyDetailFilter('Original',this)">Original</button>
-<button data-f="Fog" onclick="applyDetailFilter('Fog',this)">🌫️ Fog Original</button>
-<button data-f="Rain" onclick="applyDetailFilter('Rain',this)">🌧️ Rain Original</button>
-<button data-f="Sea" onclick="applyDetailFilter('Sea',this)">🌊 Sea Original</button>
+<button data-f="Fog" onclick="applyDetailFilter('Fog',this)">🌫️ Fog</button>
+<button data-f="Rain" onclick="applyDetailFilter('Rain',this)">🌧️ Rain</button>
+<button data-f="Sea" onclick="applyDetailFilter('Sea',this)">🌊 Sea</button>
 <button data-f="Golden" onclick="applyDetailFilter('Golden',this)">☀️ Golden</button>
 <button data-f="Night" onclick="applyDetailFilter('Night',this)">🌙 Night</button>
-<button data-f="Cinematic" onclick="applyDetailFilter('Cinematic',this)">🎬 Cinematic</button>
+<button data-f="Cinematic" onclick="applyDetailFilter('Cinematic',this)">🎬 Cine</button>
 <button data-f="B612" onclick="applyDetailFilter('B612',this)">💖 B612</button>
 <button data-f="BW" onclick="applyDetailFilter('BW',this)">⚫ B&W</button>
 </div>
-<div class="dRange"><label style="font-size:12px">Brightness - <span id="dVal">100%</span></label><input type="range" id="dBright" min="50" max="180" value="100"></div>
-<div style="padding:0 14px 6px"><label style="font-size:12px">🎵 Song</label><select id="detailSong" style="width:100%;padding:10px;border-radius:10px;background:#222;color:#fff;border:1px solid #333;margin-top:6px"><option value="">No Song</option></select></div>
-<div class="dBtns"><button class="bEdit" onclick="saveDetail()">✏️ EDIT SAVE</button><button class="bSave" onclick="downloadDetail()">💾 SAVE</button><button class="bDel" onclick="deleteDetail()">🗑️ DELETE</button><button class="bStory" onclick="shareDetail('Story')">📱 STORY</button><button class="bReel" onclick="shareDetail('Reels')">🎬 REELS</button><button class="bPost" onclick="shareDetail('Post')">📤 POST</button></div>
+<div class="dRange"><label style="font-size:11px">Brightness - <span id="dVal">100%</span></label><input type="range" id="dBright" min="50" max="180" value="100"></div>
+<div style="padding:0 12px 6px"><label style="font-size:11px">🎵 Song</label><select id="detailSong" style="width:100%;padding:9px;border-radius:10px;background:#222;color:#fff;border:1px solid #333;margin-top:4px"><option value="">No Song</option></select></div>
+<div class="dBtns"><button class="bEdit" onclick="saveDetail()">✏️ EDIT</button><button class="bSave" onclick="downloadDetail()">💾 SAVE</button><button class="bDel" onclick="deleteDetail()">🗑️ DELETE</button><button class="bStory" onclick="shareDetail('Story')">📱 STORY</button><button class="bReel" onclick="shareDetail('Reels')">🎬 REELS</button><button class="bPost" onclick="shareDetail('Post')">📤 POST</button></div>
 </div>
 
 <div class="nav">
@@ -140,20 +153,17 @@ input[type=range]{width:100%;accent-color:#ff5fa2}
 </div>
 <div id="msg"></div>
 <script>
-let video=document.getElementById('video'),canvas=document.getElementById('canvas'),stream=null,facing='user',filter='Original',intensity=65,isRec=false,recorder=null,chunks=[],flashOn=false;
+let video=document.getElementById('video'),canvas=document.getElementById('canvas'),stream=null,facing='user',filter='Original',intensity=60,isRec=false,recorder=null,chunks=[],flashOn=false;
 let gallery=[],songs=[],detailIndex=-1,detailFilter='Original',detailBright=100;
 let defaultSongs=[{name:'Trending Love',artist:'Nexoly11'},{name:'Sad Song',artist:'Nexoly11'},{name:'Party Beat',artist:'Nexoly11'}];
-let drops=[]; for(let i=0;i<150;i++) drops.push({x:Math.random(),y:Math.random(),len:10+Math.random()*14,speed:0.012+Math.random()*0.01,op:0.2+Math.random()*0.4});
 function showMsg(t){let m=document.getElementById('msg');m.innerText=t;m.style.display='block';setTimeout(()=>m.style.display='none',2500)}
 function goPage(p,el){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');if(p==='gallery')renderGallery();if(p==='reels')renderReels();if(p==='music')renderSongs();if(p==='profile')renderProfile()}
 async function startCam(){
  let msg=document.getElementById('camMsg');msg.style.display='block';msg.innerText='Camera khul raha hai... Allow dabao...';
  try{ if(stream) stream.getTracks().forEach(t=>t.stop()); stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false}); video.srcObject=stream; await video.play(); document.getElementById('camBtn').style.display='none'; msg.innerText='Camera ON ✅'; setTimeout(()=>msg.style.display='none',2000); applyFilter(); }catch(e){ msg.innerText='❌ Allow dabao - Dobara Click karo'; msg.style.background='#ff3b30'; }
 }
-// *** ORIGINAL REALISTIC FILTERS - Halke, Natural ***
 function getRealFilter(){
- let k=intensity/100; // 0 to 1
- let f='brightness(1.02) contrast(1.02) saturate(1.02)'; // Base - bilkul Original
+ let k=intensity/100; let f='brightness(1.02) contrast(1.02) saturate(1.02)';
  if(filter==='Original') f=`brightness(${1+0.02*k}) contrast(${1+0.02*k}) saturate(${1+0.03*k})`;
  if(filter==='B612') f=`brightness(${1+0.08*k}) contrast(${1+0.03*k}) saturate(${1+0.18*k}) sepia(${0.05*k})`;
  if(filter==='Fog') f=`brightness(${1+0.08*k}) contrast(${1-0.10*k}) saturate(${1-0.18*k})`;
@@ -166,58 +176,36 @@ function getRealFilter(){
  if(filter==='Vintage') f=`brightness(${1+0.02*k}) contrast(${1+0.05*k}) saturate(${1-0.15*k}) sepia(${0.25*k})`;
  return f;
 }
-function applyFilter(){ video.style.filter=getRealFilter(); document.getElementById('camStatus').innerText='ORIGINAL • '+filter+' • Intensity '+intensity+'% • Bilkul Natural'; }
+function applyFilter(){ video.style.filter=getRealFilter(); document.getElementById('camStatus').innerText='✨ '+filter+' • '+intensity+'% • Original Attractive'; }
 document.getElementById('intensity').oninput=e=>{intensity=+e.target.value; document.getElementById('vInt').innerText=intensity+'%'; applyFilter();};
-document.querySelectorAll('.fItem').forEach(x=>x.onclick=()=>{document.querySelectorAll('.fItem').forEach(y=>y.classList.remove('active'));x.classList.add('active');filter=x.dataset.f;applyFilter();showMsg(filter+' - Original Realistic ✨')});
+document.querySelectorAll('.fItem').forEach(x=>x.onclick=()=>{document.querySelectorAll('.fItem').forEach(y=>y.classList.remove('active'));x.classList.add('active');filter=x.dataset.f;applyFilter();showMsg(filter+' ✨')});
 function toggleFlip(){facing=facing==='user'?'environment':'user';startCam()}
 async function toggleFlash(){flashOn=!flashOn; try{await stream.getVideoTracks()[0].applyConstraints({advanced:[{torch:flashOn}]});showMsg(flashOn?'Flash ON':'Flash OFF')}catch(e){showMsg('Flash nahi hai')}}
-// REALISTIC OVERLAYS - Photo me bhi ORIGINAL lagenge
-function drawRealOverlay(ctx,w,h){
- let k=intensity/100;
- if(filter==='Fog'){
-  // Halka dhuan - neeche se upar, bilkul real fog jaisa
-  for(let i=0;i<3;i++){ let y=h*(0.65+i*0.15); let g=ctx.createLinearGradient(0,y-60,0,y+60); g.addColorStop(0,'rgba(255,255,255,0)'); g.addColorStop(0.5,`rgba(255,255,255,${0.18*k})`); g.addColorStop(1,'rgba(255,255,255,0)'); ctx.fillStyle=g; ctx.fillRect(0,y-60,w,120); }
-  // Upar halka white
-  let g2=ctx.createLinearGradient(0,0,0,h*0.4); g2.addColorStop(0,`rgba(255,255,255,${0.10*k})`); g2.addColorStop(1,'rgba(255,255,255,0)'); ctx.fillStyle=g2; ctx.fillRect(0,0,w,h*0.4);
- }
- if(filter==='Rain'){
-  // Patli, halki boondein - real barish jaisi, moti nahi
-  ctx.lineWidth=0.8;
-  for(let i=0;i<Math.floor(70*k)+20;i++){ let d=drops[i%drops.length]; let x=d.x*w, y=d.y*h; ctx.strokeStyle=`rgba(255,255,255,${d.op*k})`; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x-2,y+d.len); ctx.stroke(); d.y+=d.speed; if(d.y>1) d.y=0; }
- }
- if(filter==='Sea'){
-  // Samundar wala halka blue tint - neeche se
-  let g=ctx.createLinearGradient(0,h*0.5,0,h); g.addColorStop(0,'rgba(0,150,255,0)'); g.addColorStop(1,`rgba(0,150,255,${0.12*k})`); ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
- }
- if(filter==='Golden'){
-  // Sunset wala halka orange - upar se
-  let g=ctx.createLinearGradient(0,0,0,h); g.addColorStop(0,`rgba(255,140,0,${0.14*k})`); g.addColorStop(0.5,'rgba(255,140,0,0)'); g.addColorStop(1,`rgba(255,80,0,${0.06*k})`); ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
- }
- if(filter==='Cinematic'){
-  // Halki black patti - movie jaisi, jyada moti nahi
-  ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.fillRect(0,0,w,h*0.06); ctx.fillRect(0,h*0.94,w,h*0.06);
- }
-}
 function capture(){
  if(!stream) return startCam();
  canvas.width=video.videoWidth||1080; canvas.height=video.videoHeight||1920;
- let ctx=canvas.getContext('2d'); ctx.filter=getRealFilter(); ctx.translate(canvas.width,0); ctx.scale(-1,1); ctx.drawImage(video,0,0,canvas.width,canvas.height); ctx.filter='none';
- // Overlay ko flip ke baad seedha draw karo
- ctx.save(); ctx.translate(canvas.width,0); ctx.scale(-1,1); ctx.translate(-canvas.width,0); drawRealOverlay(ctx,canvas.width,canvas.height); ctx.restore();
+ let ctx=canvas.getContext('2d'); ctx.filter=getRealFilter(); ctx.translate(canvas.width,0); ctx.scale(-1,1); ctx.drawImage(video,0,0,canvas.width,canvas.height);
  let url=canvas.toDataURL('image/jpeg',0.95);
  gallery.unshift({url,type:'photo',filter,time:Date.now(),song:''});
- document.getElementById('lastImg').src=url; renderGallery(); showMsg('ORIGINAL Photo Save! 📸 Gallery me dekho'); goPage('gallery');
+ document.getElementById('lastImg').src=url; renderGallery(); showMsg('Photo Save! 📸'); goPage('gallery');
 }
 function toggleRec(){
- if(!isRec){ if(!stream) return startCam(); chunks=[]; recorder=new MediaRecorder(stream); recorder.ondataavailable=e=>chunks.push(e.data); recorder.onstop=()=>{let blob=new Blob(chunks,{type:'video/webm'}); let u=URL.createObjectURL(blob); gallery.unshift({url:u,type:'video',filter,time:Date.now(),song:''}); renderGallery(); showMsg('Video Save!'); goPage('reels');}; recorder.start(); isRec=true; document.getElementById('recBtn').innerText='⏹ STOP REEL'; }
- else{ recorder.stop(); isRec=false; document.getElementById('recBtn').innerText='🔴 START REEL'; }
+ if(!isRec){ if(!stream) return startCam(); chunks=[]; recorder=new MediaRecorder(stream); recorder.ondataavailable=e=>chunks.push(e.data); recorder.onstop=()=>{let blob=new Blob(chunks,{type:'video/webm'}); let u=URL.createObjectURL(blob); gallery.unshift({url:u,type:'video',filter,time:Date.now(),song:''}); renderGallery(); showMsg('Video Save!'); goPage('reels');}; recorder.start(); isRec=true; document.getElementById('recBtn').innerText='⏹ STOP'; }
+ else{ recorder.stop(); isRec=false; document.getElementById('recBtn').innerText='🔴 REEL'; }
 }
 function renderGallery(){
  let g=document.getElementById('galleryGrid'); document.getElementById('gCount').innerText=gallery.length+' Pic';
  if(gallery.length===0){ g.innerHTML='<div class="empty">Abhi koi photo nahi<br>Camera se photo lo</div>'; return; }
- g.innerHTML=''; gallery.forEach((item,i)=>{ let d=document.createElement('div'); d.className='gCard'; d.innerHTML=(item.type==='video'?`<video src="${item.url}" muted></video>`:`<img src="${item.url}">`)+`<p>${item.type==='video'?'🎥 Video':'📸 Photo'} • ${item.filter} • Click - Edit</p>`; d.onclick=()=>openDetail(i); g.appendChild(d); });
+ g.innerHTML=''; gallery.forEach((item,i)=>{ let d=document.createElement('div'); d.className='gCard'; d.innerHTML=(item.type==='video'?`<video src="${item.url}" muted></video>`:`<img src="${item.url}">`)+`<p>${item.type==='video'?'🎥':'📸'} ${item.filter}</p>`; d.onclick=()=>openDetail(i); g.appendChild(d); });
 }
 function renderReels(){
  let box=document.getElementById('reelsBox'); let reels=gallery.filter(x=>x.type==='video');
  if(reels.length===0){ box.innerHTML='<div class="empty">Abhi koi Reel nahi</div>'; return; }
- box.innerHTML=''; reels.forEach((r)=>{ let idx=gallery.indexOf(r); let d=document.createElement('div'); d.className='reelCard'; d.innerHTML=`<video src="${r.url}" controls></
+ box.innerHTML=''; reels.forEach((r)=>{ let idx=gallery.indexOf(r); let d=document.createElement('div'); d.className='reelCard'; d.innerHTML=`<video src="${r.url}" controls></video><div class="rc"><b style="font-size:13px">@nexoly11 • ${r.filter}</b><p style="font-size:11px;color:#aaa">🎵 ${r.song||'Original Audio'}</p><div style="display:flex;gap:6px;margin-top:6px"><button onclick="openDetail(${idx})" style="flex:1;padding:8px;border:0;border-radius:10px;background:#ff5fa2;color:#fff;font-size:11px">✏️ EDIT</button><button onclick="downloadDetailBy(${idx})" style="flex:1;padding:8px;border:0;border-radius:10px;background:#00c853;color:#fff;font-size:11px">💾 SAVE</button><button onclick="deleteBy(${idx})" style="flex:1;padding:8px;border:0;border-radius:10px;background:#ff3b30;color:#fff;font-size:11px">🗑️ DELETE</button></div></div>`; box.appendChild(d); });
+}
+function openDetail(i){
+ detailIndex=i; detailFilter='Original'; detailBright=100; document.getElementById('dBright').value=100; document.getElementById('dVal').innerText='100%';
+ let item=gallery[i]; document.getElementById('dTitle').innerText=(item.type==='video'?'🎥':'📸')+' '+item.filter;
+ let img=document.getElementById('dImg'), vid=document.getElementById('dVideo');
+ if(item.type==='video'){ img.style.display='none'; vid.style.display='block'; vid.src=item.url; } else{ vid.style.display='none'; img.style.display='block'; img.src=item.url; img.style.filter='none'; }
+ let sel=document.getEle
