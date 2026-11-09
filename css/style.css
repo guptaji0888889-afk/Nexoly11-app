@@ -139,3 +139,14 @@ body>.theme-toggle{position:fixed;top:12px;right:12px;z-index:1000;box-shadow:0 
     font-size: 13px;
   }
 }
+
+
+/* NEXOLY11 v30: compact three-dot post actions */
+.n11-post-tile{position:relative;min-width:0;overflow:visible}
+.n11-post-media{display:block;position:relative;overflow:hidden}
+.n11-post-menu-wrap{position:absolute;top:7px;right:7px;z-index:8}
+.n11-post-menu-trigger{width:34px;height:34px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.22);border-radius:50%;background:rgba(10,10,12,.82);color:#fff;font-size:23px;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.n11-post-menu{position:absolute;right:0;top:40px;min-width:132px;padding:5px;border:1px solid #383838;border-radius:10px;background:#17171b;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.n11-post-menu[hidden]{display:none!important}
+.n11-post-menu .n11-delete-post{display:block;width:100%;padding:11px 13px;border:0;border-radius:7px;background:transparent;color:#ff626d;text-align:left;font-size:14px;cursor:pointer}
+.n11-post-menu .n11-delete-post:active{background:#292027}
