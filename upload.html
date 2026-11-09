@@ -3,132 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Nexoly11 Pro - Ultra Quality</title>
+<title>Nexoly11 Pro Max - InShot Style</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:system-ui,Arial;overflow:hidden;height:100dvh;width:100vw;position:fixed}
-#camWrap{position:fixed;inset:0;width:100%;height:100%;background:#000;z-index:1;overflow:hidden}
-#video{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(1.18) contrast(1.08) saturate(1.25)}
-#fxCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
-#fogLayer{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;transition:0.6s;background:radial-gradient(ellipse at 30% 40%,rgba(255,255,255,.55) 0%,transparent 55%),radial-gradient(ellipse at 70% 60%,rgba(255,255,255,.5) 0%,transparent 50%),linear-gradient(to bottom,rgba(255,255,255,.25),transparent 60%)}
+#camWrap{position:fixed;inset:0;width:100%;height:100%;background:#000;z-index:1}
+#preview{width:100%;height:100%;object-fit:cover;display:block}
+#video{display:none}
 #canvas{display:none}
-.topBar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:linear-gradient(to bottom,rgba(0,0,0,.75),transparent)}
-.logo{font-weight:900;font-size:18px;background:linear-gradient(90deg,#ff2d95,#a855f7,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.topBar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent)}
+.logo{font-weight:900;font-size:19px}
+.logo span{color:#ff2d95}
+.liveBadge{background:#00e676;color:#000;font-size:11px;font-weight:900;padding:4px 8px;border-radius:20px}
 .topBtns{display:flex;gap:8px}
 .iconBtn{width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer}
 #overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:20;display:none}
-#drawer{position:fixed;top:0;right:-92%;width:88%;max-width:360px;height:100%;background:#121218;z-index:21;transition:.3s ease;padding:16px;overflow-y:auto;border-radius:20px 0 0 20px;border-left:1px solid #333}
+#drawer{position:fixed;top:0;right:-92%;width:88%;max-width:380px;height:100%;background:#111118;z-index:21;transition:.3s ease;padding:16px;overflow-y:auto;border-radius:20px 0 0 20px;border-left:1px solid #333}
 #drawer.open{right:0}
 #overlay.show{display:block}
-.dHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.dHead{display:flex;justify-content:space-between;align-items:center}
 .dHead b{font-size:19px;color:#ff2d95}
 .closeBtn{width:36px;height:36px;border-radius:50%;background:#222;border:0;color:#fff;font-size:18px}
-.qualityBadge{display:flex;gap:6px;margin:10px 0}
-.qb{flex:1;text-align:center;padding:8px;border-radius:10px;background:#1e1e28;font-size:12px;font-weight:700;border:1px solid #333}
-.qb.active{background:#a855f7;border-color:#a855f7}
-.ctrl{margin:14px 0}
-.ctrl label{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;color:#ddd}
-input[type=range]{width:100%;accent-color:#ff2d95;height:28px}
+.sec{margin-top:18px}
+.sec b{font-size:14px;color:#ffd166}
+.ctrl{margin:12px 0}
+.ctrl label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:#ddd}
+.ctrl label span:last-child{color:#ff2d95;font-weight:700}
+input[type=range]{width:100%;accent-color:#ff2d95;height:26px}
+.presetGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.preset{border-radius:14px;overflow:hidden;border:2px solid #333;position:relative;cursor:pointer;background:#222}
+.preset.active{border-color:#ff2d95;box-shadow:0 0 14px #ff2d95}
+.preset .thumb{height:78px;display:flex;align-items:flex-end;padding:6px;font-size:12px;font-weight:800}
+.preset small{display:block;font-size:10px;font-weight:400;opacity:.9}
+.p1{background:linear-gradient(135deg,#4a6fa5,#a8c0d8)}
+.p2{background:linear-gradient(135deg,#2c3e50,#f39c12)}
+.p3{background:linear-gradient(135deg,#1a2980,#26d0ce)}
+.p4{background:linear-gradient(135deg,#ff9966,#ff5e62)}
+.p5{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e)}
+.p6{background:linear-gradient(135deg,#f857a6,#ff5858)}
+.p7{background:linear-gradient(135deg,#11998e,#38ef7d)}
+.p8{background:linear-gradient(135deg,#8e2de2,#4a00e0)}
 .chipRow{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.chip{padding:9px 13px;border-radius:20px;background:#222;border:1px solid #333;color:#fff;font-size:13px}
-.chip.active{background:#ff2d95;border-color:#ff2d95;font-weight:700;box-shadow:0 0 12px #ff2d95}
-.checkRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-.checkRow label{background:#1e1e28;padding:8px 10px;border-radius:10px;font-size:13px;display:flex;gap:6px;align-items:center}
+.chip{padding:8px 12px;border-radius:20px;background:#222;border:1px solid #333;color:#fff;font-size:12px}
+.chip.active{background:#ff2d95;border-color:#ff2d95;font-weight:700}
 .resetBtn{width:100%;padding:12px;border:0;border-radius:12px;background:#222;color:#fff;font-weight:700;margin-top:16px}
-.bottom{position:fixed;bottom:0;left:0;right:0;z-index:10;padding:10px 12px 18px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent)}
+.bottom{position:fixed;bottom:0;left:0;right:0;z-index:10;padding:10px 12px 16px;background:linear-gradient(to top,rgba(0,0,0,.92),transparent)}
 .modes{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
 .modes::-webkit-scrollbar{display:none}
 .mode{white-space:nowrap;padding:8px 16px;border-radius:20px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:13px;font-weight:600}
 .mode.active{background:#fff;color:#000}
 .centerRow{display:flex;align-items:center;justify-content:space-between;padding:0 6px}
-.thumb{width:52px;height:52px;border-radius:12px;overflow:hidden;border:2px solid #fff;background:#222}
-.thumb img{width:100%;height:100%;object-fit:cover}
-.shutter{width:72px;height:72px;border-radius:50%;background:#fff;border:5px solid #ff2d95;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 0 0 4px rgba(255,255,255,.3)}
+.thumbS{width:52px;height:52px;border-radius:12px;overflow:hidden;border:2px solid #fff;background:#222}
+.thumbS img{width:100%;height:100%;object-fit:cover}
+.shutter{width:74px;height:74px;border-radius:50%;background:#fff;border:5px solid #ff2d95;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 0 0 4px rgba(255,255,255,.3)}
 .flip{width:52px;height:52px;border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.3);font-size:24px;color:#fff}
 .actionRow{display:flex;gap:10px;margin-top:12px}
-.capBtn{flex:1;padding:14px;border:0;border-radius:14px;background:#a855f7;color:#fff;font-weight:800;font-size:15px}
+.capBtn{flex:1;padding:14px;border:0;border-radius:14px;background:linear-gradient(90deg,#a855f7,#ff2d95);color:#fff;font-weight:800;font-size:15px}
 .recBtn{flex:1;padding:14px;border:0;border-radius:14px;background:#ff2d95;color:#fff;font-weight:800;font-size:15px}
-.recBtn.rec{background:red;animation:blink 1s infinite}
-@keyframes blink{50%{opacity:.6}}
-#status{text-align:center;font-size:12px;margin-top:8px;color:#ddd}
+#status{text-align:center;font-size:12px;margin-top:8px;color:#ffd166;font-weight:600}
 #gallery{display:flex;gap:8px;overflow-x:auto;margin-top:10px}
 #gallery img{width:64px;height:74px;object-fit:cover;border-radius:10px;border:1px solid #333}
-#msg{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.8);padding:10px 16px;border-radius:20px;z-index:30;font-size:13px;display:none;white-space:nowrap}
+#msg{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);padding:10px 16px;border-radius:20px;z-index:30;font-size:13px;display:none;white-space:nowrap}
 </style>
 </head>
 <body>
-<div id="camWrap"><video id="video" autoplay playsinline muted></video><canvas id="fxCanvas"></canvas><div id="fogLayer"></div></div>
+<div id="camWrap"><canvas id="preview"></canvas><video id="video" autoplay playsinline muted></video></div>
 <canvas id="canvas"></canvas><div id="msg"></div>
-<div class="topBar"><div class="logo">✨ Nexoly11 Pro</div><div class="topBtns"><div class="iconBtn" onclick="toggleFlip()">🔄</div><div class="iconBtn" onclick="toggleFlash()">⚡</div><div class="iconBtn" onclick="openDrawer()">⚙️</div></div></div>
+<div class="topBar"><div class="logo">Nexoly11 <span>Pro Max</span></div><div class="liveBadge" id="liveBadge">● Fog Effect LIVE</div><div class="topBtns"><div class="iconBtn" onclick="toggleFlip()">🔄</div><div class="iconBtn" onclick="openDrawer()">⚙️</div></div></div>
 <div id="overlay" onclick="closeDrawer()"></div>
 <div id="drawer">
-<div class="dHead"><b>✨ Beauty + Quality</b><button class="closeBtn" onclick="closeDrawer()">✕</button></div>
-<div class="qualityBadge"><div class="qb active" id="q4k" onclick="setQ('4K',this)">4K ULTRA</div><div class="qb" id="qHD" onclick="setQ('HD',this)">HD CLEAR</div><div class="qb" id="qSoft" onclick="setQ('SOFT',this)">SOFT</div></div>
-<div class="ctrl"><label><span>Beauty Smooth Skin</span><span id="vBeauty">75%</span></label><input type="range" id="beauty" min="0" max="100" value="75"></div>
-<div class="ctrl"><label><span>Bright - Clear</span><span id="vBright">78%</span></label><input type="range" id="bright" min="0" max="100" value="78"></div>
-<div class="ctrl"><label><span>Pink Glow</span><span id="vPink">65%</span></label><input type="range" id="pink" min="0" max="100" value="65"></div>
-<div class="ctrl"><label><span>Sharpness / Clarity</span><span id="vSharp">85%</span></label><input type="range" id="sharp" min="0" max="100" value="85"></div>
-<div class="ctrl"><label><span>Zoom</span><span id="vZoom">1.0x</span></label><input type="range" id="zoom" min="10" max="30" value="10"></div>
-<div class="ctrl"><label>🔥 Premium Filters - High Quality</label><div class="chipRow" id="filters">
-<button class="chip active" data-f="Normal">✨ Normal - Clear</button>
-<button class="chip" data-f="Golden Hour">☀️ Golden Hour Pro</button>
-<button class="chip" data-f="Portrait Blur">👤 Portrait Blur Pro</button>
-<button class="chip" data-f="Rain">🌧️ Real Rain</button>
-<button class="chip" data-f="Sea">🌊 Sea Blue</button>
-<button class="chip" data-f="Fog">🌫️ Real Fog</button>
-<button class="chip" data-f="Night">🌙 Night Clear</button>
-<button class="chip" data-f="Cinematic">🎬 Cinematic</button>
+<div class="dHead"><b>✨ Nexoly11 Effects</b><button class="closeBtn" onclick="closeDrawer()">✕</button></div>
+<p style="font-size:12px;color:#888;margin-top:6px">Wahi InShot wala look - ab LIVE Camera me!</p>
+
+<div class="sec"><b>🎬 CINEMATIC PRESETS - Jaise Photo Me Hai</b>
+<div class="presetGrid">
+<div class="preset active" data-p="Fog" onclick="setPreset('Fog',this)"><div class="thumb p1">🌫️ Fog Effect LIVE<small>Soft dhuan + glow</small></div></div>
+<div class="preset" data-p="Rain" onclick="setPreset('Rain',this)"><div class="thumb p2">🌧️ Rain Street<small>Boondein + street light</small></div></div>
+<div class="preset" data-p="Sea" onclick="setPreset('Sea',this)"><div class="thumb p3">🌊 Sea Beach<small>Blue + beach glow</small></div></div>
+<div class="preset" data-p="Golden" onclick="setPreset('Golden',this)"><div class="thumb p4">☀️ Golden Hour<small>Sunset gora glow</small></div></div>
+<div class="preset" data-p="NightCafe" onclick="setPreset('NightCafe',this)"><div class="thumb p5">🌃 Night Cafe<small>Neon + cafe light</small></div></div>
+<div class="preset" data-p="Festival" onclick="setPreset('Festival',this)"><div class="thumb p6">🎉 Festival<small>Rang + Diwali light</small></div></div>
+<div class="preset" data-p="Portrait" onclick="setPreset('Portrait',this)"><div class="thumb p7">👤 Portrait Pro<small>Background blur + clear</small></div></div>
+<div class="preset" data-p="Cinematic" onclick="setPreset('Cinematic',this)"><div class="thumb p8">🎬 Cinematic<small>Movie jaisa look</small></div></div>
 </div></div>
-<div class="ctrl"><label>Rain / Fog Intensity</label><input type="range" id="intensity" min="20" max="100" value="70"></div>
-<div class="checkRow"><label><input type="checkbox" id="c4k" checked> 4K Active</label><label><input type="checkbox" id="cHdr" checked> HDR Active</label><label><input type="checkbox" id="cAi" checked> AI Enhance ON</label><label><input type="checkbox" id="cGrid" checked> Grid</label><label><input type="checkbox" id="cFlash"> Flash / Torch</label></div>
-<button class="resetBtn" onclick="resetAll()">↺ Beauty Reset</button>
-<p style="font-size:12px;color:#888;margin-top:12px;text-align:center">Rain me asli boondein girengi.<br>Fog me asli dhuan lagega.</p>
+
+<div class="sec"><b>✨ Beauty - REAL</b>
+<div class="ctrl"><label><span>Beauty Smooth Skin</span><span id="vBeauty">75%</span></label><input type="range" id="beauty" min="0" max="100" value="75"></div>
+<div class="ctrl"><label><span>Brightness - Clear</span><span id="vBright">82%</span></label><input type="range" id="bright" min="0" max="100" value="82"></div>
+<div class="ctrl"><label><span>Pink Glow</span><span id="vPink">65%</span></label><input type="range" id="pink" min="0" max="100" value="65"></div>
+<div class="ctrl"><label><span>Clarity / Sharp</span><span id="vSharp">85%</span></label><input type="range" id="sharp" min="0" max="100" value="85"></div>
+<div class="ctrl"><label><span>Rain / Fog Intensity</span><span id="vInt">75%</span></label><input type="range" id="intensity" min="10" max="100" value="75"></div>
+<div class="ctrl"><label><span>Zoom</span><span id="vZoom">1.0x</span></label><input type="range" id="zoom" min="10" max="25" value="10"></div>
 </div>
-<div class="bottom"><div class="modes" id="modes"><button class="mode active" data-m="PHOTO">PHOTO</button><button class="mode" data-m="VIDEO">VIDEO</button><button class="mode" data-m="PORTRAIT">PORTRAIT</button><button class="mode" data-m="REEL VIDEO">REEL VIDEO</button><button class="mode" data-m="SLO-MO">SLO-MO</button><button class="mode" data-m="PANORAMA">PANORAMA</button></div>
-<div class="centerRow"><div class="thumb"><img id="lastImg"></div><div class="shutter" onclick="capture()">📸</div><button class="flip" onclick="toggleFlip()">🔄</button></div>
-<div class="actionRow"><button class="capBtn" onclick="capture()">📸 CAPTURE PHOTO - 4K</button><button class="recBtn" id="recBtn" onclick="toggleRec()">🔴 START REEL</button></div>
-<div id="status">Applied ✓ : Normal Clear • 4K Ultra</div><div id="gallery"></div></div>
+<button class="resetBtn" onclick="resetAll()">↺ Reset</button>
+</div>
+
+<div class="bottom"><div class="modes" id="modes"><button class="mode active" data-m="PHOTO">PHOTO</button><button class="mode" data-m="PORTRAIT">PORTRAIT</button><button class="mode" data-m="VIDEO">VIDEO</button><button class="mode" data-m="REEL VIDEO">REEL VIDEO</button><button class="mode" data-m="SLO-MO">SLO-MO</button></div>
+<div class="centerRow"><div class="thumbS"><img id="lastImg"></div><div class="shutter" onclick="capture()">📸</div><button class="flip" onclick="toggleFlip()">🔄</button></div>
+<div class="actionRow"><button class="capBtn" onclick="capture()">📸 CAPTURE - InShot Style</button><button class="recBtn" id="recBtn" onclick="toggleRec()">🔴 START REEL</button></div>
+<div id="status">Applied ✓ : Fog Effect LIVE • Nexoly11 Pro Max</div><div id="gallery"></div></div>
 <script>
-let video=document.getElementById('video'),canvas=document.getElementById('canvas'),fx=document.getElementById('fxCanvas'),fctx=fx.getContext('2d'),stream=null,facing='user',currentFilter='Normal',currentMode='PHOTO',isRec=false,recorder=null,chunks=[],flashOn=false,quality='4K';
-let beauty=75,bright=78,pink=65,sharp=85,zoom=1,intensity=70,raindrops=[];
-function resizeFx(){fx.width=fx.offsetWidth;fx.height=fx.offsetHeight} window.addEventListener('resize',resizeFx); resizeFx();
-for(let i=0;i<120;i++) raindrops.push({x:Math.random()*1000,y:Math.random()*1000,len:12+Math.random()*18,speed:8+Math.random()*12});
-function drawRain(){ fctx.clearRect(0,0,fx.width,fx.height); if(currentFilter!=='Rain') return; fctx.strokeStyle='rgba(255,255,255,0.65)'; fctx.lineWidth=1.2; let n=Math.floor(intensity); for(let i=0;i<n;i++){let d=raindrops[i%raindrops.length]; let x=(d.x/1000)*fx.width, y=(d.y/1000)*fx.height; fctx.beginPath(); fctx.moveTo(x,y); fctx.lineTo(x-3,y+d.len); fctx.stroke(); d.y+=d.speed; if(d.y>1000) d.y=0; } requestAnimationFrame(drawRain); }
-async function startCam(){ try{ if(stream) stream.getTracks().forEach(t=>t.stop()); stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:3840},height:{ideal:2160}},audio:false}); video.srcObject=stream; applyFilter(); showMsg('4K Ultra Quality ON 📸'); }catch(e){ showMsg('Camera Allow karo'); } }
-function applyFilter(){
- let b=1+(bright-50)/90, s=1+(pink)/140, con=1+sharp/400;
- let f=`brightness(${b}) contrast(${con}) saturate(${s})`;
- if(currentFilter==='Golden Hour') f+=` sepia(0.38) hue-rotate(-12deg) saturate(1.5) brightness(1.1)`;
- if(currentFilter==='Portrait Blur') f+=` contrast(1.12) saturate(1.3)`;
- if(currentFilter==='Rain') f+=` contrast(1.18) brightness(0.92) saturate(1.1)`;
- if(currentFilter==='Sea') f+=` hue-rotate(160deg) saturate(1.55) brightness(1.05) contrast(1.1)`;
- if(currentFilter==='Fog') f+=` brightness(1.25) contrast(0.82) saturate(0.85)`;
- if(currentFilter==='Night') f+=` brightness(0.75) contrast(1.25) saturate(1.2)`;
- if(currentFilter==='Cinematic') f+=` contrast(1.25) saturate(0.9) sepia(0.2)`;
- video.style.filter=f; video.style.transform=`scale(${zoom})`;
- document.getElementById('fogLayer').style.opacity = currentFilter==='Fog' ? (intensity/100) : 0;
- document.getElementById('status').innerText=`Applied ✓ : ${currentFilter} • ${currentMode} • ${quality} • Beauty ${beauty}%`;
- if(currentFilter==='Rain') requestAnimationFrame(drawRain); else fctx.clearRect(0,0,fx.width,fx.height);
+let video=document.getElementById('video'),preview=document.getElementById('preview'),pctx=preview.getContext('2d'),canvas=document.getElementById('canvas'),stream=null,facing='user',preset='Fog',currentMode='PHOTO',isRec=false,recorder=null,chunks=[],flashOn=false;
+let bright=82,beauty=75,pink=65,sharp=85,intensity=75,zoom=1;
+let drops=[]; for(let i=0;i<160;i++) drops.push({x:Math.random(),y:Math.random(),len:14+Math.random()*22,speed:0.008+Math.random()*0.014});
+async function startCam(){ try{ if(stream) stream.getTracks().forEach(t=>t.stop()); stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1920},height:{ideal:1080}},audio:false}); video.srcObject=stream; video.onloadedmetadata=()=>{ preview.width=video.videoWidth; preview.height=video.videoHeight; drawLoop(); }; showMsg('Nexoly11 Pro Max ON 📸'); }catch(e){ showMsg('Camera Allow karo'); } }
+function getFilter(){
+ let b=1+(bright-50)/55, con=1+(sharp-50)/180, sat=1+pink/130;
+ let f=`brightness(${b}) contrast(${con}) saturate(${sat})`;
+ if(preset==='Fog') f+=` brightness(1.12) contrast(0.88) saturate(0.85)`;
+ if(preset==='Rain') f+=` contrast(1.18) brightness(0.95) saturate(1.1) sepia(0.1)`;
+ if(preset==='Sea') f+=` hue-rotate(160deg) saturate(1.6) brightness(1.08) contrast(1.12)`;
+ if(preset==='Golden') f+=` sepia(0.38) hue-rotate(-12deg) saturate(1.5) brightness(1.12)`;
+ if(preset==='NightCafe') f+=` brightness(0.85) contrast(1.3) saturate(1.45) hue-rotate(-10deg)`;
+ if(preset==='Festival') f+=` saturate(1.6) contrast(1.2) brightness(1.08) hue-rotate(5deg)`;
+ if(preset==='Portrait') f+=` contrast(1.12) saturate(1.35) brightness(1.05)`;
+ if(preset==='Cinematic') f+=` contrast(1.28) sepia(0.22) saturate(0.9) brightness(0.95)`;
+ return f;
 }
-function setQ(q,el){quality=q;document.querySelectorAll('.qb').forEach(x=>x.classList.remove('active'));el.classList.add('active'); if(q==='4K'){bright=78;sharp=85} if(q==='HD'){bright=85;sharp=95} if(q==='SOFT'){bright=72;sharp=40} applyFilter(); showMsg(q+' Quality Lag Gayi ✨')}
+function drawFrame(ctx,w,h){
+ ctx.save(); ctx.filter=getFilter();
+ let zw=w*zoom, zh=h*zoom, zx=(w-zw)/2, zy=(h-zh)/2;
+ if(beauty>10) ctx.filter+=` blur(${(beauty/100)*0.5}px)`;
+ ctx.translate(w,0); ctx.scale(-1,1); ctx.drawImage(video,zx,zy,zw,zh); ctx.restore();
+ if(preset==='Rain'){
+   ctx.strokeStyle='rgba(255,255,255,0.75)'; ctx.lineWidth=1.6;
+   let n=Math.floor(intensity*1.3);
+   for(let i=0;i<n;i++){ let d=drops[i%drops.length]; let x=d.x*w, y=d.y*h; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x-5,y+d.len); ctx.stroke(); d.y+=d.speed; if(d.y>1) d.y=0; }
+   ctx.fillStyle='rgba(255,180,0,0.08)'; ctx.fillRect(0,0,w,h);
+ }
+ if(preset==='Fog'){
+   let a=intensity/140;
+   let g1=ctx.createRadialGradient(w*0.25,h*0.35,10,w*0.25,h*0.35,w*0.65); g1.addColorStop(0,`rgba(255,255,255,${a})`); g1.addColorStop(1,'rgba(255,255,255,0)');
+   ctx.fillStyle=g1; ctx.fillRect(0,0,w,h);
+   let g2=ctx.createRadialGradient(w*0.75,h*0.65,10,w*0.75,h*0.65,w*0.6); g2.addColorStop(0,`rgba(255,255,255,${a*0.9})`); g2.addColorStop(1,'rgba(255,255,255,0)'); ctx.fillStyle=g2; ctx.fillRect(0,0,w,h);
+ }
+ if(preset==='Golden'){ let g=ctx.createLinearGradient(0,0,0,h); g.addColorStop(0,'rgba(255,150,0,0.18)'); g.addColorStop(1,'rgba(255,80,0,0.08)'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h); }
+ if(preset==='NightCafe'){ let g=ctx.createLinearGradient(0,0,w,0); g.addColorStop(0,'rgba(255,0,150,0.12)'); g.addColorStop(1,'rgba(0,150,255,0.12)'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h); }
+ if(preset==='Festival'){ ctx.fillStyle='rgba(255,200,0,0.06)'; ctx.fillRect(0,0,w,h); }
+ if(preset==='Cinematic'){ ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.fillRect(0,0,w, h*0.08); ctx.fillRect(0,h*0.92,w,h*0.08); }
+}
+function drawLoop(){ if(!video.videoWidth){requestAnimationFrame(drawLoop);return;} drawFrame(pctx,preview.width,preview.height); requestAnimationFrame(drawLoop); }
+function setPreset(p,el){ preset=p; document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active')); el.classList.add('active'); document.getElementById('liveBadge').innerText='● '+p+' Effect LIVE'; document.getElementById('status').innerText=`Applied ✓ : ${p} Effect LIVE • Nexoly11 Pro Max`; showMsg(p+' Effect Lag Gaya ✨'); }
 function showMsg(t){let m=document.getElementById('msg');m.innerText=t;m.style.display='block';setTimeout(()=>m.style.display='none',2000)}
 function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('show')}
 function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
 function toggleFlip(){facing=facing==='user'?'environment':'user';startCam()}
-async function toggleFlash(){flashOn=!flashOn; try{let tr=stream.getVideoTracks()[0]; await tr.applyConstraints({advanced:[{torch:flashOn}]}); showMsg(flashOn?'Flash ON ⚡':'Flash OFF')}catch(e){showMsg('Flash support nahi')}}
-function resetAll(){beauty=75;bright=78;pink=65;sharp=85;zoom=1;updateLabels();applyFilter();showMsg('Reset ho gaya')}
-function updateLabels(){document.getElementById('vBeauty').innerText=beauty+'%';document.getElementById('vBright').innerText=bright+'%';document.getElementById('vPink').innerText=pink+'%';document.getElementById('vSharp').innerText=sharp+'%';document.getElementById('vZoom').innerText=zoom.toFixed(1)+'x'}
-document.getElementById('beauty').oninput=e=>{beauty=+e.target.value;updateLabels();applyFilter()};
-document.getElementById('bright').oninput=e=>{bright=+e.target.value;updateLabels();applyFilter()};
-document.getElementById('pink').oninput=e=>{pink=+e.target.value;updateLabels();applyFilter()};
-document.getElementById('sharp').oninput=e=>{sharp=+e.target.value;updateLabels();applyFilter()};
-document.getElementById('zoom').oninput=e=>{zoom=e.target.value/10;updateLabels();applyFilter()};
-document.getElementById('intensity').oninput=e=>{intensity=+e.target.value;applyFilter()};
-document.querySelectorAll('#filters .chip').forEach(c=>c.onclick=()=>{document.querySelectorAll('#filters .chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');currentFilter=c.dataset.f;applyFilter();showMsg(currentFilter+' Lag Gaya ✨')});
-document.querySelectorAll('#modes .mode').forEach(m=>m.onclick=()=>{document.querySelectorAll('#modes .mode').forEach(x=>x.classList.remove('active'));m.classList.add('active');currentMode=m.dataset.m;applyFilter()});
-function capture(){ if(!stream) return showMsg('Pehle Camera Allow karo'); canvas.width=video.videoWidth||1920; canvas.height=video.videoHeight||1080; let ctx=canvas.getContext('2d'); ctx.filter=video.style.filter; ctx.translate(canvas.width,0); ctx.scale(-1,1); ctx.drawImage(video,0,0); let url=canvas.toDataURL('image/jpeg',1.0); document.getElementById('lastImg').src=url; let g=document.getElementById('gallery'); let im=document.createElement('img'); im.src=url; im.onclick=()=>window.open(url); g.prepend(im); let a=document.createElement('a'); a.href=url; a.download='Nexoly11_4K_'+Date.now()+'.jpg'; a.click(); showMsg('4K Photo Save! 📸'); }
-function toggleRec(){ if(!isRec){ chunks=[]; recorder=new MediaRecorder(stream); recorder.ondataavailable=e=>chunks.push(e.data); recorder.onstop=()=>{let blob=new Blob(chunks,{type:'video/webm'}); let u=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=u; a.download='Nexoly11_Reel_'+Date.now()+'.webm'; a.click(); showMsg('Reel Save!')}; recorder.start(); isRec=true; document.getElementById('recBtn').innerText='⏹ STOP REEL'; document.getElementById('recBtn').classList.add('rec'); } else{ recorder.stop(); isRec=false; document.getElementById('recBtn').innerText='🔴 START REEL'; document.getElementById('recBtn').classList.remove('rec'); } }
-startCam();
+function resetAll(){bright=82;beauty=75;pink=65;sharp=85;intensity=75;zoom=1;updateLabels();showMsg('Reset ho gaya')}
+function updateLabels(){document.getElementById('vBright').innerText=bright+'%';document.getElementById('vBeauty').innerText=beauty+'%';document.getElementById('vPink').innerText=pink+'%';document.getElementById('vSharp').innerText=sharp+'%';document.getElementById('vInt').innerText=intensity+'%';document.getElementById('vZoom').innerText=zoom.toFixed(1)+'x'}
+document.getElementById('bright').oninput=e=>{bright=+e.target.value;updateLabels()};
+document.getElementById('beauty').oninput=e=>{beauty=+e.target.value;updateLabels()};
+document.getElementById('pink').oninput=e=>{pink=+e.target.value;updateLabels()};
+document.getElementById('sharp').oninput=e=>{sharp=+e.target.value;updateLabels()};
+document.getElementById('intensity').oninput=e=>{intensity=+e.target.value;updateLabels()};
+document.getElementById('zoom').oninput=e=>{zoom=e.target.value/10;updateLabels()};
+document.querySelectorAll('#modes .mode').forEach(m=>m.onclick=()=>{document.querySelectorAll('#modes .mode').forEach(x=>x.classList.remove('active'));m.classList.add('active');currentMode=m.dataset.m});
+function capture(){ if(!stream) return showMsg('Pehle Camera Allow karo'); canvas.width=preview.width; canvas.height=preview.height; let ctx=canvas.getContext('2d'); drawFrame(ctx,canvas.width,canvas.height); let url=canvas.toDataURL('image/jpeg',1.0); document.getElementById('lastImg').src=url; let g=document.getElementById('gallery'); let im=document.createElement('img'); im.src=url; im.onclick=()=>window.open(url); g.prepend(im); let a=document.createElement('a'); a.href=url; a.download='Nexoly11_InShot_'+Date.now()+'.jpg'; a.click(); showMsg('InShot Style Photo Save! 📸'); }
+function toggleRec(){ if(!isRec){ chunks=[]; let s=preview.captureStream(30); recorder=new MediaRecorder(s); recorder.ondataavailable=e=>chunks.push(e.data); recorder.onstop=()=>{let blob=new Blob(chunks,{type:'video/webm'}); let u=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=u; a.download='Nexoly11_Reel_'+Date.now()+'.webm'; a.click(); showMsg('Reel Save!')}; recorder.start(); isRec=true; document.getElementById('recBtn').innerText='⏹ STOP REEL'; } else{ recorder.stop(); isRec=false; document.getElementById('recBtn').innerText='🔴 START REEL'; } }
+updateLabels(); startCam();
 </script>
 </body>
 </html>
