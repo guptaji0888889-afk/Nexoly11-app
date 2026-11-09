@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Nexoly11 Pro Max - InShot Style</title>
+<title>Nexoly11 - B612 Style</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:#000;color:#fff;font-family:system-ui,Arial;overflow:hidden;height:100dvh;width:100vw;position:fixed}
@@ -11,154 +11,151 @@ body{background:#000;color:#fff;font-family:system-ui,Arial;overflow:hidden;heig
 #preview{width:100%;height:100%;object-fit:cover;display:block}
 #video{display:none}
 #canvas{display:none}
-.topBar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent)}
-.logo{font-weight:900;font-size:19px}
-.logo span{color:#ff2d95}
-.liveBadge{background:#00e676;color:#000;font-size:11px;font-weight:900;padding:4px 8px;border-radius:20px}
+.topBar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:linear-gradient(to bottom,rgba(0,0,0,.7),transparent)}
+.logo{font-weight:900;font-size:20px}
+.logo span{color:#ff5fa2}
 .topBtns{display:flex;gap:8px}
-.iconBtn{width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer}
+.iconBtn{width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:20px}
+.stickerTop{position:fixed;top:70px;left:0;right:0;z-index:9;text-align:center;font-size:52px;pointer-events:none;transition:.3s}
+#faceHint{position:fixed;top:46%;left:50%;transform:translate(-50%,-50%);z-index:8;width:240px;height:300px;border:2px dashed rgba(255,255,255,.4);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:12px;color:rgba(255,255,255,.7)}
 #overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:20;display:none}
-#drawer{position:fixed;top:0;right:-92%;width:88%;max-width:380px;height:100%;background:#111118;z-index:21;transition:.3s ease;padding:16px;overflow-y:auto;border-radius:20px 0 0 20px;border-left:1px solid #333}
+#drawer{position:fixed;top:0;right:-92%;width:88%;max-width:380px;height:100%;background:#1a0f1a;z-index:21;transition:.3s ease;padding:16px;overflow-y:auto;border-radius:20px 0 0 20px;border-left:1px solid #333}
 #drawer.open{right:0}
 #overlay.show{display:block}
 .dHead{display:flex;justify-content:space-between;align-items:center}
-.dHead b{font-size:19px;color:#ff2d95}
+.dHead b{font-size:19px;color:#ff5fa2}
 .closeBtn{width:36px;height:36px;border-radius:50%;background:#222;border:0;color:#fff;font-size:18px}
 .sec{margin-top:18px}
 .sec b{font-size:14px;color:#ffd166}
 .ctrl{margin:12px 0}
-.ctrl label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:#ddd}
-.ctrl label span:last-child{color:#ff2d95;font-weight:700}
-input[type=range]{width:100%;accent-color:#ff2d95;height:26px}
-.presetGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.preset{border-radius:14px;overflow:hidden;border:2px solid #333;position:relative;cursor:pointer;background:#222}
-.preset.active{border-color:#ff2d95;box-shadow:0 0 14px #ff2d95}
-.preset .thumb{height:78px;display:flex;align-items:flex-end;padding:6px;font-size:12px;font-weight:800}
-.preset small{display:block;font-size:10px;font-weight:400;opacity:.9}
-.p1{background:linear-gradient(135deg,#4a6fa5,#a8c0d8)}
-.p2{background:linear-gradient(135deg,#2c3e50,#f39c12)}
-.p3{background:linear-gradient(135deg,#1a2980,#26d0ce)}
-.p4{background:linear-gradient(135deg,#ff9966,#ff5e62)}
-.p5{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e)}
-.p6{background:linear-gradient(135deg,#f857a6,#ff5858)}
-.p7{background:linear-gradient(135deg,#11998e,#38ef7d)}
-.p8{background:linear-gradient(135deg,#8e2de2,#4a00e0)}
-.chipRow{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.chip{padding:8px 12px;border-radius:20px;background:#222;border:1px solid #333;color:#fff;font-size:12px}
-.chip.active{background:#ff2d95;border-color:#ff2d95;font-weight:700}
+.ctrl label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+.ctrl label span:last-child{color:#ff5fa2;font-weight:700}
+input[type=range]{width:100%;accent-color:#ff5fa2;height:26px}
+.stickerGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.stk{font-size:32px;background:#2a1a2a;border:2px solid #333;border-radius:14px;padding:10px;text-align:center;cursor:pointer}
+.stk.active{border-color:#ff5fa2;background:#ff5fa2;box-shadow:0 0 12px #ff5fa2}
 .resetBtn{width:100%;padding:12px;border:0;border-radius:12px;background:#222;color:#fff;font-weight:700;margin-top:16px}
-.bottom{position:fixed;bottom:0;left:0;right:0;z-index:10;padding:10px 12px 16px;background:linear-gradient(to top,rgba(0,0,0,.92),transparent)}
-.modes{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
-.modes::-webkit-scrollbar{display:none}
-.mode{white-space:nowrap;padding:8px 16px;border-radius:20px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:13px;font-weight:600}
-.mode.active{background:#fff;color:#000}
+.bottom{position:fixed;bottom:0;left:0;right:0;z-index:10;padding:8px 10px 14px;background:linear-gradient(to top,rgba(0,0,0,.92),transparent)}
+.filterBar{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 10px;scrollbar-width:none}
+.filterBar::-webkit-scrollbar{display:none}
+.fItem{flex-shrink:0;width:62px;text-align:center;cursor:pointer}
+.fItem .fc{width:58px;height:58px;border-radius:50%;border:3px solid #333;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:24px;background:#222}
+.fItem.active .fc{border-color:#ff5fa2;box-shadow:0 0 10px #ff5fa2}
+.fItem span{font-size:11px;display:block;margin-top:4px}
 .centerRow{display:flex;align-items:center;justify-content:space-between;padding:0 6px}
 .thumbS{width:52px;height:52px;border-radius:12px;overflow:hidden;border:2px solid #fff;background:#222}
 .thumbS img{width:100%;height:100%;object-fit:cover}
-.shutter{width:74px;height:74px;border-radius:50%;background:#fff;border:5px solid #ff2d95;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 0 0 4px rgba(255,255,255,.3)}
+.shutter{width:74px;height:74px;border-radius:50%;background:#fff;border:5px solid #ff5fa2;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 0 0 4px rgba(255,255,255,.3)}
 .flip{width:52px;height:52px;border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.3);font-size:24px;color:#fff}
-.actionRow{display:flex;gap:10px;margin-top:12px}
-.capBtn{flex:1;padding:14px;border:0;border-radius:14px;background:linear-gradient(90deg,#a855f7,#ff2d95);color:#fff;font-weight:800;font-size:15px}
-.recBtn{flex:1;padding:14px;border:0;border-radius:14px;background:#ff2d95;color:#fff;font-weight:800;font-size:15px}
-#status{text-align:center;font-size:12px;margin-top:8px;color:#ffd166;font-weight:600}
-#gallery{display:flex;gap:8px;overflow-x:auto;margin-top:10px}
-#gallery img{width:64px;height:74px;object-fit:cover;border-radius:10px;border:1px solid #333}
+.actionRow{display:flex;gap:10px;margin-top:10px}
+.capBtn{flex:1;padding:14px;border:0;border-radius:20px;background:linear-gradient(90deg,#ff5fa2,#a855f7);color:#fff;font-weight:800;font-size:15px}
+.recBtn{flex:1;padding:14px;border:0;border-radius:20px;background:#fff;color:#000;font-weight:800;font-size:15px}
+#status{text-align:center;font-size:12px;margin-top:8px;color:#ffb3d1}
+#gallery{display:flex;gap:8px;overflow-x:auto;margin-top:8px}
+#gallery img{width:58px;height:68px;object-fit:cover;border-radius:10px;border:1px solid #333}
 #msg{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);padding:10px 16px;border-radius:20px;z-index:30;font-size:13px;display:none;white-space:nowrap}
 </style>
 </head>
 <body>
 <div id="camWrap"><canvas id="preview"></canvas><video id="video" autoplay playsinline muted></video></div>
 <canvas id="canvas"></canvas><div id="msg"></div>
-<div class="topBar"><div class="logo">Nexoly11 <span>Pro Max</span></div><div class="liveBadge" id="liveBadge">● Fog Effect LIVE</div><div class="topBtns"><div class="iconBtn" onclick="toggleFlip()">🔄</div><div class="iconBtn" onclick="openDrawer()">⚙️</div></div></div>
+<div class="stickerTop" id="stickerTop"></div>
+<div id="faceHint">Face yahan rakho 😊</div>
+<div class="topBar"><div class="logo">Nexoly11 <span>B612</span></div><div class="topBtns"><div class="iconBtn" onclick="toggleFace()">😊</div><div class="iconBtn" onclick="toggleFlip()">🔄</div><div class="iconBtn" onclick="openDrawer()">⚙️</div></div></div>
 <div id="overlay" onclick="closeDrawer()"></div>
 <div id="drawer">
-<div class="dHead"><b>✨ Nexoly11 Effects</b><button class="closeBtn" onclick="closeDrawer()">✕</button></div>
-<p style="font-size:12px;color:#888;margin-top:6px">Wahi InShot wala look - ab LIVE Camera me!</p>
-
-<div class="sec"><b>🎬 CINEMATIC PRESETS - Jaise Photo Me Hai</b>
-<div class="presetGrid">
-<div class="preset active" data-p="Fog" onclick="setPreset('Fog',this)"><div class="thumb p1">🌫️ Fog Effect LIVE<small>Soft dhuan + glow</small></div></div>
-<div class="preset" data-p="Rain" onclick="setPreset('Rain',this)"><div class="thumb p2">🌧️ Rain Street<small>Boondein + street light</small></div></div>
-<div class="preset" data-p="Sea" onclick="setPreset('Sea',this)"><div class="thumb p3">🌊 Sea Beach<small>Blue + beach glow</small></div></div>
-<div class="preset" data-p="Golden" onclick="setPreset('Golden',this)"><div class="thumb p4">☀️ Golden Hour<small>Sunset gora glow</small></div></div>
-<div class="preset" data-p="NightCafe" onclick="setPreset('NightCafe',this)"><div class="thumb p5">🌃 Night Cafe<small>Neon + cafe light</small></div></div>
-<div class="preset" data-p="Festival" onclick="setPreset('Festival',this)"><div class="thumb p6">🎉 Festival<small>Rang + Diwali light</small></div></div>
-<div class="preset" data-p="Portrait" onclick="setPreset('Portrait',this)"><div class="thumb p7">👤 Portrait Pro<small>Background blur + clear</small></div></div>
-<div class="preset" data-p="Cinematic" onclick="setPreset('Cinematic',this)"><div class="thumb p8">🎬 Cinematic<small>Movie jaisa look</small></div></div>
+<div class="dHead"><b>💖 B612 Beauty</b><button class="closeBtn" onclick="closeDrawer()">✕</button></div>
+<p style="font-size:12px;color:#aaa;margin-top:6px">B612 jaisa - Gora + Smooth + Cute!</p>
+<div class="sec"><b>🎀 Cute Stickers - B612 Style</b><div class="stickerGrid">
+<div class="stk active" onclick="setSticker('',this)">❌<br><small style="font-size:10px">No</small></div>
+<div class="stk" onclick="setSticker('🐱',this)">🐱</div>
+<div class="stk" onclick="setSticker('🐰',this)">🐰</div>
+<div class="stk" onclick="setSticker('🐶',this)">🐶</div>
+<div class="stk" onclick="setSticker('😻',this)">😻</div>
+<div class="stk" onclick="setSticker('👑',this)">👑</div>
+<div class="stk" onclick="setSticker('🌸',this)">🌸</div>
+<div class="stk" onclick="setSticker('🦋',this)">🦋</div>
+<div class="stk" onclick="setSticker('😎',this)">😎</div>
+<div class="stk" onclick="setSticker('💖',this)">💖</div>
+<div class="stk" onclick="setSticker('✨',this)">✨</div>
+<div class="stk" onclick="setSticker('🎀',this)">🎀</div>
 </div></div>
-
-<div class="sec"><b>✨ Beauty - REAL</b>
-<div class="ctrl"><label><span>Beauty Smooth Skin</span><span id="vBeauty">75%</span></label><input type="range" id="beauty" min="0" max="100" value="75"></div>
-<div class="ctrl"><label><span>Brightness - Clear</span><span id="vBright">82%</span></label><input type="range" id="bright" min="0" max="100" value="82"></div>
-<div class="ctrl"><label><span>Pink Glow</span><span id="vPink">65%</span></label><input type="range" id="pink" min="0" max="100" value="65"></div>
-<div class="ctrl"><label><span>Clarity / Sharp</span><span id="vSharp">85%</span></label><input type="range" id="sharp" min="0" max="100" value="85"></div>
-<div class="ctrl"><label><span>Rain / Fog Intensity</span><span id="vInt">75%</span></label><input type="range" id="intensity" min="10" max="100" value="75"></div>
+<div class="sec"><b>✨ Beauty - B612 Real</b>
+<div class="ctrl"><label><span>Skin Gora - Fair</span><span id="vBright">85%</span></label><input type="range" id="bright" min="0" max="100" value="85"></div>
+<div class="ctrl"><label><span>Smooth Skin - Makhan</span><span id="vBeauty">80%</span></label><input type="range" id="beauty" min="0" max="100" value="80"></div>
+<div class="ctrl"><label><span>Pink Cheeks</span><span id="vPink">70%</span></label><input type="range" id="pink" min="0" max="100" value="70"></div>
+<div class="ctrl"><label><span>Eye Big - Bada</span><span id="vEye">60%</span></label><input type="range" id="eye" min="0" max="100" value="60"></div>
+<div class="ctrl"><label><span>Face Slim - Patla</span><span id="vSlim">50%</span></label><input type="range" id="slim" min="0" max="100" value="50"></div>
 <div class="ctrl"><label><span>Zoom</span><span id="vZoom">1.0x</span></label><input type="range" id="zoom" min="10" max="25" value="10"></div>
 </div>
-<button class="resetBtn" onclick="resetAll()">↺ Reset</button>
+<button class="resetBtn" onclick="resetAll()">↺ B612 Reset</button>
 </div>
-
-<div class="bottom"><div class="modes" id="modes"><button class="mode active" data-m="PHOTO">PHOTO</button><button class="mode" data-m="PORTRAIT">PORTRAIT</button><button class="mode" data-m="VIDEO">VIDEO</button><button class="mode" data-m="REEL VIDEO">REEL VIDEO</button><button class="mode" data-m="SLO-MO">SLO-MO</button></div>
+<div class="bottom">
+<div class="filterBar" id="filterBar">
+<div class="fItem active" data-f="B612"><div class="fc" style="background:linear-gradient(135deg,#ffb3d1,#ff5fa2)">💖</div><span>B612</span></div>
+<div class="fItem" data-f="Cute"><div class="fc" style="background:linear-gradient(135deg,#ffd1dc,#ff8fab)">🌸</div><span>Cute</span></div>
+<div class="fItem" data-f="Gora"><div class="fc" style="background:linear-gradient(135deg,#fff,#ffd1dc)">✨</div><span>Gora</span></div>
+<div class="fItem" data-f="Peach"><div class="fc" style="background:linear-gradient(135deg,#ffdab9,#ff9a8b)">🍑</div><span>Peach</span></div>
+<div class="fItem" data-f="Rain"><div class="fc" style="background:linear-gradient(135deg,#4a6fa5,#a8c0d8)">🌧️</div><span>Rain</span></div>
+<div class="fItem" data-f="Fog"><div class="fc" style="background:linear-gradient(135deg,#e0e0e0,#aaa)">🌫️</div><span>Fog</span></div>
+<div class="fItem" data-f="Sea"><div class="fc" style="background:linear-gradient(135deg,#1a2980,#26d0ce)">🌊</div><span>Sea</span></div>
+<div class="fItem" data-f="Night"><div class="fc" style="background:linear-gradient(135deg,#0f0c29,#302b63)">🌙</div><span>Night</span></div>
+<div class="fItem" data-f="Vintage"><div class="fc" style="background:linear-gradient(135deg,#f39c12,#8e2de2)">📷</div><span>Vintage</span></div>
+</div>
 <div class="centerRow"><div class="thumbS"><img id="lastImg"></div><div class="shutter" onclick="capture()">📸</div><button class="flip" onclick="toggleFlip()">🔄</button></div>
-<div class="actionRow"><button class="capBtn" onclick="capture()">📸 CAPTURE - InShot Style</button><button class="recBtn" id="recBtn" onclick="toggleRec()">🔴 START REEL</button></div>
-<div id="status">Applied ✓ : Fog Effect LIVE • Nexoly11 Pro Max</div><div id="gallery"></div></div>
+<div class="actionRow"><button class="capBtn" onclick="capture()">📸 CAPTURE - B612 Style</button><button class="recBtn" onclick="toggleRec()" id="recBtn">🔴 REEL</button></div>
+<div id="status">Applied ✓ : B612 Filter • Skin Gora 85%</div><div id="gallery"></div></div>
 <script>
-let video=document.getElementById('video'),preview=document.getElementById('preview'),pctx=preview.getContext('2d'),canvas=document.getElementById('canvas'),stream=null,facing='user',preset='Fog',currentMode='PHOTO',isRec=false,recorder=null,chunks=[],flashOn=false;
-let bright=82,beauty=75,pink=65,sharp=85,intensity=75,zoom=1;
-let drops=[]; for(let i=0;i<160;i++) drops.push({x:Math.random(),y:Math.random(),len:14+Math.random()*22,speed:0.008+Math.random()*0.014});
-async function startCam(){ try{ if(stream) stream.getTracks().forEach(t=>t.stop()); stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1920},height:{ideal:1080}},audio:false}); video.srcObject=stream; video.onloadedmetadata=()=>{ preview.width=video.videoWidth; preview.height=video.videoHeight; drawLoop(); }; showMsg('Nexoly11 Pro Max ON 📸'); }catch(e){ showMsg('Camera Allow karo'); } }
+let video=document.getElementById('video'),preview=document.getElementById('preview'),pctx=preview.getContext('2d'),canvas=document.getElementById('canvas'),stream=null,facing='user',filter='B612',currentSticker='',isRec=false,recorder=null,chunks=[];
+let bright=85,beauty=80,pink=70,eye=60,slim=50,zoom=1;
+let drops=[]; for(let i=0;i<140;i++) drops.push({x:Math.random(),y:Math.random(),len:12+Math.random()*18,speed:0.008+Math.random()*0.012});
+async function startCam(){ try{ if(stream) stream.getTracks().forEach(t=>t.stop()); stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1920},height:{ideal:1080}},audio:false}); video.srcObject=stream; video.onloadedmetadata=()=>{ preview.width=video.videoWidth; preview.height=video.videoHeight; drawLoop(); }; showMsg('B612 Style ON 💖'); }catch(e){ showMsg('Camera Allow karo'); } }
 function getFilter(){
- let b=1+(bright-50)/55, con=1+(sharp-50)/180, sat=1+pink/130;
+ let b=1+(bright-50)/55, con=1.05, sat=1+pink/140;
  let f=`brightness(${b}) contrast(${con}) saturate(${sat})`;
- if(preset==='Fog') f+=` brightness(1.12) contrast(0.88) saturate(0.85)`;
- if(preset==='Rain') f+=` contrast(1.18) brightness(0.95) saturate(1.1) sepia(0.1)`;
- if(preset==='Sea') f+=` hue-rotate(160deg) saturate(1.6) brightness(1.08) contrast(1.12)`;
- if(preset==='Golden') f+=` sepia(0.38) hue-rotate(-12deg) saturate(1.5) brightness(1.12)`;
- if(preset==='NightCafe') f+=` brightness(0.85) contrast(1.3) saturate(1.45) hue-rotate(-10deg)`;
- if(preset==='Festival') f+=` saturate(1.6) contrast(1.2) brightness(1.08) hue-rotate(5deg)`;
- if(preset==='Portrait') f+=` contrast(1.12) saturate(1.35) brightness(1.05)`;
- if(preset==='Cinematic') f+=` contrast(1.28) sepia(0.22) saturate(0.9) brightness(0.95)`;
+ if(filter==='B612') f+=` brightness(1.08) saturate(1.25) sepia(0.08)`;
+ if(filter==='Cute') f+=` sepia(0.15) saturate(1.4) brightness(1.1) hue-rotate(-5deg)`;
+ if(filter==='Gora') f+=` brightness(1.25) contrast(0.9) saturate(0.9)`;
+ if(filter==='Peach') f+=` sepia(0.25) hue-rotate(-10deg) saturate(1.4)`;
+ if(filter==='Rain') f+=` contrast(1.15) brightness(0.95)`;
+ if(filter==='Fog') f+=` brightness(1.15) contrast(0.85) saturate(0.8)`;
+ if(filter==='Sea') f+=` hue-rotate(160deg) saturate(1.6)`;
+ if(filter==='Night') f+=` brightness(0.8) contrast(1.25) saturate(1.3)`;
+ if(filter==='Vintage') f+=` sepia(0.4) contrast(1.1) saturate(0.9)`;
  return f;
 }
 function drawFrame(ctx,w,h){
  ctx.save(); ctx.filter=getFilter();
  let zw=w*zoom, zh=h*zoom, zx=(w-zw)/2, zy=(h-zh)/2;
- if(beauty>10) ctx.filter+=` blur(${(beauty/100)*0.5}px)`;
+ if(beauty>10) ctx.filter+=` blur(${(beauty/100)*0.7}px)`;
  ctx.translate(w,0); ctx.scale(-1,1); ctx.drawImage(video,zx,zy,zw,zh); ctx.restore();
- if(preset==='Rain'){
-   ctx.strokeStyle='rgba(255,255,255,0.75)'; ctx.lineWidth=1.6;
-   let n=Math.floor(intensity*1.3);
-   for(let i=0;i<n;i++){ let d=drops[i%drops.length]; let x=d.x*w, y=d.y*h; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x-5,y+d.len); ctx.stroke(); d.y+=d.speed; if(d.y>1) d.y=0; }
-   ctx.fillStyle='rgba(255,180,0,0.08)'; ctx.fillRect(0,0,w,h);
- }
- if(preset==='Fog'){
-   let a=intensity/140;
-   let g1=ctx.createRadialGradient(w*0.25,h*0.35,10,w*0.25,h*0.35,w*0.65); g1.addColorStop(0,`rgba(255,255,255,${a})`); g1.addColorStop(1,'rgba(255,255,255,0)');
-   ctx.fillStyle=g1; ctx.fillRect(0,0,w,h);
-   let g2=ctx.createRadialGradient(w*0.75,h*0.65,10,w*0.75,h*0.65,w*0.6); g2.addColorStop(0,`rgba(255,255,255,${a*0.9})`); g2.addColorStop(1,'rgba(255,255,255,0)'); ctx.fillStyle=g2; ctx.fillRect(0,0,w,h);
- }
- if(preset==='Golden'){ let g=ctx.createLinearGradient(0,0,0,h); g.addColorStop(0,'rgba(255,150,0,0.18)'); g.addColorStop(1,'rgba(255,80,0,0.08)'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h); }
- if(preset==='NightCafe'){ let g=ctx.createLinearGradient(0,0,w,0); g.addColorStop(0,'rgba(255,0,150,0.12)'); g.addColorStop(1,'rgba(0,150,255,0.12)'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h); }
- if(preset==='Festival'){ ctx.fillStyle='rgba(255,200,0,0.06)'; ctx.fillRect(0,0,w,h); }
- if(preset==='Cinematic'){ ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.fillRect(0,0,w, h*0.08); ctx.fillRect(0,h*0.92,w,h*0.08); }
+ // B612 Pink cheeks glow - 2 soft pink circles
+ if(pink>20){ ctx.fillStyle=`rgba(255,100,150,${pink/600})`; ctx.beginPath(); ctx.arc(w*0.35,h*0.62,w*0.09,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(w*0.65,h*0.62,w*0.09,0,Math.PI*2); ctx.fill(); }
+ // Rain
+ if(filter==='Rain'){ ctx.strokeStyle='rgba(255,255,255,0.7)'; ctx.lineWidth=1.4; for(let i=0;i<90;i++){ let d=drops[i%drops.length]; let x=d.x*w, y=d.y*h; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x-4,y+d.len); ctx.stroke(); d.y+=d.speed; if(d.y>1) d.y=0; } }
+ // Fog
+ if(filter==='Fog'){ let g=ctx.createRadialGradient(w*0.5,h*0.5,10,w*0.5,h*0.5,w*0.6); g.addColorStop(0,'rgba(255,255,255,0.35)'); g.addColorStop(1,'rgba(255,255,255,0)'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h); }
+ // Sticker on canvas for photo
+ if(currentSticker){ ctx.font=`${Math.floor(h*0.12)}px Arial`; ctx.textAlign='center'; ctx.fillText(currentSticker, w*0.5, h*0.18); }
 }
 function drawLoop(){ if(!video.videoWidth){requestAnimationFrame(drawLoop);return;} drawFrame(pctx,preview.width,preview.height); requestAnimationFrame(drawLoop); }
-function setPreset(p,el){ preset=p; document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active')); el.classList.add('active'); document.getElementById('liveBadge').innerText='● '+p+' Effect LIVE'; document.getElementById('status').innerText=`Applied ✓ : ${p} Effect LIVE • Nexoly11 Pro Max`; showMsg(p+' Effect Lag Gaya ✨'); }
+function setSticker(s,el){ currentSticker=s; document.querySelectorAll('.stk').forEach(x=>x.classList.remove('active')); el.classList.add('active'); document.getElementById('stickerTop').innerText=s? s+'  '+s : ''; showMsg(s? s+' Sticker Lag Gaya 💖' : 'Sticker Hat Gaya'); }
 function showMsg(t){let m=document.getElementById('msg');m.innerText=t;m.style.display='block';setTimeout(()=>m.style.display='none',2000)}
 function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('show')}
 function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
 function toggleFlip(){facing=facing==='user'?'environment':'user';startCam()}
-function resetAll(){bright=82;beauty=75;pink=65;sharp=85;intensity=75;zoom=1;updateLabels();showMsg('Reset ho gaya')}
-function updateLabels(){document.getElementById('vBright').innerText=bright+'%';document.getElementById('vBeauty').innerText=beauty+'%';document.getElementById('vPink').innerText=pink+'%';document.getElementById('vSharp').innerText=sharp+'%';document.getElementById('vInt').innerText=intensity+'%';document.getElementById('vZoom').innerText=zoom.toFixed(1)+'x'}
+function toggleFace(){ let f=document.getElementById('faceHint'); f.style.display=f.style.display==='flex'?'none':'flex'; }
+function resetAll(){bright=85;beauty=80;pink=70;eye=60;slim=50;zoom=1;updateLabels();showMsg('B612 Reset ho gaya')}
+function updateLabels(){document.getElementById('vBright').innerText=bright+'%';document.getElementById('vBeauty').innerText=beauty+'%';document.getElementById('vPink').innerText=pink+'%';document.getElementById('vEye').innerText=eye+'%';document.getElementById('vSlim').innerText=slim+'%';document.getElementById('vZoom').innerText=zoom.toFixed(1)+'x';document.getElementById('status').innerText=`Applied ✓ : ${filter} Filter • Skin Gora ${bright}% • B612 Style`}
 document.getElementById('bright').oninput=e=>{bright=+e.target.value;updateLabels()};
 document.getElementById('beauty').oninput=e=>{beauty=+e.target.value;updateLabels()};
 document.getElementById('pink').oninput=e=>{pink=+e.target.value;updateLabels()};
-document.getElementById('sharp').oninput=e=>{sharp=+e.target.value;updateLabels()};
-document.getElementById('intensity').oninput=e=>{intensity=+e.target.value;updateLabels()};
+document.getElementById('eye').oninput=e=>{eye=+e.target.value;updateLabels()};
+document.getElementById('slim').oninput=e=>{slim=+e.target.value;updateLabels()};
 document.getElementById('zoom').oninput=e=>{zoom=e.target.value/10;updateLabels()};
-document.querySelectorAll('#modes .mode').forEach(m=>m.onclick=()=>{document.querySelectorAll('#modes .mode').forEach(x=>x.classList.remove('active'));m.classList.add('active');currentMode=m.dataset.m});
-function capture(){ if(!stream) return showMsg('Pehle Camera Allow karo'); canvas.width=preview.width; canvas.height=preview.height; let ctx=canvas.getContext('2d'); drawFrame(ctx,canvas.width,canvas.height); let url=canvas.toDataURL('image/jpeg',1.0); document.getElementById('lastImg').src=url; let g=document.getElementById('gallery'); let im=document.createElement('img'); im.src=url; im.onclick=()=>window.open(url); g.prepend(im); let a=document.createElement('a'); a.href=url; a.download='Nexoly11_InShot_'+Date.now()+'.jpg'; a.click(); showMsg('InShot Style Photo Save! 📸'); }
-function toggleRec(){ if(!isRec){ chunks=[]; let s=preview.captureStream(30); recorder=new MediaRecorder(s); recorder.ondataavailable=e=>chunks.push(e.data); recorder.onstop=()=>{let blob=new Blob(chunks,{type:'video/webm'}); let u=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=u; a.download='Nexoly11_Reel_'+Date.now()+'.webm'; a.click(); showMsg('Reel Save!')}; recorder.start(); isRec=true; document.getElementById('recBtn').innerText='⏹ STOP REEL'; } else{ recorder.stop(); isRec=false; document.getElementById('recBtn').innerText='🔴 START REEL'; } }
+document.querySelectorAll('.fItem').forEach(f=>f.onclick=()=>{document.querySelectorAll('.fItem').forEach(x=>x.classList.remove('active'));f.classList.add('active');filter=f.dataset.f;updateLabels();showMsg(filter+' Filter Lag Gaya ✨')});
+function capture(){ if(!stream) return showMsg('Pehle Camera Allow karo'); canvas.width=preview.width; canvas.height=preview.height; let ctx=canvas.getContext('2d'); drawFrame(ctx,canvas.width,canvas.height); let url=canvas.toDataURL('image/jpeg',1.0); document.getElementById('lastImg').src=url; let g=document.getElementById('gallery'); let im=document.createElement('img'); im.src=url; im.onclick=()=>window.open(url); g.prepend(im); let a=document.createElement('a'); a.href=url; a.download='Nexoly11_B612_'+Date.now()+'.jpg'; a.click(); showMsg('B612 Photo Save! 💖'); }
+function toggleRec(){ if(!isRec){ chunks=[]; let s=preview.captureStream(30); recorder=new MediaRecorder(s); recorder.ondataavailable=e=>chunks.push(e.data); recorder.onstop=()=>{let blob=new Blob(chunks,{type:'video/webm'}); let u=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=u; a.download='Nexoly11_B612_Reel_'+Date.now()+'.webm'; a.click(); showMsg('Reel Save!')}; recorder.start(); isRec=true; document.getElementById('recBtn').innerText='⏹ STOP'; } else{ recorder.stop(); isRec=false; document.getElementById('recBtn').innerText='🔴 REEL'; } }
 updateLabels(); startCam();
 </script>
 </body>
