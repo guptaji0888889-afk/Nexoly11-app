@@ -186,3 +186,21 @@ body>.theme-toggle{position:fixed;top:12px;right:12px;z-index:1000;box-shadow:0 
 .n11-settings-list>.ig-settings-row{display:flex!important;width:100%;min-height:54px;margin:0!important;padding:12px 14px!important;flex-direction:row!important;align-items:center;justify-content:flex-start!important;border-radius:12px!important}
 .n11-settings-list>.ig-settings-row .ig-chevron{margin-left:auto}
 .ig-settings-area[hidden],.n11-subpanel[hidden],.n11-post-menu[hidden]{display:none!important}
+
+
+/* NEXOLY11 seven-theme palette layer */
+:root{--n11-bg:#080b12;--n11-surface:#121a29;--n11-surface2:#1a2638;--n11-text:#f4f7ff;--n11-muted:#a8b3c7;--n11-border:#2a3a52;--n11-accent:#ff3d72;--n11-accentText:#fff;--n11-nav:#0b1220;--n11-input:#172236}
+html,body{background:var(--n11-bg)!important;color:var(--n11-text)!important}
+.topbar,.bottomnav,.ig-topbar{background:var(--n11-nav)!important;border-color:var(--n11-border)!important}
+.panel,.post,.storycard,.ig-settings-area,.n11-settings-list,.n11-subpanel,.ig-post-grid,.ig-discover{background:var(--n11-surface)!important;color:var(--n11-text)!important;border-color:var(--n11-border)!important}
+.field,input,textarea,select{background:var(--n11-input)!important;color:var(--n11-text)!important;border-color:var(--n11-border)!important}
+button,.cat,.ig-btn,.ig-icon-btn,.ig-settings-row,.theme-card{color:var(--n11-text)}
+.ig-settings-row,.theme-card,.cat{background:var(--n11-surface2)!important;border-color:var(--n11-border)!important}
+.btn,.cat.active,.theme-card.selected{background:var(--n11-accent)!important;color:var(--n11-accentText)!important;border-color:var(--n11-accent)!important}
+a,.brand span,.bottomnav a.active{color:var(--n11-accent)}
+.muted,.hint,.ig-bio,.ig-fullname{color:var(--n11-muted)!important}
+.postactions button{color:var(--n11-text)!important}
+.ig-tabs,.ig-highlights{border-color:var(--n11-border)!important}
+.theme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.theme-card{min-height:54px;border:1px solid var(--n11-border)!important;border-radius:12px;padding:12px;font-weight:700}
+.theme-card.selected{outline:2px solid var(--n11-accent);outline-offset:2px}
