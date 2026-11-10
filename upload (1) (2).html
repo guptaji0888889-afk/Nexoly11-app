@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:Arial;text-align:center}
+.top{display:flex;justify-content:space-between;padding:12px 14px}
+.top b{font-size:22px}
+#preview{width:94%;height:52vh;object-fit:cover;background:#222;display:block;margin:10px auto;border-radius:12px;border:2px solid #333}
+.big{width:90%;padding:15px;border:0;border-radius:20px;font-weight:800;font-size:15px;margin:6px}
+.b1{background:#ff5fa2;color:#fff}.b2{background:#fff;color:#000}
+.fBar{display:flex;gap:8px;overflow-x:auto;padding:10px}
+.fBar::-webkit-scrollbar{display:none}
+.fItem{flex-shrink:0;text-align:center}
+.fItem .fc{width:46px;height:46px;border-radius:50%;background:#222;border:2px solid #444;display:flex;align-items:center;justify-content:center;font-size:18px}
+.fItem.active .fc{border-color:#fff;background:#ff5fa2}
+#grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:10px}
+#grid img{width:100%;height:120px;object-fit:cover;border-radius:10px}
+</style>
+</head>
+<body>
+<div class="top"><span>←</span><b>inshot</b><span>+</span></div>
+<p style="background:#ff5fa2;padding:8px;font-size:13px;font-weight:700" id="msg">Neeche CAMERA KHOLO dabao - Phone ka Camera khulega</p>
+
+<img id="preview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600">
+<p id="liveTag" style="color:#0f0;font-size:12px">● Fog Effect LIVE</p>
+
+<div class="fBar">
+<div class="fItem active" data-f="Original"><div class="fc">📷</div><span>Original</span></div>
+<div class="fItem" data-f="Fog"><div class="fc">🌫️</div><span>Fog</span></div>
+<div class="fItem" data-f="Rain"><div class="fc">🌧️</div><span>Rain</span></div>
+<div class="fItem" data-f="Sea"><div class="fc">🌊</div><span>Sea</span></div>
+<div class="fItem" data-f="Golden"><div class="fc">☀️</div><span>Golden</span></div>
+<div class="fItem" data-f="Night"><div class="fc">🌙</div><span>Night</span></div>
+<div class="fItem" data-f="B612"><div class="fc">💖</div><span>B612</span></div>
+</div>
+
+<button class="big b1" onclick="document.getElementById('cam').click()">📸 CAMERA KHOLO</button><br>
+<button class="big b2" onclick="downloadPhoto()">💾 PHOTO SAVE KARO</button>
+
+<input type="file" id="cam" accept="image/*" capture="user" style="display:none" onchange="showPhoto(this)">
+
+<div id="grid"></div>
+
+<script>
+let filter='Original', currentUrl='';
+function getFilter(){
+  if(filter=='Fog') return 'brightness(1.10) contrast(0.90) saturate(0.85)';
+  if(filter=='Rain') return 'brightness(0.97) contrast(1.12)';
+  if(filter=='Sea') return 'brightness(1.05) saturate(1.25) hue-rotate(8deg)';
+  if(filter=='Golden') return 'brightness(1.06) saturate(1.18) sepia(0.18)';
+  if(filter=='Night') return 'brightness(0.88) contrast(1.12)';
+  if(filter=='B612') return 'brightness(1.08) saturate(1.18)';
+  return 'none';
+}
+document.querySelectorAll('.fItem').forEach(x=>x.onclick=()=>{
+  document.querySelectorAll('.fItem').forEach(y=>y.classList.remove('active'));
+  x.classList.add('active'); filter=x.dataset.f;
+  document.getElementById('preview').style.filter=getFilter();
+  document.getElementById('liveTag').innerText='● '+filter+' Effect LIVE';
+  document.getElementById('msg').innerText=filter+' Lag Gaya ✨ Ab SAVE dabao';
+});
+function showPhoto(input){
+  let f=input.files[0]; if(!f) return;
+  let url=URL.createObjectURL(f); currentUrl=url;
+  let img=document.getElementById('preview');
+  img.src=url; img.style.filter=getFilter();
+  document.getElementById('msg').innerText='Photo Aa Gayi ✅ Filter lagao aur SAVE dabao';
+  let d=document.createElement('img'); d.src=url; d.style.filter=getFilter();
+  document.getElementById('grid').prepend(d);
+}
+function downloadPhoto(){
+  if(!currentUrl){ alert('Pehle CAMERA KHOLO dabake photo lo'); return; }
+  let img=document.getElementById('preview');
+  let c=document.createElement('canvas'); c.width=img.naturalWidth||1080; c.height=img.naturalHeight||1920;
+  let ctx=c.getContext('2d'); ctx.filter=getFilter(); ctx.drawImage(img,0,0,c.width,c.height);
+  let a=document.createElement('a'); a.href=c.toDataURL('image/jpeg',0.92); a.download='Nexoly11_'+filter+'.jpg'; a.click();
+  document.getElementById('msg').innerText='Save Ho Gayi ✅ Gallery me dekho';
+}
+</script>
+</body>
+</html>

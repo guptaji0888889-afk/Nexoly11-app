@@ -35,3 +35,8 @@ After confirming the base setup is already applied, run `PRIVACY_SOCIAL_MIGRATIO
 - Added one-view-per-signed-in-user tracking for feed posts and displayed view counts on the home feed as well as the profile grid.
 - Added a unique `(post_id, viewer_id)` index and compatibility column migration for post view upserts.
 - Backend changes still require running `PRIVACY_SOCIAL_MIGRATION.sql` in the connected Supabase project; frontend ZIP alone cannot change the live database or Storage policies.
+
+## Emergency code validation — 10 Nov 2026
+- Fixed a JavaScript syntax error in `js/profile-ui.js` (`async let highlightGroups=[]` changed to `let highlightGroups=[]`). This error prevented the entire profile UI script from loading, including profile highlights and related controls.
+- Ran `node --check` against every active file in `js/`; all passed after the fix.
+- This frontend correction does not apply the required Supabase SQL migration, configure Storage/RLS, or publish the site. Those remain separate deployment steps.
