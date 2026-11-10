@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nexoly11 Camera Pro</title>
     <style>
         * {
@@ -24,30 +24,39 @@
             width: 100%;
             max-width: 410px;
             height: 100vh;
-            max-height: 850px;
             background: #121212;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            border-radius: 0px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
-        @media (min-width: 450px) {
-            .phone-frame {
-                border-radius: 40px;
-                border: 8px solid #2a2a2a;
-            }
+        /* Live Camera Feed */
+        #camera-feed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+        .viewfinder-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            z-index: 2;
         }
         /* Top Header */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            padding: 25px 20px 15px 20px;
             z-index: 10;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
         }
         .logo {
             font-size: 18px;
@@ -55,25 +64,6 @@
             background: linear-gradient(45deg, #a855f7, #3b82f6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        /* Viewfinder Area */
-        .viewfinder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80') no-repeat center center/cover;
-        }
-        .viewfinder::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
         }
         /* Controls Overlay */
         .overlay-content {
@@ -89,7 +79,7 @@
         .panels-container {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .panel {
             flex: 1;
@@ -97,14 +87,13 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
-            padding: 12px;
+            padding: 10px;
         }
         .panel-title {
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -114,32 +103,31 @@
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 8px;
-            padding: 8px;
+            padding: 6px;
             color: #fff;
-            font-size: 11px;
-            margin-bottom: 8px;
+            font-size: 10px;
+            margin-bottom: 6px;
             resize: none;
-            height: 40px;
+            height: 35px;
         }
         .preset-row {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             overflow-x: auto;
         }
         .preset-btn {
             background: rgba(255, 255, 255, 0.1);
             border: none;
-            border-radius: 6px;
-            padding: 4px 8px;
+            border-radius: 4px;
+            padding: 3px 6px;
             color: #fff;
-            font-size: 9px;
+            font-size: 8px;
             white-space: nowrap;
-            cursor: pointer;
         }
         .slider-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
         .slider-item {
             font-size: 9px;
@@ -148,16 +136,16 @@
             color: #ccc;
         }
         .slider-item input {
-            width: 60px;
+            width: 55px;
         }
-        /* Bottom Navigation Modes */
+        /* Mode Selection */
         .mode-nav {
             display: flex;
             justify-content: space-around;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
             color: #888;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         .mode-nav .active {
             color: #ffffff;
@@ -185,8 +173,8 @@
             object-fit: cover;
         }
         .shutter-btn {
-            width: 75px;
-            height: 75px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             background: linear-gradient(135deg, #a855f7, #3b82f6);
             display: flex;
@@ -196,17 +184,13 @@
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
         }
         .shutter-inner {
-            width: 63px;
-            height: 63px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
             background: #fff;
-            transition: transform 0.1s;
-        }
-        .shutter-btn:active .shutter-inner {
-            transform: scale(0.9);
         }
         .flip-btn {
-            font-size: 20px;
+            font-size: 18px;
             background: rgba(255,255,255,0.1);
             border: none;
             width: 45px;
@@ -223,8 +207,9 @@
 <body>
 
     <div class="phone-frame">
-        <!-- Background Camera View -->
-        <div class="viewfinder"></div>
+        <!-- Live Camera Video Feed -->
+        <video id="camera-feed" autoplay playsinline></video>
+        <div class="viewfinder-overlay"></div>
 
         <!-- Top Header -->
         <div class="header">
@@ -243,7 +228,7 @@
                         <span>AI Generator</span>
                         <input type="checkbox" checked style="accent-color: #3b82f6;">
                     </div>
-                    <textarea class="auto-input ai-input" placeholder="Compose with AI (e.g., At Taj Mahal)..."></textarea>
+                    <textarea class="ai-input" placeholder="Compose with AI..."></textarea>
                     <div class="preset-row">
                         <button class="preset-btn">Portraits</button>
                         <button class="preset-btn">Landscapes</button>
@@ -262,7 +247,7 @@
                 </div>
             </div>
 
-            <!-- Mode Selection (Instagram Style) -->
+            <!-- Mode Selection -->
             <div class="mode-nav">
                 <span class="active">AI PIC</span>
                 <span>PRO VIDEO</span>
@@ -276,21 +261,48 @@
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Gallery">
                 </div>
                 
-                <div class="shutter-btn" onclick="captureAction()">
+                <div class="shutter-btn" onclick="capturePhoto()">
                     <div class="shutter-inner"></div>
                 </div>
 
-                <button class="flip-btn">🔄</button>
+                <button class="flip-btn" onclick="switchCamera()">🔄</button>
             </div>
 
         </div>
     </div>
 
     <script>
-        function captureAction() {
-            alert("✨ AI Photo Captured & Processed in 4K Quality!");
-            // यहाँ आप अपने Supabase स्टोरेज या अपलोड लॉजिक को जोड़ सकते हैं।
+        let currentStream = null;
+        let useFrontCamera = true;
+
+        async function startCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+            }
+            const constraints = {
+                video: { facingMode: useFrontCamera ? "user" : "environment" },
+                audio: false
+            };
+            try {
+                currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                document.getElementById('camera-feed').srcObject = currentStream;
+            } catch (err) {
+                console.error("Camera access denied or not available: ", err);
+                alert("कृपया कैमरा इस्तेमाल करने की अनुमति (Permission) दें!");
+            }
         }
+
+        function switchCamera() {
+            useFrontCamera = !useFrontCamera;
+            startCamera();
+        }
+
+        function capturePhoto() {
+            alert("✨ 4K AI Photo Captured Successfully!");
+        }
+
+        // Start camera on load
+        startCamera();
     </script>
 </body>
 </html>
