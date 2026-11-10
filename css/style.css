@@ -231,3 +231,35 @@ a,.brand span,.bottomnav a.active{color:var(--n11-accent)}
 .theme-card.theme-candy{background:linear-gradient(135deg,#fff5fa,#ffd5e8 60%,#f5a8ce)!important;color:#713454!important}
 .theme-card.selected{outline:3px solid var(--n11-accent)!important;outline-offset:2px}
 @media(max-width:380px){.theme-card{min-height:118px!important;padding:14px!important}.theme-card b{font-size:17px}}
+
+
+/* NEXOLY11 v31 — extend selected theme across every app surface */
+:root{color-scheme:dark}
+:root[data-theme="white"],:root[data-theme="candy"]{color-scheme:light}
+body,.wrap,.profile-wrap,.ig-profile-head,.ig-discover,.ig-post-grid,
+.chatlist,.chat-window,.notification-list,.saved-wrap,.search-wrap,
+.creator-wrap,.upload-wrap{background:var(--n11-bg)!important;color:var(--n11-text)!important}
+header,.topbar,.bottomnav,.ig-topbar,.chat-header,.creator-tabs,
+.ig-tabs,.ig-highlights,.ig-settings-title{background:var(--n11-nav)!important;color:var(--n11-text)!important;border-color:var(--n11-border)!important}
+.panel,.post,.storycard,.ig-settings-area,.n11-settings-list,.n11-subpanel,
+.ig-discover,.ig-post-grid,.chat-card,.notification-card,.search-result,
+.creator-card,.upload-card,.stat,.row,.highlight-item{
+ background:var(--n11-surface)!important;color:var(--n11-text)!important;border-color:var(--n11-border)!important
+}
+.field,input,textarea,select,.search-input,.message-input{
+ background:var(--n11-input)!important;color:var(--n11-text)!important;border-color:var(--n11-border)!important
+}
+.field::placeholder,input::placeholder,textarea::placeholder{color:var(--n11-muted)!important;opacity:1}
+.btn,.primary-btn,.send-btn,.create-nav,.creator-tab.active,.ig-btn.primary{
+ background:var(--n11-accent)!important;color:var(--n11-accentText)!important;border-color:var(--n11-accent)!important
+}
+.btn.secondary,.secondary-btn,.creator-tab,.cat,.ig-btn,.ig-icon-btn,
+.ig-settings-row,.theme-card,.tab-button,.filter-chip{
+ background:var(--n11-surface2)!important;color:var(--n11-text)!important;border-color:var(--n11-border)!important
+}
+a,.brand span,.bottomnav a.active,.ig-row-icon,.active-icon{color:var(--n11-accent)!important}
+.muted,.hint,.subtext,.timestamp,.ig-bio,.ig-fullname{color:var(--n11-muted)!important}
+hr,.divider{border-color:var(--n11-border)!important}
+.modal,.sheet,.drawer,.dropdown-menu,.context-menu{background:var(--n11-surface)!important;color:var(--n11-text)!important;border-color:var(--n11-border)!important}
+.bubble.theirs,.chat-bubble.theirs{background:var(--n11-surface2)!important;color:var(--n11-text)!important}
+.bubble.mine,.chat-bubble.mine{background:var(--n11-accent)!important;color:var(--n11-accentText)!important}
