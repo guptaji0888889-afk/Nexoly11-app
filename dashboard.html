@@ -1,4 +1,23 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><link rel="stylesheet" href="css/reset.css"><link rel="stylesheet" href="css/style.css?v=35"><title>Nexoly11 | Profile</title></head><body><header class="topbar ig-topbar"><a class="brand" href="index.html">NEXOLY<span>11</span></a><div><a href="notifications.html" aria-label="Notifications">♡</a><button id="topSettings" aria-label="Settings">⋮</button></div></header><main class="profile-wrap">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><link rel="stylesheet" href="css/reset.css"><link rel="stylesheet" href="css/style.css?v=35"><title>Nexoly11 | Profile</title>
+<style>
+#highlightList{display:flex;gap:12px;overflow-x:auto;align-items:flex-start}
+#highlightList .n11-highlight{border:0;background:transparent;color:inherit;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:68px;cursor:pointer;padding:0}
+#highlightList .n11-highlight-ring{width:62px;height:62px;border-radius:50%;padding:3px;border:2px solid #a855f7;display:block;overflow:hidden}
+#highlightList .n11-highlight-ring img,#highlightList .n11-highlight-ring video{width:100%;height:100%;object-fit:cover;border-radius:50%}
+#highlightList .n11-highlight small{max-width:76px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.n11-highlight-viewer[hidden]{display:none!important}.n11-highlight-viewer{position:fixed;inset:0;z-index:99999;background:#080808;color:#fff;display:flex;align-items:center;justify-content:center}
+.n11-hv-top{position:absolute;top:env(safe-area-inset-top,12px);left:14px;right:14px;display:flex;justify-content:space-between;align-items:center;z-index:2;padding:10px}
+.n11-hv-top button,.n11-hv-prev,.n11-hv-next{border:0;background:#ffffff24;color:white;border-radius:50%;width:42px;height:42px;font-size:28px}
+.n11-hv-progress{position:absolute;top:62px;left:14px;right:14px;display:flex;gap:4px;z-index:2}
+.n11-hv-progress i{height:3px;background:#ffffff55;flex:1;border-radius:5px}.n11-hv-progress i.seen{background:white}
+.n11-hv-media{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.n11-hv-media img,.n11-hv-media video{max-width:100%;max-height:82%;object-fit:contain}
+.n11-hv-prev,.n11-hv-next{position:absolute;top:50%;transform:translateY(-50%);z-index:2}.n11-hv-prev{left:10px}.n11-hv-next{right:10px}
+.n11-hv-actions{position:absolute;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:16px;right:16px;display:flex;justify-content:space-between;align-items:center}
+.n11-hv-actions button{background:#ffffff20;border:1px solid #ffffff66;color:white;border-radius:20px;padding:9px 14px}
+.n11-highlight-viewer button:disabled{opacity:.25}
+</style>
+</head><body><header class="topbar ig-topbar"><a class="brand" href="index.html">NEXOLY<span>11</span></a><div><a href="notifications.html" aria-label="Notifications">♡</a><button id="topSettings" aria-label="Settings">⋮</button></div></header><main class="profile-wrap">
 <section class="ig-profile-head">
  <div class="ig-identity"><div class="ig-avatar-wrap"><img id="profileAvatar" src="" alt="Profile photo"><span class="ig-add">＋</span></div><div class="ig-stats"><div><b id="postCount">0</b><span>posts</span></div><div><b id="followers">0</b><span>followers</span></div><div><b id="following">0</b><span>following</span></div></div></div>
  <h2 id="profileName">My Profile</h2><p id="profileFullName" class="ig-fullname"></p><p id="profileBio" class="ig-bio">Nexoly11 creator</p><p id="profileEmail" class="muted" hidden></p>
@@ -53,4 +72,4 @@
   <section class="panel n11-subpanel" id="aboutPanel" hidden><button class="n11-panel-back" data-settings-back>‹ Settings</button><h3>About Nexoly11</h3><p class="muted">NEXOLY11 · Connect, create and discover.</p><p class="muted">Version 30</p></section>
  </div>
 </section>
-</main><nav class="bottomnav" aria-label="Main navigation"><a href="index.html" aria-label="Home"><span>⌂</span></a><a href="search.html" aria-label="Search"><span>⌕</span></a><a href="reels.html" aria-label="Reels"><span>▶</span></a><a class="create-nav" href="upload.html" aria-label="Create"><span>＋</span></a><a href="messages.html" aria-label="Messages"><span>✉</span></a><a class="active" href="dashboard.html" aria-label="Profile"><span>♙</span></a></nav><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/app.js?v=35" defer></script><script src="js/social-extras.js" defer></script><script src="js/privacy-controls.js" defer></script><script src="js/theme.js"></script><script src="js/profile-settings.js" defer></script><script src="js/profile-ui.js?v=35" defer></script></body></html>
+</main><nav class="bottomnav" aria-label="Main navigation"><a href="index.html" aria-label="Home"><span>⌂</span></a><a href="search.html" aria-label="Search"><span>⌕</span></a><a href="reels.html" aria-label="Reels"><span>▶</span></a><a class="create-nav" href="upload.html" aria-label="Create"><span>＋</span></a><a href="messages.html" aria-label="Messages"><span>✉</span></a><a class="active" href="dashboard.html" aria-label="Profile"><span>♙</span></a></nav><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/app.js?v=35" defer></script><script src="js/social-extras.js" defer></script><script src="js/privacy-controls.js" defer></script><script src="js/theme.js"></script><script src="js/profile-settings.js" defer></script><script src="js/profile-ui.js?v=36" defer></script></body></html>
