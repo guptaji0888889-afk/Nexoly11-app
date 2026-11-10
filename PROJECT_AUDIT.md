@@ -27,3 +27,11 @@ This is still an early MVP, not a production-ready or load-tested service. Never
 
 ## Required backend step for this update
 After confirming the base setup is already applied, run `PRIVACY_SOCIAL_MIGRATION.sql` once in the Supabase SQL Editor. Do not rerun the base setup blindly. Test private follow requests, block visibility, notifications, and account access using two separate test accounts.
+
+
+## Profile repair follow-up (10 Nov 2026)
+- Removed the duplicate profile-save click handler so profile edits are handled in one place and missing profile rows are reported instead of showing a false success.
+- Expanded creator suggestions to sample the newest 100 profiles before filtering followed accounts.
+- Added one-view-per-signed-in-user tracking for feed posts and displayed view counts on the home feed as well as the profile grid.
+- Added a unique `(post_id, viewer_id)` index and compatibility column migration for post view upserts.
+- Backend changes still require running `PRIVACY_SOCIAL_MIGRATION.sql` in the connected Supabase project; frontend ZIP alone cannot change the live database or Storage policies.

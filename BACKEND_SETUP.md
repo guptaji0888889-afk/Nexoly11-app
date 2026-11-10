@@ -31,3 +31,7 @@ Run `PRIVACY_SOCIAL_MIGRATION.sql` in Supabase SQL Editor AFTER `SUPABASE_SETUP.
 5. Test with two separate accounts: publish, like, comment, share, download, follow, send a message, and create a story highlight.
 
 The upload path now resizes large images to a maximum 1920px edge and JPEG-optimizes them before upload. Videos are not transcoded in-browser; large video upload speed still depends on the user's network and Supabase Storage region. The NEXOLY11 AI panel currently provides local in-app help responses; it is not connected to a hosted generative-AI model.
+
+
+## Profile, highlights and view-count repair
+After the base `SUPABASE_SETUP.sql` is already installed, run the complete `PRIVACY_SOCIAL_MIGRATION.sql` once in Supabase SQL Editor. It creates the `story_highlights` table/policies and post-view table/policies/index required by profile highlights and view counts. Confirm the `nexoly-media` bucket exists and that authenticated users can upload only into their own `<user-id>/...` folder. Never paste a service-role key into `js/config.js`.

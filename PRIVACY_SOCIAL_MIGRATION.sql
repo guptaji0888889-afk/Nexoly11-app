@@ -160,7 +160,11 @@ create table if not exists public.post_views (
  viewer_id uuid references auth.users(id) on delete set null,
  viewed_at timestamptz not null default now()
 );
+-- Compatibility for projects that created the earlier post_views table.
+alter table public.post_views add column if not exists viewer_id uuid references auth.users(id) on delete set null;
 create index if not exists post_views_post_idx on public.post_views(post_id);
+-- One counted view per signed-in viewer per post; required by the app's upsert.
+create unique index if not exists post_views_post_viewer_uidx on public.post_views(post_id,viewer_id) where viewer_id is not null;
 alter table public.post_views enable row level security;
 drop policy if exists post_views_insert_viewer on public.post_views;
 create policy post_views_insert_viewer on public.post_views for insert to authenticated with check(viewer_id=auth.uid());
