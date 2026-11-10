@@ -212,3 +212,6 @@ a,.brand span,.bottomnav a.active{color:var(--n11-accent)}
 .n11-subpanel{background:var(--n11-surface)!important;color:var(--n11-text)!important;border-color:var(--n11-border)!important}
 .theme-card{color:var(--n11-text)!important;background:var(--n11-surface2)!important}
 .theme-card.selected{background:var(--n11-accent)!important;color:var(--n11-accentText)!important}
+
+/* NEXOLY11 AI chat */
+.ai-panel .ai-avatar{font-size:25px;color:#bd8cff;margin-bottom:8px}.ai-panel h3{margin:8px 0}.ai-chat{margin-top:16px;border-top:1px solid var(--n11-border,#303030);padding-top:12px}.ai-chat[hidden]{display:none!important}.ai-replies{height:min(48vh,430px);min-height:190px;overflow-y:auto;display:flex;flex-direction:column;padding:8px 2px;scroll-behavior:smooth}.ai-replies .bubble{white-space:pre-wrap;line-height:1.45}.ai-replies .mine{background:#b783f6;color:#160d22}.ai-replies .theirs{background:var(--n11-input,#202020);color:var(--n11-text,#fff)}.ai-compose{display:flex;gap:8px;align-items:center}.ai-compose .field{flex:1;min-width:0;margin:6px 0}.ai-compose .btn{flex:0 0 auto;margin:6px 0}.ai-pending{opacity:.7}
