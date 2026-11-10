@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nexoly11 Creator Studio Pro</title>
+    <title>Nexoly11 Insta-Pro Studio</title>
     <style>
         * {
             margin: 0;
@@ -14,8 +14,8 @@
         body, html {
             width: 100%;
             height: 100%;
-            background-color: #0b0b0b;
-            color: #ffffff;
+            background-color: #000;
+            color: #fff;
             overflow: hidden;
         }
         .app-container {
@@ -26,7 +26,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            background: #121212;
+            background: #111;
             overflow: hidden;
         }
         #camera-feed, #preview-media {
@@ -47,8 +47,8 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 70%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.3), transparent);
+            height: 75%;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.4), transparent);
             z-index: 3;
         }
         /* Top Header */
@@ -63,35 +63,37 @@
         .logo {
             font-size: 16px;
             font-weight: 700;
-            background: linear-gradient(45deg, #a855f7, #3b82f6);
+            background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .top-tools {
             display: flex;
-            gap: 12px;
-            font-size: 18px;
-            cursor: pointer;
+            gap: 10px;
         }
-        .top-tools span {
-            background: rgba(255,255,255,0.2);
-            padding: 5px 8px;
+        .tool-icon {
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(8px);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
         }
-        /* Main UI Overlay */
+        /* Overlay UI Content */
         .overlay-content {
             position: relative;
             z-index: 5;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 15px 20px 25px 20px;
-            gap: 12px;
+            padding: 15px 15px 25px 15px;
+            gap: 10px;
             width: 100%;
         }
         /* Panels */
@@ -101,59 +103,64 @@
         }
         .panel {
             flex: 1;
-            background: rgba(20, 20, 20, 0.85);
-            backdrop-filter: blur(10px);
+            background: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 8px 10px;
+            border-radius: 14px;
+            padding: 10px;
         }
         .panel-title {
             font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: #ffaa00;
         }
         .ai-input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 6px;
-            padding: 5px;
+            padding: 6px;
             color: #fff;
-            font-size: 9px;
-            margin-bottom: 4px;
+            font-size: 10px;
+            margin-bottom: 6px;
             resize: none;
-            height: 28px;
+            height: 30px;
         }
         .preset-row {
             display: flex;
-            gap: 4px;
+            gap: 5px;
             overflow-x: auto;
         }
         .preset-btn {
             background: rgba(255, 255, 255, 0.15);
             border: none;
             border-radius: 4px;
-            padding: 2px 6px;
+            padding: 3px 8px;
             color: #fff;
-            font-size: 8px;
+            font-size: 9px;
             white-space: nowrap;
             cursor: pointer;
         }
+        .preset-btn:hover { background: #dd2a7b; }
+        
         /* Mode Navigation */
         .mode-nav {
             display: flex;
             justify-content: space-around;
-            font-size: 11px;
-            font-weight: 600;
-            color: #aaa;
+            font-size: 12px;
+            font-weight: 700;
+            color: #888;
+            letter-spacing: 1px;
         }
         .mode-nav .active {
-            color: #ffffff;
-            border-bottom: 2px solid #3b82f6;
+            color: #ff5e00;
+            text-shadow: 0 0 10px rgba(255,94,0,0.5);
+            border-bottom: 2px solid #ff5e00;
             padding-bottom: 2px;
         }
         /* Bottom Shutter Bar */
@@ -169,7 +176,7 @@
             border-radius: 12px;
             border: 2px solid #fff;
             overflow: hidden;
-            background: #333;
+            background: #222;
             cursor: pointer;
         }
         .gallery-preview img {
@@ -178,25 +185,25 @@
             object-fit: cover;
         }
         .shutter-btn {
-            width: 65px;
-            height: 65px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af);
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+            box-shadow: 0 0 20px rgba(221, 42, 123, 0.8);
         }
         .shutter-inner {
-            width: 53px;
-            height: 53px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
             background: #fff;
         }
         .flip-btn {
             font-size: 18px;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.2);
             border: none;
             width: 48px;
             height: 48px;
@@ -207,8 +214,46 @@
             align-items: center;
             cursor: pointer;
         }
-        #file-input {
+        #file-input { display: none; }
+
+        /* Modal Popups for Music & Text */
+        .modal {
             display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            width: 100%;
+            max-width: 350px;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .modal-title { font-size: 16px; font-weight: bold; color: #ff5e00; }
+        .song-item {
+            padding: 10px;
+            background: #2a2a2a;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .song-item:hover { background: #dd2a7b; }
+        .close-modal {
+            background: #444;
+            border: none;
+            color: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -222,66 +267,88 @@
         
         <div class="viewfinder-overlay"></div>
 
-        <!-- Top Header with Edit Tools -->
+        <!-- Top Header with Real Interactive Tools -->
         <div class="header">
-            <div class="logo">✨ Nexoly11 Pro</div>
+            <div class="logo">✨ Nexoly11 Insta-Pro</div>
             <div class="top-tools">
-                <span onclick="addText()" title="Add Text">Aa</span>
-                <span onclick="addMusic()" title="Add Music">🎵</span>
-                <span onclick="openFilters()" title="Filters">✨</span>
+                <button class="tool-icon" onclick="openTextModal()" title="Add Text">Aa</button>
+                <button class="tool-icon" onclick="openMusicModal()" title="Add Music">🎵</button>
+                <button class="tool-icon" onclick="applyAiFilter()" title="AI Filters">✨</button>
             </div>
         </div>
 
         <!-- Overlay UI -->
         <div class="overlay-content">
             
-            <!-- AI & Normal Pic Options Panel -->
+            <!-- AI & Normal Mode Panel -->
             <div class="panels-container">
                 <div class="panel">
                     <div class="panel-title">
-                        <span>AI / Normal Mode</span>
-                        <input type="checkbox" id="ai-toggle" checked style="accent-color: #3b82f6;">
+                        <span>⚡ AI Camera Engine</span>
+                        <input type="checkbox" id="ai-toggle" checked style="accent-color: #dd2a7b;">
                     </div>
-                    <textarea class="ai-input" id="ai-prompt" placeholder="AI Prompt (e.g. Cinematic)..."></textarea>
+                    <textarea class="ai-input" id="ai-prompt" placeholder="AI Prompt (e.g., Cinematic Glow)..."></textarea>
                     <div class="preset-row">
-                        <button class="preset-btn" onclick="setPreset('Normal HD')">Normal HD</button>
-                        <button class="preset-btn" onclick="setPreset('AI Portrait')">AI Portrait</button>
-                        <button class="preset-btn" onclick="setPreset('Cyberpunk')">Cyberpunk</button>
+                        <button class="preset-btn" onclick="setFilterEffect('normal')">Normal HD</button>
+                        <button class="preset-btn" onclick="setFilterEffect('ai-portrait')">AI Portrait</button>
+                        <button class="preset-btn" onclick="setFilterEffect('cinematic')">Cinematic</button>
+                        <button class="preset-btn" onclick="setFilterEffect('cyberpunk')">Cyberpunk</button>
                     </div>
                 </div>
             </div>
 
             <!-- Mode Selection -->
             <div class="mode-nav">
-                <span class="active" onclick="switchMode(this)">STORY</span>
-                <span onclick="switchMode(this)">REEL</span>
-                <span onclick="switchMode(this)">POST</span>
-                <span onclick="switchMode(this)">LIVE</span>
+                <span class="active" onclick="switchMode(this, 'STORY')">STORY</span>
+                <span onclick="switchMode(this, 'REEL')">REEL</span>
+                <span onclick="switchMode(this, 'POST')">POST</span>
+                <span onclick="switchMode(this, 'LIVE')">LIVE</span>
             </div>
 
             <!-- Bottom Shutter & Gallery -->
             <div class="bottom-bar">
-                <!-- Gallery Icon -->
                 <div class="gallery-preview" onclick="document.getElementById('file-input').click();">
                     <img id="thumb-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Gallery">
                 </div>
                 <input type="file" id="file-input" accept="image/*,video/*" onchange="loadMedia(event)">
                 
-                <!-- Shutter Button -->
-                <div class="shutter-btn" onclick="capturePhoto()">
+                <div class="shutter-btn" onclick="captureMedia()">
                     <div class="shutter-inner"></div>
                 </div>
 
-                <!-- Flip Camera -->
                 <button class="flip-btn" onclick="switchCamera()">🔄</button>
             </div>
 
         </div>
     </div>
 
+    <!-- Music Modal -->
+    <div id="music-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">🎵 Select Background Song</div>
+            <div class="song-item" onclick="selectSong('Kesariya - Arjit Singh')">🎵 Kesariya - Arjit Singh</div>
+            <div class="song-item" onclick="selectSong('Elevated - Shubh')">🎵 Elevated - Shubh</div>
+            <div class="song-item" onclick="selectSong('Millionaire - Honey Singh')">🎵 Millionaire - Honey Singh</div>
+            <div class="song-item" onclick="selectSong('Lo-Fi Chill Beat')">🎵 Lo-Fi Chill Beat</div>
+            <button class="close-modal" onclick="closeModals()">Close</button>
+        </div>
+    </div>
+
+    <!-- Text Modal -->
+    <div id="text-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">✏️ Add Story/Reel Text</div>
+            <input type="text" id="story-text-input" placeholder="Type your caption..." style="padding:10px; background:#222; border:1px solid #444; color:#fff; border-radius:8px;">
+            <button class="close-modal" onclick="saveText()" style="background:#dd2a7b;">Add to Screen</button>
+            <button class="close-modal" onclick="closeModals()">Cancel</button>
+        </div>
+    </div>
+
     <script>
         let currentStream = null;
         let useFrontCamera = true;
+        let currentMode = 'STORY';
+        let selectedSongName = '';
 
         async function startCamera() {
             try {
@@ -290,7 +357,7 @@
                 }
                 const constraints = {
                     video: { facingMode: useFrontCamera ? "user" : "environment" },
-                    audio: false
+                    audio: true
                 };
                 currentStream = await navigator.mediaDevices.getUserMedia(constraints);
                 document.getElementById('camera-feed').srcObject = currentStream;
@@ -316,39 +383,73 @@
                 preview.style.display = 'block';
                 document.getElementById('camera-feed').style.display = 'none';
                 document.getElementById('thumb-img').src = url;
-                alert("📁 Gallery se media load ho gaya! Ab aap edit kar sakte hain.");
             }
         }
 
-        function capturePhoto() {
-            const isAiOn = document.getElementById('ai-toggle').checked;
-            if(isAiOn) {
-                alert("✨ AI Pic 4K Quality me capture ho gayi!");
-            } else {
-                alert("📸 Normal HD Photo Captured!");
-            }
-        }
-
-        function addText() {
-            let text = prompt("Story/Reel ke liye text likhein:");
-            if(text) alert("✏️ Text added: " + text);
-        }
-
-        function addMusic() {
-            alert("🎵 Music Library khul rahi hai (Song select karein)...");
-        }
-
-        function openFilters() {
-            alert("✨ Filters & Editing Tools active ho gaye hain!");
-        }
-
-        function setPreset(val) {
-            document.getElementById('ai-prompt').value = val + " style selected";
-        }
-
-        function switchMode(element) {
+        function switchMode(element, mode) {
             document.querySelectorAll('.mode-nav span').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
+            currentMode = mode;
+        }
+
+        function setFilterEffect(type) {
+            const videoFeed = document.getElementById('camera-feed');
+            videoFeed.style.filter = 'none';
+            if(type === 'ai-portrait') {
+                videoFeed.style.filter = 'contrast(1.1) brightness(1.15) saturate(1.2)';
+                document.getElementById('ai-prompt').value = "AI Portrait Studio Glow Active";
+            } else if(type === 'cinematic') {
+                videoFeed.style.filter = 'sepia(0.3) contrast(1.2) brightness(0.95)';
+                document.getElementById('ai-prompt').value = "Cinematic Color Grade Active";
+            } else if(type === 'cyberpunk') {
+                videoFeed.style.filter = 'hue-rotate(90deg) saturate(1.5)';
+                document.getElementById('ai-prompt').value = "Cyberpunk Neon Mode Active";
+            } else {
+                document.getElementById('ai-prompt').value = "Normal HD Mode";
+            }
+        }
+
+        function applyAiFilter() {
+            setFilterEffect('ai-portrait');
+            alert("✨ AI Smart Beautification & Ultra HD Filter Applied!");
+        }
+
+        function openMusicModal() {
+            document.getElementById('music-modal').style.display = 'flex';
+        }
+
+        function selectSong(song) {
+            selectedSongName = song;
+            alert("🎵 Song Selected: " + song + " (Ready for " + currentMode + ")");
+            closeModals();
+        }
+
+        function openTextModal() {
+            document.getElementById('text-modal').style.display = 'flex';
+        }
+
+        function saveText() {
+            let txt = document.getElementById('story-text-input').value;
+            if(txt) {
+                alert("✏️ Text '" + txt + "' successfully added to your " + currentMode + "!");
+                closeModals();
+            }
+        }
+
+        function closeModals() {
+            document.getElementById('music-modal').style.display = 'none';
+            document.getElementById('text-modal').style.display = 'none';
+        }
+
+        function captureMedia() {
+            const isAiOn = document.getElementById('ai-toggle').checked;
+            let msg = currentMode + " successfully created!";
+            if(isAiOn) {
+                msg = "✨ AI-Enhanced " + currentMode + " captured with 4K Quality & Audio (" + (selectedSongName || "No Song") + ")!";
+            } else {
+                msg = "📸 Normal " + currentMode + " captured!";
+            }
+            alert(msg);
         }
 
         startCamera();
