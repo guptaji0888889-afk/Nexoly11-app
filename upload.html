@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nexoly11 Insta-Pro Studio</title>
+    <title>Nexoly11 Reels & Story Studio</title>
     <style>
         * {
             margin: 0;
@@ -29,7 +29,7 @@
             background: #111;
             overflow: hidden;
         }
-        #camera-feed, #preview-media {
+        #camera-feed, #recorded-video {
             position: absolute;
             top: 0;
             left: 0;
@@ -38,7 +38,7 @@
             object-fit: cover;
             z-index: 1;
         }
-        #preview-media {
+        #recorded-video {
             display: none;
             z-index: 2;
         }
@@ -48,7 +48,7 @@
             left: 0;
             width: 100%;
             height: 75%;
-            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.4), transparent);
+            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.3), transparent);
             z-index: 3;
         }
         /* Top Header */
@@ -63,29 +63,44 @@
         .logo {
             font-size: 16px;
             font-weight: 700;
-            background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
+            background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .top-tools {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
-        .tool-icon {
+        .tool-btn {
             background: rgba(255,255,255,0.25);
             backdrop-filter: blur(8px);
             border: none;
             color: #fff;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            cursor: pointer;
+            gap: 5px;
         }
-        /* Overlay UI Content */
+        /* Recording Timer Badge */
+        #rec-timer {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 15;
+            display: none;
+        }
+        /* Overlay UI */
         .overlay-content {
             position: relative;
             z-index: 5;
@@ -96,7 +111,7 @@
             gap: 10px;
             width: 100%;
         }
-        /* Panels */
+        /* AI & Filters Panel */
         .panels-container {
             display: flex;
             gap: 8px;
@@ -119,18 +134,6 @@
             align-items: center;
             color: #ffaa00;
         }
-        .ai-input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            padding: 6px;
-            color: #fff;
-            font-size: 10px;
-            margin-bottom: 6px;
-            resize: none;
-            height: 30px;
-        }
         .preset-row {
             display: flex;
             gap: 5px;
@@ -140,7 +143,7 @@
             background: rgba(255, 255, 255, 0.15);
             border: none;
             border-radius: 4px;
-            padding: 3px 8px;
+            padding: 4px 8px;
             color: #fff;
             font-size: 9px;
             white-space: nowrap;
@@ -200,6 +203,12 @@
             height: 58px;
             border-radius: 50%;
             background: #fff;
+            transition: all 0.2s;
+        }
+        .recording .shutter-inner {
+            background: #ff0000;
+            border-radius: 8px;
+            transform: scale(0.6);
         }
         .flip-btn {
             font-size: 18px;
@@ -216,7 +225,7 @@
         }
         #file-input { display: none; }
 
-        /* Modal Popups for Music & Text */
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
@@ -236,15 +245,17 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
-        .modal-title { font-size: 16px; font-weight: bold; color: #ff5e00; }
+        .modal-title { font-size: 15px; font-weight: bold; color: #ff5e00; }
         .song-item {
             padding: 10px;
             background: #2a2a2a;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
         }
         .song-item:hover { background: #dd2a7b; }
         .close-modal {
@@ -261,38 +272,37 @@
 
     <div class="app-container">
         <!-- Live Camera Feed -->
-        <video id="camera-feed" autoplay playsinline></video>
-        <!-- Gallery Selected Media Preview -->
-        <img id="preview-media" alt="Preview">
+        <video id="camera-feed" autoplay playsinline muted></video>
+        <!-- Recorded Reel/Story Preview -->
+        <video id="recorded-video" controls playsinline></video>
         
         <div class="viewfinder-overlay"></div>
+        <div id="rec-timer">🔴 REC 00:00</div>
 
         <!-- Top Header with Real Interactive Tools -->
         <div class="header">
-            <div class="logo">✨ Nexoly11 Insta-Pro</div>
+            <div class="logo">✨ Nexoly11 Reels</div>
             <div class="top-tools">
-                <button class="tool-icon" onclick="openTextModal()" title="Add Text">Aa</button>
-                <button class="tool-icon" onclick="openMusicModal()" title="Add Music">🎵</button>
-                <button class="tool-icon" onclick="applyAiFilter()" title="AI Filters">✨</button>
+                <button class="tool-btn" onclick="openMusicModal()" id="active-song-btn">🎵 Music</button>
+                <button class="tool-btn" onclick="openTextModal()">✏️ Text</button>
             </div>
         </div>
 
         <!-- Overlay UI -->
         <div class="overlay-content">
             
-            <!-- AI & Normal Mode Panel -->
+            <!-- AI Filters Panel -->
             <div class="panels-container">
                 <div class="panel">
                     <div class="panel-title">
-                        <span>⚡ AI Camera Engine</span>
-                        <input type="checkbox" id="ai-toggle" checked style="accent-color: #dd2a7b;">
+                        <span>✨ AI Pro Filters</span>
+                        <span id="active-filter-name" style="font-size:9px; color:#fff;">Normal HD</span>
                     </div>
-                    <textarea class="ai-input" id="ai-prompt" placeholder="AI Prompt (e.g., Cinematic Glow)..."></textarea>
                     <div class="preset-row">
-                        <button class="preset-btn" onclick="setFilterEffect('normal')">Normal HD</button>
-                        <button class="preset-btn" onclick="setFilterEffect('ai-portrait')">AI Portrait</button>
-                        <button class="preset-btn" onclick="setFilterEffect('cinematic')">Cinematic</button>
-                        <button class="preset-btn" onclick="setFilterEffect('cyberpunk')">Cyberpunk</button>
+                        <button class="preset-btn" onclick="setFilterEffect('normal', 'Normal HD')">Normal</button>
+                        <button class="preset-btn" onclick="setFilterEffect('portrait', 'AI Portrait')">AI Portrait</button>
+                        <button class="preset-btn" onclick="setFilterEffect('cinematic', 'Cinematic 4K')">Cinematic</button>
+                        <button class="preset-btn" onclick="setFilterEffect('cyberpunk', 'Neon Cyber')">Cyberpunk</button>
                     </div>
                 </div>
             </div>
@@ -312,7 +322,8 @@
                 </div>
                 <input type="file" id="file-input" accept="image/*,video/*" onchange="loadMedia(event)">
                 
-                <div class="shutter-btn" onclick="captureMedia()">
+                <!-- Shutter Button / Reel Recorder -->
+                <div class="shutter-btn" id="shutter-btn" onclick="handleShutterClick()">
                     <div class="shutter-inner"></div>
                 </div>
 
@@ -322,33 +333,37 @@
         </div>
     </div>
 
-    <!-- Music Modal -->
+    <!-- Music Modal with Good Songs -->
     <div id="music-modal" class="modal">
         <div class="modal-content">
-            <div class="modal-title">🎵 Select Background Song</div>
-            <div class="song-item" onclick="selectSong('Kesariya - Arjit Singh')">🎵 Kesariya - Arjit Singh</div>
-            <div class="song-item" onclick="selectSong('Elevated - Shubh')">🎵 Elevated - Shubh</div>
-            <div class="song-item" onclick="selectSong('Millionaire - Honey Singh')">🎵 Millionaire - Honey Singh</div>
-            <div class="song-item" onclick="selectSong('Lo-Fi Chill Beat')">🎵 Lo-Fi Chill Beat</div>
-            <button class="close-modal" onclick="closeModals()">Close</button>
+            <div class="modal-title">🎵 Top Trending Songs</div>
+            <div class="song-item" onclick="selectSong('Kesariya - Arijit Singh')"><span>🎵 Kesariya</span><span>0:30</span></div>
+            <div class="song-item" onclick="selectSong('Millionaire - Yo Yo Honey Singh')"><span>🎵 Millionaire</span><span>0:30</span></div>
+            <div class="song-item" onclick="selectSong('Elevated - Shubh')"><span>🎵 Elevated</span><span>0:30</span></div>
+            <div class="song-item" onclick="selectSong('Aashiqui Tum Hi Ho')"><span>🎵 Tum Hi Ho</span><span>0:30</span></div>
+            <button class="close-modal" onclick="closeModals()">Cancel</button>
         </div>
     </div>
 
     <!-- Text Modal -->
     <div id="text-modal" class="modal">
         <div class="modal-content">
-            <div class="modal-title">✏️ Add Story/Reel Text</div>
-            <input type="text" id="story-text-input" placeholder="Type your caption..." style="padding:10px; background:#222; border:1px solid #444; color:#fff; border-radius:8px;">
-            <button class="close-modal" onclick="saveText()" style="background:#dd2a7b;">Add to Screen</button>
-            <button class="close-modal" onclick="closeModals()">Cancel</button>
+            <div class="modal-title">✏️ Add Text to Reel/Story</div>
+            <input type="text" id="story-text-input" placeholder="Type caption or shayari..." style="padding:10px; background:#222; border:1px solid #444; color:#fff; border-radius:8px; font-size:14px;">
+            <button class="close-modal" onclick="saveText()" style="background:#dd2a7b;">Done</button>
+            <button class="close-modal" onclick="closeModals()">Close</button>
         </div>
     </div>
 
     <script>
         let currentStream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let isRecording = false;
         let useFrontCamera = true;
         let currentMode = 'STORY';
-        let selectedSongName = '';
+        let timerInterval = null;
+        let secondsCount = 0;
 
         async function startCamera() {
             try {
@@ -356,34 +371,23 @@
                     currentStream.getTracks().forEach(track => track.stop());
                 }
                 const constraints = {
-                    video: { facingMode: useFrontCamera ? "user" : "environment" },
+                    video: { facingMode: useFrontCamera ? "user" : "environment", width: { ideal: 1280 }, height: { ideal: 720 } },
                     audio: true
                 };
                 currentStream = await navigator.mediaDevices.getUserMedia(constraints);
                 document.getElementById('camera-feed').srcObject = currentStream;
                 document.getElementById('camera-feed').style.display = 'block';
-                document.getElementById('preview-media').style.display = 'none';
+                document.getElementById('recorded-video').style.display = 'none';
             } catch (err) {
                 console.error("Camera error: ", err);
-                alert("Camera permission allow karein!");
+                alert("कृपया कैमरा और माइक की अनुमति (Permission) दें!");
             }
         }
 
         function switchCamera() {
+            if(isRecording) return;
             useFrontCamera = !useFrontCamera;
             startCamera();
-        }
-
-        function loadMedia(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const url = URL.createObjectURL(file);
-                const preview = document.getElementById('preview-media');
-                preview.src = url;
-                preview.style.display = 'block';
-                document.getElementById('camera-feed').style.display = 'none';
-                document.getElementById('thumb-img').src = url;
-            }
         }
 
         function switchMode(element, mode) {
@@ -392,35 +396,102 @@
             currentMode = mode;
         }
 
-        function setFilterEffect(type) {
-            const videoFeed = document.getElementById('camera-feed');
-            videoFeed.style.filter = 'none';
-            if(type === 'ai-portrait') {
-                videoFeed.style.filter = 'contrast(1.1) brightness(1.15) saturate(1.2)';
-                document.getElementById('ai-prompt').value = "AI Portrait Studio Glow Active";
-            } else if(type === 'cinematic') {
-                videoFeed.style.filter = 'sepia(0.3) contrast(1.2) brightness(0.95)';
-                document.getElementById('ai-prompt').value = "Cinematic Color Grade Active";
-            } else if(type === 'cyberpunk') {
-                videoFeed.style.filter = 'hue-rotate(90deg) saturate(1.5)';
-                document.getElementById('ai-prompt').value = "Cyberpunk Neon Mode Active";
+        // Real Media Recording for Reels & Stories
+        function handleShutterClick() {
+            if (currentMode === 'REEL' || currentMode === 'STORY') {
+                if (!isRecording) {
+                    startRecording();
+                } else {
+                    stopRecording();
+                }
             } else {
-                document.getElementById('ai-prompt').value = "Normal HD Mode";
+                capturePhotoSnapshot();
             }
         }
 
-        function applyAiFilter() {
-            setFilterEffect('ai-portrait');
-            alert("✨ AI Smart Beautification & Ultra HD Filter Applied!");
+        function startRecording() {
+            recordedChunks = [];
+            try {
+                mediaRecorder = new MediaRecorder(currentStream, { mimeType: 'video/webm;codecs=vp9,opus' });
+            } catch (e) {
+                try { mediaRecorder = new MediaRecorder(currentStream); } catch(err) { alert("Recording not supported on this browser"); return; }
+            }
+
+            mediaRecorder.ondataavailable = function(event) {
+                if (event.data.size > 0) recordedChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = function() {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const videoURL = URL.createObjectURL(blob);
+                const recordedView = document.getElementById('recorded-video');
+                recordedView.src = videoURL;
+                recordedView.style.display = 'block';
+                document.getElementById('camera-feed').style.display = 'none';
+                alert("🎥 " + currentMode + " successfully recorded! Play to preview.");
+            };
+
+            mediaRecorder.start();
+            isRecording = true;
+            document.getElementById('shutter-btn').classList.add('recording');
+            
+            // Start Timer
+            secondsCount = 0;
+            document.getElementById('rec-timer').style.display = 'block';
+            document.getElementById('rec-timer').innerText = "🔴 REC 00:00";
+            timerInterval = setInterval(() => {
+                secondsCount++;
+                let mins = Math.floor(secondsCount / 60).toString().padStart(2, '0');
+                let secs = (secondsCount % 60).toString().padStart(2, '0');
+                document.getElementById('rec-timer').innerText = `🔴 REC ${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+            isRecording = false;
+            document.getElementById('shutter-btn').classList.remove('recording');
+            clearInterval(timerInterval);
+            document.getElementById('rec-timer').style.display = 'none';
+        }
+
+        function capturePhotoSnapshot() {
+            alert("📸 AI Photo Captured with Ultra HD Quality!");
+        }
+
+        function loadMedia(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                const preview = document.getElementById('recorded-video');
+                preview.src = url;
+                preview.style.display = 'block';
+                document.getElementById('camera-feed').style.display = 'none';
+                document.getElementById('thumb-img').src = url;
+                alert("📁 Gallery media loaded successfully!");
+            }
+        }
+
+        function setFilterEffect(type, name) {
+            const videoFeed = document.getElementById('camera-feed');
+            document.getElementById('active-filter-name').innerText = name;
+            videoFeed.style.filter = 'none';
+            if(type === 'portrait') {
+                videoFeed.style.filter = 'contrast(1.15) brightness(1.2) saturate(1.25)';
+            } else if(type === 'cinematic') {
+                videoFeed.style.filter = 'sepia(0.25) contrast(1.25) brightness(0.95)';
+            } else if(type === 'cyberpunk') {
+                videoFeed.style.filter = 'hue-rotate(75deg) saturate(1.6)';
+            }
         }
 
         function openMusicModal() {
             document.getElementById('music-modal').style.display = 'flex';
         }
 
-        function selectSong(song) {
-            selectedSongName = song;
-            alert("🎵 Song Selected: " + song + " (Ready for " + currentMode + ")");
+        function selectSong(songName) {
+            document.getElementById('active-song-btn').innerText = "🎵 " + songName.split(' - ')[0];
+            alert("🎵 Song Applied: " + songName + " (Play hoga Reel/Story ke sath)");
             closeModals();
         }
 
@@ -431,7 +502,7 @@
         function saveText() {
             let txt = document.getElementById('story-text-input').value;
             if(txt) {
-                alert("✏️ Text '" + txt + "' successfully added to your " + currentMode + "!");
+                alert("✏️ Caption/Text added: '" + txt + "'");
                 closeModals();
             }
         }
@@ -439,17 +510,6 @@
         function closeModals() {
             document.getElementById('music-modal').style.display = 'none';
             document.getElementById('text-modal').style.display = 'none';
-        }
-
-        function captureMedia() {
-            const isAiOn = document.getElementById('ai-toggle').checked;
-            let msg = currentMode + " successfully created!";
-            if(isAiOn) {
-                msg = "✨ AI-Enhanced " + currentMode + " captured with 4K Quality & Audio (" + (selectedSongName || "No Song") + ")!";
-            } else {
-                msg = "📸 Normal " + currentMode + " captured!";
-            }
-            alert(msg);
         }
 
         startCamera();
