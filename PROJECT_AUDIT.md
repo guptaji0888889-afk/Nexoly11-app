@@ -40,3 +40,10 @@ After confirming the base setup is already applied, run `PRIVACY_SOCIAL_MIGRATIO
 - Fixed a JavaScript syntax error in `js/profile-ui.js` (`async let highlightGroups=[]` changed to `let highlightGroups=[]`). This error prevented the entire profile UI script from loading, including profile highlights and related controls.
 - Ran `node --check` against every active file in `js/`; all passed after the fix.
 - This frontend correction does not apply the required Supabase SQL migration, configure Storage/RLS, or publish the site. Those remain separate deployment steps.
+
+
+## Re-check of uploaded package — 17 Nov 2026
+- Found a JavaScript syntax error in `js/profile-ui.js`: `async let highlightGroups=[]` is invalid JavaScript.
+- Corrected it to `let highlightGroups=[]`.
+- Re-ran `node --check` on every `.js` file in the package; all passed.
+- This validates JavaScript syntax only. It does not verify live Supabase credentials/schema/RLS/Storage, browser workflows, or production readiness.
