@@ -49,3 +49,4 @@
  async function shareProfile(){const url=location.href;try{if(navigator.share)await navigator.share({title:'NEXOLY11 Profile',url});else{await navigator.clipboard.writeText(url);status('Profile link copy ho gaya.')}}catch(_){}}
  document.addEventListener('DOMContentLoaded',()=>start().catch(e=>{console.error('NEXOLY profile UI',e);status('Profile error: '+e.message)}));
 })();
+ 
