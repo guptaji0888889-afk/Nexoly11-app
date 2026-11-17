@@ -86,6 +86,45 @@
 }
 .camera-modebar,.camera-side-tools{display:none}
 </style>
+
+<style id="nexoly-camera-redesign">
+/* NEXOLY11 Creator redesign: compact dark creator surface, no oversized pink form */
+:root{--n11-bg:#080b12;--n11-card:#111827;--n11-line:#273449;--n11-accent:#ff3f78}
+body{background:radial-gradient(ellipse at 50% 0%,#202b43 0,#090d16 48%,#070910 100%)!important;color:#f7f8fc!important}
+.topbar{background:#0b1020!important;border-bottom:1px solid #263148!important;color:#fff!important;padding:16px 20px!important}
+.topbar a{color:#fff!important}.topbar .brand{font-weight:900;letter-spacing:.4px}
+.wrap{max-width:620px!important;padding:22px 14px 110px!important}
+.panel{background:#101827!important;border:1px solid #26344c!important;border-radius:26px!important;box-shadow:0 18px 55px #0008!important;padding:22px!important;color:#fff!important}
+#uploadTitle{font-size:25px!important;color:#fff!important;margin:0 0 18px!important}
+.creator-tabs{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:9px!important}
+.creator-tab{border:1px solid #34445e!important;background:#1b2940!important;color:#eaf0ff!important;border-radius:15px!important;padding:14px 5px!important;text-align:center!important;font-weight:800!important}
+.creator-tab.active,.creator-tab[aria-selected=true]{background:linear-gradient(135deg,#ff3f78,#a72fff)!important;border-color:transparent!important;color:white!important}
+.hint{color:#aab7cc!important;font-size:14px!important;line-height:1.5!important;margin:14px 0 18px!important}
+.camera-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;margin:18px 0!important;position:static!important;background:none!important}
+.camera-actions .btn{min-height:49px!important;border-radius:15px!important;border:1px solid #35445d!important;background:#1d2b43!important;color:#fff!important;font-weight:800!important;padding:12px!important;box-shadow:none!important}
+.camera-actions #openCamera{grid-column:1/-1!important;background:linear-gradient(100deg,#ff3f78,#a82fff)!important;border:0!important;min-height:58px!important;font-size:17px!important}
+.camera-actions #stopCamera{background:#482337!important}
+.camera-actions .btn:disabled{opacity:.42!important}
+.camera-status{background:#40202b;border:1px solid #9d3657;color:#ffdce7;padding:12px 14px;border-radius:12px;line-height:1.45}
+.camera-box{border:1px solid #34445e!important;border-radius:22px!important;overflow:hidden!important;background:#000!important}
+.camera-enhance,#editTools{background:#111827!important;border:1px solid #2b3a52!important;border-radius:20px!important;color:#fff!important}
+.camera-enhance label{color:#dce5f5!important}
+input[type=range]{accent-color:#ff3f78!important}
+#media{color:#fff!important}
+body.camera-live{background:#000!important;overflow:hidden!important}
+body.camera-live .camera-box{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;bottom:0!important;z-index:100!important;border:0!important;border-radius:0!important}
+body.camera-live #cameraView{width:100%!important;height:100%!important;object-fit:cover!important}
+body.camera-live .camera-actions{top:auto!important;bottom:calc(24px + env(safe-area-inset-bottom))!important;left:10px!important;right:10px!important;z-index:150!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:13px!important}
+body.camera-live .camera-actions .btn{width:48px!important;height:48px!important;min-height:48px!important;border-radius:50%!important;padding:0!important;font-size:0!important;background:#111827d9!important;border:1px solid #ffffff55!important}
+body.camera-live #takePhoto{width:76px!important;height:76px!important;background:#fff!important;border:6px solid #ffffff88!important}
+body.camera-live #takePhoto:after{content:' ';display:block;width:52px;height:52px;background:#fff;border:2px solid #111;border-radius:50%;margin:auto}
+body.camera-live #startRecord{font-size:0!important}
+body.camera-live #startRecord:after{content:'●';font-size:28px;color:#ff315f}
+body.camera-live #stopCamera{font-size:20px!important;color:#fff!important}
+body.camera-live .camera-mark{top:calc(16px + env(safe-area-inset-top))!important;left:14px!important}
+body.camera-live .camera-modebar{bottom:calc(110px + env(safe-area-inset-bottom))!important}
+@media(max-width:420px){.panel{padding:16px!important}.camera-actions .btn{font-size:13px!important}}
+</style>
 </head><body><header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> CREATE</a><a href="index.html">✕ Close</a></header><main class="wrap"><section class="panel"><h2 id="uploadTitle">Create on Nexoly11</h2>
 <div class="creator-tabs" role="tablist"><a class="creator-tab" href="upload.html?type=post" data-kind="post">🖼️ Post</a><a class="creator-tab" href="upload.html?type=reel" data-kind="reel">🎬 Reel</a><a class="creator-tab" href="upload.html?type=story" data-kind="story">⭕ Story</a></div>
 <p class="hint" id="modeHint">Post, Reel ya Story banayein. Camera ya Gallery dono use kar sakte hain.</p>
@@ -118,11 +157,33 @@ document.querySelectorAll('.camera-side-tools button').forEach(b=>b.addEventList
 const params=new URLSearchParams(location.search),kind=params.get('type')||'post';if(kind==='post')document.getElementById('media').multiple=true;else document.getElementById('media').multiple=false;document.querySelectorAll('.creator-tab').forEach(a=>a.classList.toggle('active',a.dataset.kind===kind));document.querySelectorAll('.camera-modebar a').forEach(a=>a.classList.toggle('active',a.dataset.mode===kind));
 const hint=document.getElementById('modeHint');if(kind==='story'){document.getElementById('uploadTitle').textContent='Create Story · 24 Hours';hint.textContent='Story 24 ghante baad automatically expire hogi.';document.getElementById('category').style.display='none'}else if(kind==='reel'){document.getElementById('uploadTitle').textContent='Create Reel';hint.textContent='Reel ke liye video select ya camera se record karein.';document.getElementById('media').setAttribute('accept','video/*');document.getElementById('takePhoto').disabled=true;document.getElementById('timerShot').disabled=true}
 const camera=document.getElementById('cameraView'),cameraBox=document.getElementById('cameraBox');let stream=null,recorder=null,chunks=[],facing='user';
-async function openCam(){try{if(!navigator.mediaDevices?.getUserMedia)throw new Error('Is browser mein camera support nahi hai. HTTPS par Chrome use karein.');stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:facing},width:{ideal:1080},height:{ideal:1920}},audio:kind==='reel'});camera.srcObject=stream;await camera.play();cameraBox.hidden=false;document.body.classList.add('camera-live');document.getElementById('editTools').style.display='block';['switchCamera','takePhoto','timerShot','startRecord','stopCamera'].forEach(id=>document.getElementById(id).disabled=false);document.getElementById('openCamera').disabled=true;applyCameraLook()}catch(e){const msg=e.name==='NotAllowedError'?'Camera permission blocked hai. Chrome ke site settings mein Camera > Allow karein, phir page reload karein.':e.name==='NotFoundError'?'Phone camera detect nahi hua.':'Camera open nahi hua: '+e.message;alert(msg)}}
-function closeCam(){if(recorder&&recorder.state==='recording')recorder.stop();stream?.getTracks().forEach(t=>t.stop());stream=null;camera.srcObject=null;cameraBox.hidden=true;document.body.classList.remove('camera-live');['switchCamera','takePhoto','timerShot','startRecord','stopCamera'].forEach(id=>document.getElementById(id).disabled=true);document.getElementById('openCamera').disabled=false}
+async function openCam(){
+ const openBtn=document.getElementById('openCamera');openBtn.disabled=true;openBtn.textContent='⌛ Opening camera…';
+ try{
+  if(!window.isSecureContext)throw new Error('Camera ke liye secure HTTPS page zaroori hai. GitHub Pages ka https link kholen.');
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('Browser camera API available nahi. Chrome mein page kholen.');
+  const video={facingMode:{ideal:facing},width:{ideal:1280},height:{ideal:720}};
+  try{stream=await navigator.mediaDevices.getUserMedia({video,audio:kind==='reel'});}
+  catch(firstError){
+   // Microphone permission/device failure should not block the camera.
+   stream=await navigator.mediaDevices.getUserMedia({video,audio:false});
+  }
+  camera.setAttribute('playsinline','');camera.muted=true;camera.srcObject=stream;
+  await new Promise((resolve,reject)=>{if(camera.readyState>=2)return resolve();camera.onloadedmetadata=()=>resolve();camera.onerror=()=>reject(new Error('Camera preview load nahi hua.'));setTimeout(()=>reject(new Error('Camera start hone mein timeout. Permission check karke dobara try karein.')),9000)});
+  await camera.play();cameraBox.hidden=false;document.body.classList.add('camera-live');
+  const editTools=document.getElementById('editTools');if(editTools)editTools.style.display='block';
+  ['switchCamera','takePhoto','timerShot','startRecord','stopCamera'].forEach(id=>document.getElementById(id).disabled=false);
+  openBtn.textContent='📷 Camera Ready';applyCameraLook();
+ }catch(e){
+  stream?.getTracks().forEach(t=>t.stop());stream=null;openBtn.disabled=false;openBtn.textContent='📷 Open Camera';
+  let msg=e.name==='NotAllowedError'?'Camera permission Allow karein: Chrome address bar ke lock icon > Site settings > Camera > Allow.':e.name==='NotFoundError'?'Phone ka camera detect nahi hua.':e.name==='NotReadableError'?'Camera kisi doosri app mein use ho raha hai. WhatsApp/Camera app band karke try karein.':e.message||'Camera open nahi hua.';
+  let status=document.getElementById('cameraStatus');if(!status){status=document.createElement('p');status.id='cameraStatus';status.className='camera-status';document.querySelector('.camera-actions').after(status)}status.textContent=msg;status.style.display='block';
+ }
+}
+function closeCam(){if(recorder&&recorder.state==='recording')recorder.stop();stream?.getTracks().forEach(t=>t.stop());stream=null;camera.srcObject=null;cameraBox.hidden=true;document.body.classList.remove('camera-live');['switchCamera','takePhoto','timerShot','startRecord','stopCamera'].forEach(id=>document.getElementById(id).disabled=true);document.getElementById('openCamera').disabled=false;document.getElementById('openCamera').textContent='📷 Open Camera'}
 document.getElementById('openCamera').onclick=openCam;document.getElementById('stopCamera').onclick=closeCam;document.getElementById('switchCamera').onclick=async()=>{facing=facing==='user'?'environment':'user';closeCam();await openCam()};document.getElementById('cameraFlip').onclick=()=>document.getElementById('switchCamera').click();
 function setCaptured(file){const dt=new DataTransfer();dt.items.add(file);media.files=dt.files;media.dispatchEvent(new Event('change',{bubbles:true}))}
-function capturePhoto(){const c=document.createElement('canvas');c.width=camera.videoWidth;c.height=camera.videoHeight;const x=c.getContext('2d');x.filter=camera.style.filter||'none';if(facing==='user'&&mirrorOn){x.translate(c.width,0);x.scale(-1,1)}x.drawImage(camera,0,0);c.toBlob(b=>setCaptured(new File([b],'nexoly-camera.jpg',{type:'image/jpeg'})),'image/jpeg',.94)}
+function capturePhoto(){if(!stream||camera.readyState<2||!camera.videoWidth){alert('Pehle camera ko poori tarah open hone dein.');return}const c=document.createElement('canvas');c.width=camera.videoWidth;c.height=camera.videoHeight;const x=c.getContext('2d');x.filter=camera.style.filter||'none';if(facing==='user'&&mirrorOn){x.translate(c.width,0);x.scale(-1,1)}x.drawImage(camera,0,0);c.toBlob(b=>setCaptured(new File([b],'nexoly-camera.jpg',{type:'image/jpeg'})),'image/jpeg',.94)}
 document.getElementById('takePhoto').onclick=capturePhoto;
 let mirrorOn=false;const applyCameraLook=()=>{const smooth=Number(document.getElementById('beautySmooth').value),bright=Number(document.getElementById('camBright').value),warm=Number(document.getElementById('camWarm').value),zoom=Number(document.getElementById('camZoom').value);camera.style.filter=`brightness(${bright/100}) saturate(${1+warm/100}) blur(${smooth/15}px)`;camera.style.transform=`${mirrorOn?'scaleX(-1) ':''}scale(${zoom})`};
 ['beautySmooth','camBright','camWarm','camZoom'].forEach(id=>document.getElementById(id).addEventListener('input',applyCameraLook));document.getElementById('gridToggle').onclick=()=>document.getElementById('cameraGrid').hidden=!document.getElementById('cameraGrid').hidden;document.getElementById('mirrorToggle').onclick=()=>{mirrorOn=!mirrorOn;applyCameraLook()};document.getElementById('beautyReset').onclick=()=>{document.getElementById('beautySmooth').value=0;document.getElementById('camBright').value=100;document.getElementById('camWarm').value=0;document.getElementById('camZoom').value=1;applyCameraLook()};document.getElementById('timerShot').onclick=async()=>{const box=document.getElementById('cameraCount');box.hidden=false;for(let n=3;n>0;n--){box.textContent=n;await new Promise(r=>setTimeout(r,700))}box.hidden=true;capturePhoto()};
@@ -140,38 +201,4 @@ document.getElementById('editorMention').onclick=()=>{const t=prompt('Username l
 document.getElementById('editorDraw').onclick=()=>{alert('Draw tool: is MVP build mein freehand drawing abhi available nahi hai. Text, stickers aur filters available hain.')};
 document.getElementById('editorSave').onclick=()=>{const f=media.files[0];if(!f){alert('Pehle media select karein.');return}const a=document.createElement('a');a.href=mediaUrl;a.download='Nexoly11-preview-'+f.name;a.click()};
 document.getElementById('editorMore').onclick=()=>alert('More tools: Crop, rotate, timer camera, front/back camera aur atmosphere effects neeche available hain.');
-window.addEventListener('pagehide',closeCam);document.getElementById('publish').addEventListener('click',()=>{if(kind==='reel'&&media.files[0]&&!media.files[0].type.startsWith('video/'))alert('Reel mein video zaroori hai.');});</script><script>/* NEXOLY11 Creator Studio upgrade: real browser-side capture and export tools */
-(()=>{
- const $=id=>document.getElementById(id); const style=document.createElement('style');
- style.textContent=`.n11-pro-tools{background:#141820;border:1px solid #343c49;border-radius:18px;padding:14px;margin:14px 0;color:#fff}.n11-pro-tools h3{margin:0 0 10px;font-size:16px}.n11-pro-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.n11-pro-grid button,.n11-pro-tools button{border:1px solid #394454;background:#222b38;color:#fff;border-radius:12px;padding:11px;font-weight:700}.n11-pro-tools label{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;margin:10px 0}.n11-pro-tools input[type=range]{width:58%;accent-color:#ff4778}.n11-pro-tools .active{border-color:#ff4778;background:#492536}.n11-pro-tools .n11-note{font-size:11px;color:#aeb9c9;line-height:1.5}.n11-pro-tools .n11-export{background:#ff4778;border:0;width:100%;margin-top:10px;padding:14px}.n11-preview-video{max-width:100%;max-height:55vh}`;
- document.head.append(style);
- const edit=$('editTools'); if(!edit)return;
- const panel=document.createElement('section');panel.className='n11-pro-tools';panel.innerHTML=`<h3>✦ NEXOLY11 PRO EDITOR</h3>
- <div class="n11-pro-grid"><button type="button" data-look="none">Original</button><button type="button" data-look="contrast(1.18) saturate(1.35)">Vivid</button><button type="button" data-look="sepia(.28) saturate(1.2)">Warm</button><button type="button" data-look="grayscale(1)">B&W</button><button type="button" data-look="contrast(1.2) saturate(.82)">Cinema</button><button type="button" data-look="brightness(1.12) saturate(1.15)">Glow</button></div>
- <label>Brightness <input id="n11Bright" type="range" min="60" max="150" value="100"></label><label>Contrast <input id="n11Contrast" type="range" min="60" max="160" value="100"></label><label>Saturation <input id="n11Sat" type="range" min="0" max="200" value="100"></label><label>Soft focus <input id="n11Soft" type="range" min="0" max="8" value="0"></label>
- <div class="n11-pro-grid"><button type="button" id="n11Rotate">↻ Rotate</button><button type="button" id="n11Crop">▣ 9:16 Crop</button><button type="button" id="n11Text">Aa Add Text</button><button type="button" id="n11Sticker">😎 Face Sticker</button><button type="button" id="n11Speed">▶ Speed 1×</button><button type="button" id="n11Reset">↺ Reset</button></div>
- <p class="n11-note">Beauty controls are real-time visual enhancement, not AI face retouch. Face-tracking masks/background removal need a dedicated on-device AI model. Export below bakes supported color adjustments and watermark into the saved media.</p><button type="button" class="n11-export" id="n11Export">⬇ EXPORT EDITED MEDIA</button><p class="n11-note" id="n11ExportStatus" aria-live="polite"></p>`;
- edit.append(panel);
- let look='none',rot=0,crop=false,speed=1,overlayText='',sticker='';
- const preview=$('preview');
- function current(){return preview.querySelector('img.preview-media,video.preview-media')}
- function filter(){return `${look==='none'?'':look+' ' }brightness(${$('n11Bright').value}%) contrast(${$('n11Contrast').value}%) saturate(${$('n11Sat').value}%) blur(${$('n11Soft').value}px)`}
- function apply(){const el=current();if(el){el.style.filter=filter();el.style.transform=`rotate(${rot}deg)`;el.style.objectFit=crop?'cover':'contain';el.style.aspectRatio=crop?'9 / 16':'auto';if(el.tagName==='VIDEO')el.playbackRate=speed;} if(camera){camera.style.filter=filter();camera.style.transform=`${mirrorOn?'scaleX(-1) ':''}scale(${Number($('camZoom')?.value||1)}) rotate(${rot}deg)`;}}
- panel.querySelectorAll('[data-look]').forEach(b=>b.onclick=()=>{look=b.dataset.look;panel.querySelectorAll('[data-look]').forEach(x=>x.classList.toggle('active',x===b));apply()});
- ['n11Bright','n11Contrast','n11Sat','n11Soft'].forEach(id=>$(id).oninput=apply);
- $('n11Rotate').onclick=()=>{rot=(rot+90)%360;apply()};$('n11Crop').onclick=()=>{crop=!crop;$('n11Crop').classList.toggle('active',crop);apply()};
- $('n11Text').onclick=()=>{overlayText=prompt('Video/photo par text likhein',overlayText)||'';let el=preview.querySelector('.creator-text');if(!el&&overlayText){el=document.createElement('div');el.className='creator-text';preview.querySelector('.media-stage')?.append(el)}if(el)el.textContent=overlayText};
- $('n11Sticker').onclick=()=>{sticker=prompt('Sticker: 😎 👑 🐵 ❤️ ✨',sticker||'😎')||'';let el=preview.querySelector('.creator-sticker');if(!el&&sticker){el=document.createElement('div');el.className='creator-sticker';preview.querySelector('.media-stage')?.append(el)}if(el)el.textContent=sticker};
- $('n11Speed').onclick=()=>{speed=speed===1?0.75:speed===0.75?0.5:speed===0.5?1:1;$('n11Speed').textContent=`▶ Speed ${speed}×`;apply()};
- $('n11Reset').onclick=()=>{look='none';rot=0;crop=false;speed=1;['n11Bright','n11Contrast','n11Sat','n11Soft'].forEach((id,i)=>$(id).value=[100,100,100,0][i]);$('n11Speed').textContent='▶ Speed 1×';apply()};
- // Camera photo capture uses the processed canvas, not an unfiltered raw frame.
- const originalCapture=window.capturePhoto;
- window.capturePhoto=function(){if(!camera?.videoWidth){return originalCapture?.()}const c=document.createElement('canvas');c.width=camera.videoWidth;c.height=camera.videoHeight;const ctx=c.getContext('2d');ctx.filter=filter();if(facing==='user'&&mirrorOn){ctx.translate(c.width,0);ctx.scale(-1,1)}ctx.drawImage(camera,0,0,c.width,c.height);ctx.filter='none';ctx.fillStyle='#fff';ctx.font='bold 26px sans-serif';ctx.textAlign='right';ctx.fillText('NEXOLY11 🇮🇳',c.width-22,c.height-28);c.toBlob(blob=>{if(blob)setCaptured(new File([blob],'nexoly11-edited.jpg',{type:'image/jpeg'}))},'image/jpeg',.94)};
- // Record the filtered live camera feed through a canvas stream.
- const recordBtn=$('startRecord');if(recordBtn)recordBtn.onclick=()=>{if(!stream||!camera.videoWidth)return alert('Pehle camera open karein.');if(recorder?.state==='recording'){recorder.stop();recordBtn.textContent='🔴 Record Video';return}const c=document.createElement('canvas');c.width=camera.videoWidth;c.height=camera.videoHeight;const ctx=c.getContext('2d');let raf;const draw=()=>{ctx.clearRect(0,0,c.width,c.height);ctx.save();ctx.filter=filter();if(facing==='user'&&mirrorOn){ctx.translate(c.width,0);ctx.scale(-1,1)}ctx.drawImage(camera,0,0,c.width,c.height);ctx.restore();ctx.filter='none';ctx.fillStyle='white';ctx.font='bold 22px sans-serif';ctx.fillText('NEXOLY11 🇮🇳',18,c.height-24);raf=requestAnimationFrame(draw)};draw();const out=c.captureStream(30);stream.getAudioTracks().forEach(t=>out.addTrack(t));chunks=[];const mime=MediaRecorder.isTypeSupported('video/webm;codecs=vp9')?'video/webm;codecs=vp9':'video/webm';recorder=new MediaRecorder(out,{mimeType:mime});recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};recorder.onstop=()=>{cancelAnimationFrame(raf);out.getTracks().forEach(t=>t.stop());setCaptured(new File(chunks,'nexoly11-edited.webm',{type:'video/webm'}));recordBtn.textContent='🔴 Record Video'};recorder.start();recordBtn.textContent='⏹ Stop Recording'};
- // Export selected image/video with the selected visual treatment.
- $('n11Export').onclick=async()=>{const status=$('n11ExportStatus'),el=current();if(!el){status.textContent='Pehle gallery se photo/video select karein ya camera capture karein.';return}status.textContent='Export ho raha hai…';try{const isVideo=el.tagName==='VIDEO',c=document.createElement('canvas'),w=el.videoWidth||el.naturalWidth,h=el.videoHeight||el.naturalHeight;if(!w||!h)throw Error('Media abhi load nahi hua.');let cw=crop?Math.min(w,h*9/16):w,ch=crop?cw*16/9:h;c.width=(rot%180)?ch:cw;c.height=(rot%180)?cw:ch;const ctx=c.getContext('2d');if(isVideo){const streamOut=c.captureStream(25);const audio=el.captureStream?.();audio?.getAudioTracks().forEach(t=>streamOut.addTrack(t));const mime=MediaRecorder.isTypeSupported('video/webm;codecs=vp9')?'video/webm;codecs=vp9':'video/webm';const rec=new MediaRecorder(streamOut,{mimeType:mime}),parts=[];rec.ondataavailable=e=>{if(e.data.size)parts.push(e.data)};const done=new Promise(resolve=>rec.onstop=()=>resolve(new Blob(parts,{type:mime})));const wasPaused=el.paused;el.currentTime=0;el.playbackRate=speed;await el.play();rec.start();const draw=()=>{ctx.save();ctx.clearRect(0,0,c.width,c.height);ctx.filter=filter();ctx.translate(c.width/2,c.height/2);ctx.rotate(rot*Math.PI/180);ctx.drawImage(el,-cw/2,-ch/2,cw,ch);ctx.restore();ctx.filter='none';ctx.fillStyle='white';ctx.font='bold 20px sans-serif';ctx.fillText('NEXOLY11 🇮🇳',16,c.height-20);if(!el.ended)requestAnimationFrame(draw);else rec.stop()};draw();const blob=await done;streamOut.getTracks().forEach(t=>t.stop());if(wasPaused)el.pause();download(blob,'nexoly11-edited.webm');}else{ctx.filter=filter();ctx.translate(c.width/2,c.height/2);ctx.rotate(rot*Math.PI/180);ctx.drawImage(el,-cw/2,-ch/2,cw,ch);ctx.filter='none';ctx.fillStyle='white';ctx.font='bold 24px sans-serif';ctx.textAlign='right';ctx.fillText('NEXOLY11 🇮🇳',c.width-18,c.height-22);const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.94));download(blob,'nexoly11-edited.jpg')}status.textContent='Export complete ✓';}catch(e){status.textContent='Export failed: '+e.message}}
- function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000)}
- const mo=new MutationObserver(()=>apply());mo.observe(preview,{childList:true,subtree:true});
-})();
-</script><script src="js/theme.js"></script></body></html>
+window.addEventListener('pagehide',closeCam);document.getElementById('publish').addEventListener('click',()=>{if(kind==='reel'&&media.files[0]&&!media.files[0].type.startsWith('video/'))alert('Reel mein video zaroori hai.');});</script><script src="js/theme.js"></script></body></html>
