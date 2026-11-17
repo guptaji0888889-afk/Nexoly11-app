@@ -26,5 +26,19 @@
  $('videoSpeed').onchange=e=>{const v=video();if(v)v.playbackRate=Number(e.target.value);};
  $('previewTrim').onclick=()=>{const v=video();if(!v){alert('Pehle video select karein.');return;}const start=Math.max(0,Number($('trimStart').value)||0),end=Number($('trimEnd').value)||v.duration;if(start>=v.duration||end<=start){alert('Start/end time sahi set karein.');return;}v.currentTime=start;v.playbackRate=Number($('videoSpeed').value)||1;v.play().catch(()=>{});const stop=()=>{if(v.currentTime>=Math.min(end,v.duration)){v.pause();v.removeEventListener('timeupdate',stop);}};v.addEventListener('timeupdate',stop);};
  const media=$('media');media?.addEventListener('change',()=>{const v=video();if(v){$('trimStart').value=0;$('trimEnd').value=Number.isFinite(v.duration)?v.duration.toFixed(1):0;v.onloadedmetadata=()=>{$('trimEnd').value=v.duration.toFixed(1);};}});
- $('aiGenerate').onclick=()=>{const p=$('aiImagePrompt').value.trim();$('aiStudioStatus').textContent=p?'AI image generation server/API is not configured. Connect a secure image-generation endpoint to enable this feature.':'Pehle image ka prompt likhein.';};
+ $('aiGenerate').onclick=async()=>{
+  const prompt=$('aiImagePrompt').value.trim(),status=$('aiStudioStatus'),btn=$('aiGenerate');
+  if(!prompt){status.textContent='Pehle image ka prompt likhein.';return;}
+  const endpoint=window.NEXOLY_AI_IMAGE_ENDPOINT;
+  if(!endpoint){status.textContent='AI image service abhi connect nahi hai. Is feature ko chalane ke liye secure server endpoint/API key zaroori hai; browser mein secret key mat daalein.';return;}
+  btn.disabled=true;btn.textContent='Generating…';status.textContent='AI image ban rahi hai. Thoda wait karein…';
+  try{
+   const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
+   if(!response.ok)throw new Error('Server error '+response.status);
+   const data=await response.json();const url=data.imageUrl||data.url||data.image_url;
+   if(!url)throw new Error('Server response mein image URL nahi mila.');
+   const img=document.createElement('img');img.className='preview-media';img.alt='AI generated image';img.src=url;img.onload=()=>{const stage=document.createElement('div');stage.className='media-stage';stage.append(img);$('preview').replaceChildren(stage);$('editTools').style.display='block';status.textContent='AI image ready. Ab export ya publish kar sakte hain.';};
+   img.onerror=()=>{status.textContent='Generated image load nahi hui. Server se valid public image URL bhejein.';};
+  }catch(err){status.textContent='AI generation fail: '+err.message;}finally{btn.disabled=false;btn.textContent='✨ Generate AI image';}
+ };
 })();
