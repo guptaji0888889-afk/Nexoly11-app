@@ -83,3 +83,11 @@ insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types) v
 drop policy if exists nexoly_media_public_read on storage.objects; create policy nexoly_media_public_read on storage.objects for select using(bucket_id='nexoly-media');
 drop policy if exists nexoly_media_insert_own on storage.objects; create policy nexoly_media_insert_own on storage.objects for insert to authenticated with check(bucket_id='nexoly-media' and (storage.foldername(name))[1]=auth.uid()::text);
 drop policy if exists nexoly_media_delete_own on storage.objects; create policy nexoly_media_delete_own on storage.objects for delete to authenticated using(bucket_id='nexoly-media' and (storage.foldername(name))[1]=auth.uid()::text);
+
+
+-- Sound attachment and remix attribution fields (safe to run on an existing project)
+alter table public.posts add column if not exists soundtrack_url text;
+alter table public.posts add column if not exists soundtrack_path text;
+alter table public.posts add column if not exists soundtrack_title text;
+alter table public.posts add column if not exists remix_source_id uuid references public.posts(id) on delete set null;
+create index if not exists posts_remix_source_idx on public.posts(remix_source_id);
