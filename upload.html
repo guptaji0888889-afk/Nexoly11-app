@@ -300,17 +300,28 @@ async function renderMusicLibrary(){
  const q=(document.getElementById('musicSearch').value||'').trim();
  const categoryQuery=musicQueries[activeMusicTab]||musicQueries['for-you'];
  const searchTerm=q||categoryQuery;
- musicLibrary.innerHTML='<div class="n11-library-note">🎵 Free licensed music search ho raha hai…</div>';
+ musicLibrary.innerHTML='<div class="n11-library-note">🎵 Free music search ho raha hai…</div>';
  try{
-  const params=new URLSearchParams({action:'query',generator:'search',gsrsearch:'filetype:audio '+searchTerm,gsrnamespace:'6',gsrlimit:'24',prop:'imageinfo',iiprop:'url|extmetadata',format:'json',origin:'*'});
+  const params=new URLSearchParams({action:'query',list:'search',srsearch:'filemime:audio '+searchTerm,srnamespace:'6',srlimit:'30',format:'json',origin:'*'});
   const response=await fetch('https://commons.wikimedia.org/w/api.php?'+params.toString());
   if(!response.ok)throw new Error('Music source unavailable');
-  const data=await response.json();const pages=Object.values(data.query?.pages||{});
-  const tracks=pages.map(page=>{const info=page.imageinfo?.[0],url=info?.url,meta=info?.extmetadata||{};const mime=info?.mime||'';if(!url||!/^audio\/(mpeg|ogg|wav|flac|mp4)/i.test(mime))return null;const license=(meta.LicenseShortName?.value||'Free license').replace(/<[^>]*>/g,'');return {title:page.title.replace(/^File:/,''),url,license}}).filter(Boolean);
-  if(!tracks.length){musicLibrary.innerHTML='<div class="n11-library-note">Is category mein abhi playable track nahi mila. Search mein “piano”, “instrumental”, “dhol” ya “meditation” try karein, ya My Music se phone ka audio add karein.</div>';return}
+  const data=await response.json();
+  const titles=(data.query?.search||[]).map(x=>x.title).filter(Boolean);
+  if(!titles.length){musicLibrary.innerHTML='<div class="n11-library-note">Is search mein audio nahi mila. “instrumental”, “piano”, “guitar”, “drums” ya “meditation” try karein. Phone se MP3 bhi add kar sakte hain.</div>';return;}
+  const infoParams=new URLSearchParams({action:'query',titles:titles.join('|'),prop:'imageinfo',iiprop:'url|mime|extmetadata',format:'json',origin:'*'});
+  const infoResponse=await fetch('https://commons.wikimedia.org/w/api.php?'+infoParams.toString());
+  if(!infoResponse.ok)throw new Error('Audio details unavailable');
+  const infoData=await infoResponse.json();
+  const tracks=Object.values(infoData.query?.pages||{}).map(page=>{
+   const info=page.imageinfo?.[0],url=info?.url,meta=info?.extmetadata||{},mime=info?.mime||'';
+   if(!url||!/^audio\//i.test(mime))return null;
+   const license=(meta.LicenseShortName?.value||'Check source licence').replace(/<[^>]*>/g,'');
+   return {title:page.title.replace(/^File:/,''),url,license};
+  }).filter(Boolean);
+  if(!tracks.length){musicLibrary.innerHTML='<div class="n11-library-note">Abhi playable audio nahi mila. “piano”, “guitar” ya “instrumental” search karein, ya My Music se apna MP3 select karein.</div>';return;}
   musicLibrary.innerHTML=tracks.map((t,i)=>`<div class="n11-track-card"><span class="n11-track-icon">♫</span><span class="n11-track-info"><b>${escapeMusicText(t.title)}</b><small>Wikimedia Commons · ${escapeMusicText(t.license)}</small></span><button class="n11-track-play" type="button" data-track-index="${i}" aria-label="Preview track">▶</button></div>`).join('');
   musicLibrary.querySelectorAll('[data-track-index]').forEach(btn=>btn.addEventListener('click',()=>{const t=tracks[Number(btn.dataset.trackIndex)];chooseCommonsTrack(t.url,t.title,t.license)}));
- }catch(error){musicLibrary.innerHTML='<div class="n11-library-note">Free music catalogue abhi load nahi ho paaya. Internet connection check karein. Aap My Music se apne phone ka MP3/M4A/WAV bhi chala sakte hain.</div>';}
+ }catch(error){musicLibrary.innerHTML='<div class="n11-library-note">Music list load nahi hui. Internet connection ya Commons service unavailable ho sakti hai. My Music se phone ka MP3/M4A/WAV select kar sakte hain.</div>';}
 }
 document.querySelectorAll('[data-music-tab]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-music-tab]').forEach(b=>b.classList.toggle('active',b===btn));activeMusicTab=btn.dataset.musicTab;document.getElementById('musicSearch').value='';renderMusicLibrary()}));
 document.getElementById('musicSearch').addEventListener('input',()=>{clearTimeout(musicSearchTimer);musicSearchTimer=setTimeout(renderMusicLibrary,450)});renderMusicLibrary();
