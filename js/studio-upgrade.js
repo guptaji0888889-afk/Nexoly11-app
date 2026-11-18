@@ -29,56 +29,32 @@
   }catch(e){alert('Photo load nahi ho payi. Dobara select karein.');}finally{URL.revokeObjectURL(sourceUrl);}
  };
 
- // Music Studio: four original royalty-free synthesized instrumental loops + user's own audio.
+ // Music Studio: original royalty-free Web Audio loops + user's own local tracks.
  const musicInput=$('music'),music=$('musicPreview');
- let musicObjectUrl=null,fadeTimer=null;
- const musicTrackNames={lofi:'Midnight Lo-fi',beat:'Creator Beat',calm:'Peaceful Vibes',cinema:'Cinematic Rise'};
- function musicStatus(message){const el=$('musicStatus');if(el)el.textContent=message;}
- function stopFade(){if(fadeTimer){clearInterval(fadeTimer);fadeTimer=null;}}
- function selectTrack(name,url,meta='Free original instrumental • Preview'){
-  stopFade();if(musicObjectUrl)URL.revokeObjectURL(musicObjectUrl);
-  musicObjectUrl=url;music.src=url;music.load();
-  $('musicSelected').hidden=false;$('musicFileName').textContent=name;$('musicFileMeta').textContent=meta;
-  document.querySelectorAll('[data-free-track]').forEach(b=>b.classList.toggle('active',b.dataset.freeTrack===Object.keys(musicTrackNames).find(k=>musicTrackNames[k]===name)));
-  music.volume=Number($('musicVolume')?.value||80)/100;
-  musicStatus('Track ready. ▶ Play dabakar preview sunein.');
- }
- function wavBlob(buffer){
-  const channels=buffer.numberOfChannels,length=buffer.length,rate=buffer.sampleRate,bytes=44+length*channels*2,ab=new ArrayBuffer(bytes),v=new DataView(ab);
-  const write=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};
-  write(0,'RIFF');v.setUint32(4,bytes-8,true);write(8,'WAVE');write(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,channels,true);v.setUint32(24,rate,true);v.setUint32(28,rate*channels*2,true);v.setUint16(32,channels*2,true);v.setUint16(34,16,true);write(36,'data');v.setUint32(40,bytes-44,true);
-  let offset=44;for(let i=0;i<length;i++)for(let c=0;c<channels;c++){let x=Math.max(-1,Math.min(1,buffer.getChannelData(c)[i]));v.setInt16(offset,x<0?x*32768:x*32767,true);offset+=2;}
-  return new Blob([ab],{type:'audio/wav'});
- }
- async function makeFreeTrack(kind){
-  const Offline=window.OfflineAudioContext||window.webkitOfflineAudioContext;if(!Offline)throw new Error('Audio generation is not supported in this browser.');
-  const rate=22050,duration=12,ctx=new Offline(1,rate*duration,rate);
-  const master=ctx.createGain();master.gain.value=.18;master.connect(ctx.destination);
-  const patterns={lofi:[220,261.63,329.63,392],beat:[110,164.81,220,329.63],calm:[174.61,220,261.63,329.63],cinema:[130.81,196,261.63,392]};
-  const notes=patterns[kind]||patterns.lofi;
-  for(let t=0;t<duration;t+=.5){
-   const idx=Math.floor(t/.5)%notes.length,osc=ctx.createOscillator(),gain=ctx.createGain();
-   osc.type=kind==='beat'?'triangle':'sine';osc.frequency.value=notes[idx]*(kind==='cinema'&&t>6?2:1);
-   gain.gain.setValueAtTime(0, t);gain.gain.linearRampToValueAtTime(kind==='beat'?.22:.14,t+.025);gain.gain.exponentialRampToValueAtTime(.001,t+.43);
-   osc.connect(gain);gain.connect(master);osc.start(t);osc.stop(t+.45);
-   if(kind==='beat'&&Math.round(t*2)%2===0){const kick=ctx.createOscillator(),kg=ctx.createGain();kick.type='sine';kick.frequency.setValueAtTime(95,t);kick.frequency.exponentialRampToValueAtTime(42,t+.12);kg.gain.setValueAtTime(.32,t);kg.gain.exponentialRampToValueAtTime(.001,t+.14);kick.connect(kg);kg.connect(master);kick.start(t);kick.stop(t+.15);}
-  }
-  const rendered=await ctx.startRendering();return wavBlob(rendered);
- }
- document.querySelectorAll('[data-free-track]').forEach(btn=>btn.addEventListener('click',async()=>{
-  const kind=btn.dataset.freeTrack;btn.disabled=true;musicStatus('Free music taiyar ho raha hai…');
-  try{const blob=await makeFreeTrack(kind),url=URL.createObjectURL(blob);selectTrack(musicTrackNames[kind],url,'Original generated instrumental • Free to use');}
-  catch(e){musicStatus('Track generate nahi hua: '+e.message);}finally{btn.disabled=false;}
- }));
- musicInput?.addEventListener('change',()=>{
-  const file=musicInput.files?.[0];if(!file)return;
-  if(!file.type.startsWith('audio/')){musicStatus('Valid audio file select karein.');musicInput.value='';return;}
-  if(file.size>25*1024*1024){musicStatus('Music file 25 MB se chhoti honi chahiye.');musicInput.value='';return;}
-  selectTrack(file.name,URL.createObjectURL(file),'Your uploaded audio • Local preview');
- });
+ const musicLibrary=$('musicLibrary'),musicSearch=$('musicSearch');
+ let musicObjectUrl=null, audioCtx=null, loopTimer=null, activeTrack=null, activeTab='for-you', activeNodes=[];
+ const tracks=[
+  {id:'midnight',name:'Midnight Lo-fi',mood:'Chill',category:'chill',icon:'🌙',bpm:78,style:'lofi'},
+  {id:'creator',name:'Creator Beat',mood:'Upbeat',category:'beats',icon:'⚡',bpm:110,style:'beat'},
+  {id:'peaceful',name:'Peaceful Vibes',mood:'Ambient',category:'chill',icon:'🌿',bpm:68,style:'ambient'},
+  {id:'cinematic',name:'Cinematic Rise',mood:'Cinematic',category:'trending',icon:'🎬',bpm:92,style:'cinema'},
+  {id:'desi',name:'Desi Dhol Pulse',mood:'Festive',category:'beats',icon:'🥁',bpm:104,style:'desi'},
+  {id:'motivation',name:'Motivation Drive',mood:'Energetic',category:'trending',icon:'🔥',bpm:120,style:'beat'}
+ ];
+ const status=msg=>{const el=$('musicStatus');if(el)el.textContent=msg;};
+ function ensureAudio(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw new Error('Is browser mein Web Audio support nahi hai.');if(!audioCtx)audioCtx=new AC();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx;}
+ function tone(freq,when,duration,type='sine',gain=.08){const c=ensureAudio(),o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(freq,when);g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(gain,when+.015);g.gain.exponentialRampToValueAtTime(.0001,when+duration);o.connect(g);g.connect(c.destination);o.start(when);o.stop(when+duration+.03);activeNodes.push(o);}
+ function noise(when,duration,gain=.025){const c=ensureAudio(),len=Math.ceil(c.sampleRate*duration),buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;const src=c.createBufferSource(),g=c.createGain();src.buffer=buf;g.gain.setValueAtTime(gain,when);g.gain.exponentialRampToValueAtTime(.0001,when+duration);src.connect(g);g.connect(c.destination);src.start(when);activeNodes.push(src);}
+ function stopMusic(){if(loopTimer){clearInterval(loopTimer);loopTimer=null;}activeNodes.forEach(n=>{try{n.stop();}catch(e){}});activeNodes=[];if(music){music.pause();}const b=document.querySelector('[data-music-play="'+activeTrack+'"]');if(b)b.textContent='▶';}
+ function scheduleLoop(track){const c=ensureAudio(),beat=60/track.bpm;let step=0;const playStep=()=>{const t=c.currentTime+.02,bar=step%16;if(track.style==='ambient'){if(bar%4===0){[220,261.63,329.63].forEach((f,i)=>tone(f,t,1.4,'sine',.035));}}else{if(bar%4===0)tone(track.style==='desi'?95:58,t,.18,'sine',.16);if(bar%4===2)noise(t,.12,.045);if(bar%2===1)noise(t,.035,.012);if(track.style==='lofi'&&bar%4===0)tone([130.81,164.81,196][Math.floor(bar/4)%3],t+.05,.32,'triangle',.035);if(track.style==='cinema'&&bar%4===0)tone(110+bar*5,t,.65,'sawtooth',.025);}step++;};playStep();loopTimer=setInterval(playStep,beat*250);}
+ function renderTracks(){if(!musicLibrary)return;const q=(musicSearch?.value||'').trim().toLowerCase();const list=tracks.filter(t=>(activeTab==='for-you'||activeTab==='trending'&&t.category==='trending'||activeTab==='beats'&&t.category==='beats'||activeTab==='chill'&&t.category==='chill')&&(!q||`${t.name} ${t.mood} ${t.category}`.toLowerCase().includes(q)));musicLibrary.innerHTML=list.length?list.map(t=>`<article class="n11-track-card ${activeTrack===t.id?'selected':''}"><span class="n11-track-icon">${t.icon}</span><span class="n11-track-info"><b>${t.name}</b><small>${t.mood} · ${t.bpm} BPM · Original free loop</small></span><button type="button" class="n11-track-play" data-music-play="${t.id}" aria-label="Preview ${t.name}">${activeTrack===t.id?'Ⅱ':'▶'}</button></article>`).join(''):'<div class="n11-library-note">Is search mein track nahi mila. Dusra keyword try karein ya My Music se apna track add karein.</div>';musicLibrary.querySelectorAll('[data-music-play]').forEach(btn=>btn.addEventListener('click',()=>{const t=tracks.find(x=>x.id===btn.dataset.musicPlay);if(activeTrack===t.id){stopMusic();activeTrack=null;renderTracks();status('Preview stopped.');return;}stopMusic();activeTrack=t.id;try{scheduleLoop(t);renderTracks();status(t.name+' preview chal raha hai. Ye Nexoly11 ka original generated loop hai.');}catch(e){status(e.message);}}));}
+ document.querySelectorAll('[data-music-tab]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-music-tab]').forEach(x=>x.classList.toggle('active',x===btn));activeTab=btn.dataset.musicTab;renderTracks();}));
+ musicSearch?.addEventListener('input',renderTracks);renderTracks();
+ musicInput?.addEventListener('change',()=>{const file=musicInput.files?.[0];if(!file)return;if(!file.type.startsWith('audio/')){status('Please choose a valid audio file.');musicInput.value='';return;}if(file.size>15*1024*1024){status('Music file 15 MB se chhoti honi chahiye.');musicInput.value='';return;}stopMusic();activeTrack='my-music';if(musicObjectUrl)URL.revokeObjectURL(musicObjectUrl);musicObjectUrl=URL.createObjectURL(file);music.src=musicObjectUrl;music.volume=Number($('musicVolume')?.value||80)/100;music.hidden=false;music.style.display='block';$('musicSelected').hidden=false;$('musicFileName').textContent=file.name;$('musicFileMeta').textContent='Your device · Local preview';music.load();status('Aapka track select ho gaya. Preview player se play karein.');});
+ $('musicRemove')?.addEventListener('click',()=>{music.pause();music.removeAttribute('src');music.load();musicInput.value='';music.hidden=true;music.style.display='none';$('musicSelected').hidden=true;if(musicObjectUrl)URL.revokeObjectURL(musicObjectUrl);musicObjectUrl=null;activeTrack=null;status('My Music track removed.');});
  $('musicVolume')?.addEventListener('input',e=>{const v=Number(e.target.value);$('musicVolumeValue').textContent=v+'%';if(music)music.volume=v/100;});
- $('musicRemove')?.addEventListener('click',()=>{music.pause();music.removeAttribute('src');music.load();musicInput.value='';$('musicSelected').hidden=true;document.querySelectorAll('[data-free-track]').forEach(b=>b.classList.remove('active'));stopFade();if(musicObjectUrl)URL.revokeObjectURL(musicObjectUrl);musicObjectUrl=null;musicStatus('Music removed. Koi doosra free track choose karein.');});
- music?.addEventListener('error',()=>musicStatus('Audio load nahi hua. Dusra track choose karein.'));
+ window.addEventListener('pagehide',()=>{stopMusic();if(musicObjectUrl)URL.revokeObjectURL(musicObjectUrl);});
+
  const video=()=>document.querySelector('#preview video.preview-media');
  $('videoSpeed').onchange=e=>{const v=video();if(v)v.playbackRate=Number(e.target.value);};
  $('previewTrim').onclick=()=>{const v=video();if(!v){alert('Pehle video select karein.');return;}const start=Math.max(0,Number($('trimStart').value)||0),end=Number($('trimEnd').value)||v.duration;if(start>=v.duration||end<=start){alert('Start/end time sahi set karein.');return;}v.currentTime=start;v.playbackRate=Number($('videoSpeed').value)||1;v.play().catch(()=>{});const stop=()=>{if(v.currentTime>=Math.min(end,v.duration)){v.pause();v.removeEventListener('timeupdate',stop);}};v.addEventListener('timeupdate',stop);};
