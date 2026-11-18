@@ -238,3 +238,6 @@ a,.brand span,.bottomnav a.active{color:var(--n11-accent)}
 .n11-notification{padding:14px;margin:10px 0;background:var(--n11-surface)!important;border-color:var(--n11-border)!important;color:var(--n11-text)!important}
 .n11-notification.unread{border-left:4px solid var(--n11-accent)!important}
 .n11-notification-row{display:flex;align-items:center;gap:11px}.n11-notification-copy{flex:1;min-width:0;line-height:1.45}.n11-notification-copy small{display:block;margin-top:4px}.n11-unread-dot{width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:var(--n11-accent)}
+
+/* Nexoly11 sound + remix actions */
+.n11-remix-actions{display:flex;gap:9px;padding:9px 12px 12px}.n11-remix-actions button{border:1px solid #39485b;background:#151f2c;color:#f7f8fc;border-radius:22px;padding:9px 13px;font-weight:700;font-size:12px}.n11-remix-actions button:active{transform:scale(.97);border-color:#31d7c9}.n11-sound-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:8px 12px;color:#d8e5f4;font-size:12px}.n11-sound-row audio{width:min(220px,60%);height:30px}
