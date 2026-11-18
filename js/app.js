@@ -16,7 +16,7 @@
  function header(){return `<header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> 🇮🇳</a><div class="toplinks"><a href="messages.html">✉</a><a href="dashboard.html">♙</a></div></header>`}
  async function loadFeed(videoOnly=false){
   const feed=$('#feed');if(!feed)return;feed.innerHTML='<div class="empty">Loading reels…</div>';
-  let q=db.from('posts').select('id,user_id,media_url,media_type,caption,category,created_at,soundtrack_url,soundtrack_title').order('created_at',{ascending:false}).limit(50);if(videoOnly)q=q.eq('media_type','video');
+  let q=db.from('posts').select('id,user_id,media_url,media_type,caption,category,created_at').order('created_at',{ascending:false}).limit(50);if(videoOnly)q=q.eq('media_type','video');
   const {data,error}=await q;if(error){feed.innerHTML=`<div class="empty">Could not load posts: ${esc(error.message)}</div>`;return}if(!data?.length){feed.innerHTML='<div class="empty">Abhi koi reel nahi hai. Pehli reel upload karein!<br><a class="btn" href="upload.html?type=reel">＋ Upload Reel</a></div>';return}
   const ids=[...new Set(data.map(p=>p.user_id))],postIds=data.map(p=>p.id);const me=await session();
   const [pr,likes,comments,views]=await Promise.all([
