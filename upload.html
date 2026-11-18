@@ -198,6 +198,30 @@ body.camera-live #cameraEnhance.beauty-open p{display:block!important;font-size:
 @media(max-width:700px){.pro-studio{margin:14px 12px!important;padding:14px!important}.pro-pane{padding-top:10px!important}}
 </style>
 
+
+<style id="n11-crop-mobile-fix">
+#n11CropBox[hidden]{display:none!important}
+.n11-crop-box{position:relative;z-index:2;margin:14px 0 18px;padding:16px;border-radius:20px;background:#111820;border:1px solid #34404d;max-width:100%;box-sizing:border-box}
+.n11-crop-title{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.n11-crop-ratios{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.n11-crop-ratios button,.n11-crop-actions button{min-height:42px;padding:9px 13px;border-radius:12px;border:1px solid #46515d;background:#202832;color:#fff;font-weight:600}
+.n11-crop-ratios button.active,.n11-crop-actions button.apply{background:linear-gradient(110deg,#ff2d83,#a52cff);border:0}
+.n11-crop-zoom{display:flex;align-items:center;gap:10px;margin:14px 0}
+.n11-crop-zoom input{flex:1;min-width:0}
+.n11-crop-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.n11-crop-actions button.apply{flex:1}
+.n11-crop-box small{display:block;color:#aeb8c4;line-height:1.45}
+</style>
+
+<style id="n11-crop-visible-fix">
+#n11CropBox[hidden]{display:none!important}
+#n11CropBox{scroll-margin-bottom:190px;margin:16px 0 22px;padding:16px;position:relative;z-index:5;background:#111820;border:1px solid #3b4655;border-radius:18px;color:#fff}
+#n11CropBox .n11-crop-ratios,#n11CropBox .n11-crop-actions{display:flex;gap:8px;flex-wrap:wrap}
+#n11CropBox button{min-height:44px;padding:10px 13px;border-radius:11px;background:#242d38;color:#fff;border:1px solid #485565;font-weight:700}
+#n11CropBox button.active,#n11CropBox button.apply{background:linear-gradient(110deg,#ff2d83,#a52cff);border:0}
+#n11CropBox .n11-crop-actions button.apply{flex:1}
+body{padding-bottom:190px!important}
+</style>
 </head><body><header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> CREATE</a><a href="index.html">✕ Close</a></header><main class="wrap"><section class="panel"><h2 id="uploadTitle">New post</h2>
 <div class="ig-picker-head"><button type="button" class="ig-back" onclick="location.href='index.html'" aria-label="Close">×</button><strong id="igPageTitle">New post</strong><button type="button" class="ig-next" id="igNext" onclick="document.getElementById('caption').scrollIntoView({behavior:'smooth'})">Next</button></div>
 <div class="ig-picker-actions"><button type="button" class="ig-chip" onclick="alert('Drafts will appear here when draft saving is enabled.')">▧ Drafts</button><button type="button" class="ig-chip" onclick="alert('Templates are coming soon.')">▣ Templates</button></div>
@@ -211,14 +235,16 @@ body.camera-live #cameraEnhance.beauty-open p{display:block!important;font-size:
 <nav class="camera-modebar"><a href="upload.html?type=post" data-mode="post">POST</a><a href="upload.html?type=story" data-mode="story">STORY</a><a href="upload.html?type=reel" data-mode="reel">REEL</a><a href="upload.html?type=live" data-mode="live">LIVE</a></nav>
 </div>
 <div class="camera-enhance" id="cameraEnhance"><b>✨ Camera Studio</b><div class="studio-buttons"><button type="button" class="btn secondary" id="gridToggle">▦ Grid</button><button type="button" class="btn secondary" id="mirrorToggle">↔ Mirror</button><button type="button" class="btn secondary" id="beautyReset">↺ Reset</button></div><label>Beauty smooth <input id="beautySmooth" type="range" min="0" max="45" value="0"></label><label>Brightness <input id="camBright" type="range" min="70" max="140" value="100"></label><label>Warmth <input id="camWarm" type="range" min="0" max="30" value="0"></label><label>Zoom <input id="camZoom" type="range" min="1" max="3" step="0.1" value="1"></label><p class="hint">Beauty, brightness aur zoom preview/captured photo par apply honge. Face-tracking AR masks ke liye dedicated AR engine ki zaroorat hoti hai.</p></div>
-<p class="hint">Camera permission browser se allow karein. Live camera HTTPS par kaam karta hai.</p><label class="muted" for="media">Choose from Gallery</label><input class="field" type="file" id="media" accept="image/*,video/*" required><p class="hint" id="multiHint">Post mein multiple photos select kar sakte hain (har media alag post ke roop mein publish hoga).</p><div id="preview"></div>
+<p class="hint">Camera permission browser se allow karein. Live camera HTTPS par kaam karta hai.</p><label class="muted" for="media">Choose from Gallery</label><input class="field" type="file" id="media" accept="image/*,video/*" required><p class="hint" id="multiHint">Post mein multiple photos select kar sakte hain (har media alag post ke roop mein publish hoga).</p>
 <section id="n11CropBox" class="n11-crop-box" hidden aria-label="Photo crop editor">
  <div class="n11-crop-title"><b>✂️ Crop photo</b><span>Photo ko apne hisaab se set karein</span></div>
  <div class="n11-crop-ratios"><button type="button" class="active" data-ratio="1:1">1:1 Square</button><button type="button" data-ratio="4:5">4:5 Portrait</button><button type="button" data-ratio="original">Original</button></div>
  <label class="n11-crop-zoom">Zoom <input id="n11CropZoom" type="range" min="1" max="3" step="0.05" value="1"><b id="n11CropZoomValue">1.0×</b></label>
  <div class="n11-crop-actions"><button type="button" id="n11CropRotate">↻ Rotate</button><button type="button" id="n11CropReset">Reset</button><button type="button" id="n11CropApply" class="apply">✓ Apply crop</button></div>
  <small>Crop apply karne par nayi photo file banegi; original gallery photo safe rahegi.</small>
-</section><p class="hint">Image posts par NEXOLY11 watermark publish ke waqt add hota hai. Video watermark abhi preview tak limited hai.</p><div id="editTools" style="display:none"><label class="muted" for="visualFilter">✨ Filters & Effects</label><select class="field" id="visualFilter"><option value="filter-normal">Original</option><option value="filter-warm">Warm</option><option value="filter-cool">Cool</option><option value="filter-bw">Black & White</option><option value="filter-vivid">Vivid</option><option value="filter-glow">✨ Glow</option><option value="filter-portrait">Portrait</option><option value="filter-cinema">Cinema</option><option value="filter-vintage">Vintage</option></select>
+</section>
+<div id="preview"></div>
+<p class="hint">Image posts par NEXOLY11 watermark publish ke waqt add hota hai. Video watermark abhi preview tak limited hai.</p><div id="editTools" style="display:none"><label class="muted" for="visualFilter">✨ Filters & Effects</label><select class="field" id="visualFilter"><option value="filter-normal">Original</option><option value="filter-warm">Warm</option><option value="filter-cool">Cool</option><option value="filter-bw">Black & White</option><option value="filter-vivid">Vivid</option><option value="filter-glow">✨ Glow</option><option value="filter-portrait">Portrait</option><option value="filter-cinema">Cinema</option><option value="filter-vintage">Vintage</option></select>
 <div class="effect-categories" role="tablist" aria-label="Effect categories">
 <button type="button" class="effect-cat active" data-effect-cat="trending">✨ TRENDING</button>
 <button type="button" class="effect-cat" data-effect-cat="appearance">💎 APPEARANCE</button>
@@ -338,7 +364,7 @@ document.getElementById('editorMore').onclick=()=>alert('More tools: Crop, rotat
  if(!input||!box)return;
  let original=null,ratio='1:1',zoom=1,rotation=0;
  const zoomInput=document.getElementById('n11CropZoom'),zoomValue=document.getElementById('n11CropZoomValue');
- input.addEventListener('change',()=>{const f=input.files&&input.files[0];original=f&&f.type.startsWith('image/')?f:null;box.hidden=!original;ratio='1:1';zoom=1;rotation=0;zoomInput.value='1';zoomValue.textContent='1.0×';document.querySelectorAll('.n11-crop-ratios button').forEach(b=>b.classList.toggle('active',b.dataset.ratio==='1:1'));});
+ input.addEventListener('change',()=>{const f=input.files&&input.files[0];original=f&&f.type.startsWith('image/')?f:null;box.hidden=!original;ratio='1:1';zoom=1;rotation=0;zoomInput.value='1';zoomValue.textContent='1.0×';document.querySelectorAll('.n11-crop-ratios button').forEach(b=>b.classList.toggle('active',b.dataset.ratio==='1:1'));if(original){setTimeout(()=>box.scrollIntoView({behavior:'smooth',block:'center'}),250);}});
  document.querySelectorAll('.n11-crop-ratios button').forEach(b=>b.addEventListener('click',()=>{ratio=b.dataset.ratio;document.querySelectorAll('.n11-crop-ratios button').forEach(x=>x.classList.toggle('active',x===b));}));
  zoomInput.addEventListener('input',()=>{zoom=Number(zoomInput.value);zoomValue.textContent=zoom.toFixed(1)+'×';});
  document.getElementById('n11CropRotate').addEventListener('click',()=>{rotation=(rotation+90)%360;});
