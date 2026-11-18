@@ -28,6 +28,36 @@
    c.toBlob(blob=>blob?download(blob,'NEXOLY11-edited-photo.jpg'):alert('Photo export nahi ho paya.'),'image/jpeg',.94);
   }catch(e){alert('Photo load nahi ho payi. Dobara select karein.');}finally{URL.revokeObjectURL(sourceUrl);}
  };
+
+ // Music Studio: local soundtrack preview and controls. Publishing/upload is handled by js/app.js.
+ const musicInput=$('music'),music=$('musicPreview'),musicTrack=$('musicTrack'),musicPlay=$('musicPlay');
+ let musicObjectUrl=null,fadeTimer=null;
+ function musicStatus(message){const el=$('musicStatus');if(el)el.textContent=message;}
+ function stopFade(){if(fadeTimer){clearInterval(fadeTimer);fadeTimer=null;}}
+ musicInput?.addEventListener('change',()=>{
+  const file=musicInput.files?.[0];if(!file)return;
+  if(!file.type.startsWith('audio/')){musicStatus('Please choose a valid audio file.');musicInput.value='';return;}
+  if(file.size>15*1024*1024){musicStatus('Music file 15 MB se chhoti honi chahiye.');musicInput.value='';return;}
+  if(musicObjectUrl)URL.revokeObjectURL(musicObjectUrl);
+  musicObjectUrl=URL.createObjectURL(file);music.src=musicObjectUrl;music.volume=Number($('musicVolume')?.value||80)/100;
+  musicTrack.hidden=false;$('musicName').textContent=file.name;
+  music.onloadedmetadata=()=>{$('musicDuration').textContent=Number.isFinite(music.duration)?`${Math.floor(music.duration/60)}:${String(Math.floor(music.duration%60)).padStart(2,'0')} • Ready`:'Ready to preview';};
+  musicStatus('Track selected. Play to preview; soundtrack will be attached when you publish a video.');
+ });
+ musicPlay?.addEventListener('click',async()=>{
+  if(!music.src){musicStatus('Pehle music file select karein.');return;}
+  if(!music.paused){music.pause();stopFade();musicPlay.textContent='▶ Play';return;}
+  const start=Math.max(0,Number($('musicStart')?.value)||0);
+  if(Number.isFinite(music.duration)&&start>=music.duration){musicStatus('Start time track duration se kam rakhein.');return;}
+  music.currentTime=start;music.volume=0;try{await music.play();musicPlay.textContent='Ⅱ Pause';}catch(e){musicStatus('Audio preview start nahi hua. Dobara Play karein.');return;}
+  stopFade();const target=Number($('musicVolume')?.value||80)/100,fade=Number($('musicFade')?.value||0);
+  if(!fade){music.volume=target;return;}
+  const steps=20;let n=0;fadeTimer=setInterval(()=>{n++;music.volume=Math.min(target,target*n/steps);if(n>=steps)stopFade();},fade*1000/steps);
+ });
+ music?.addEventListener('ended',()=>{stopFade();musicPlay.textContent='▶ Play';});
+ $('musicVolume')?.addEventListener('input',e=>{const v=Number(e.target.value);$('musicVolumeValue').textContent=v+'%';if(music)music.volume=v/100;});
+ $('musicRemove')?.addEventListener('click',()=>{music.pause();music.removeAttribute('src');music.load();musicInput.value='';musicTrack.hidden=true;stopFade();if(musicObjectUrl)URL.revokeObjectURL(musicObjectUrl);musicObjectUrl=null;musicPlay.textContent='▶ Play';musicStatus('Track removed. Choose another soundtrack.');});
+
  const video=()=>document.querySelector('#preview video.preview-media');
  $('videoSpeed').onchange=e=>{const v=video();if(v)v.playbackRate=Number(e.target.value);};
  $('previewTrim').onclick=()=>{const v=video();if(!v){alert('Pehle video select karein.');return;}const start=Math.max(0,Number($('trimStart').value)||0),end=Number($('trimEnd').value)||v.duration;if(start>=v.duration||end<=start){alert('Start/end time sahi set karein.');return;}v.currentTime=start;v.playbackRate=Number($('videoSpeed').value)||1;v.play().catch(()=>{});const stop=()=>{if(v.currentTime>=Math.min(end,v.duration)){v.pause();v.removeEventListener('timeupdate',stop);}};v.addEventListener('timeupdate',stop);};
