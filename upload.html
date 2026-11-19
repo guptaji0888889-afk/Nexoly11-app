@@ -222,6 +222,64 @@ body.camera-live #cameraEnhance.beauty-open p{display:block!important;font-size:
 #n11CropBox .n11-crop-actions button.apply{flex:1}
 body{padding-bottom:190px!important}
 </style>
+
+<style id="n11-inline-create-layout">
+/* Unified create studio: mode switcher above, live preview beside editing tools */
+.ig-picker-head{margin-bottom:10px!important}
+.creator-tabs{position:static!important;inset:auto!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important;margin:10px 0 16px!important;padding:7px!important;border:1px solid #29233b!important;border-radius:17px!important;background:linear-gradient(120deg,#11121b,#171022)!important}
+.creator-tab{display:flex!important;align-items:center!important;justify-content:center!important;min-height:48px!important;padding:10px 5px!important;border:1px solid #30283e!important;border-radius:12px!important;background:#171823!important;color:#b9b7c8!important;font-size:12px!important;letter-spacing:.5px!important;text-decoration:none!important}
+.creator-tab.active{color:#fff!important;border-color:#bd39ff!important;background:linear-gradient(120deg,#f02d9b,#8c22ef)!important;box-shadow:0 5px 18px #a52cff44!important}
+.n11-create-workspace{display:grid;grid-template-columns:minmax(0,43%) minmax(0,57%);gap:12px;align-items:start;margin:12px 0}
+.n11-create-workspace #preview{min-width:0;position:sticky;top:10px;padding:0!important}
+.n11-create-workspace #preview:empty{display:block!important;min-height:210px;border:1px dashed #39334a;border-radius:16px;background:linear-gradient(145deg,#11131b,#08090e);position:relative}
+.n11-create-workspace #preview:empty:after{content:'Choose photo / video';position:absolute;inset:0;display:grid;place-items:center;color:#9b9bab;font-size:12px;text-align:center;padding:12px}
+.n11-create-workspace #preview .media-stage{margin:0!important;border:1px solid #39334a;border-radius:16px;overflow:hidden;background:#090a10}
+.n11-create-workspace #preview .preview-media{width:100%!important;max-height:66vh!important;aspect-ratio:4/5;object-fit:contain!important}
+.n11-create-workspace #editTools{min-width:0;margin:0!important;padding:12px!important;max-height:78vh;overflow:auto;overscroll-behavior:contain;border:1px solid #302641!important;border-radius:17px!important;background:linear-gradient(155deg,#111522,#0b0c13)!important}
+.n11-create-workspace #editTools .effect-tiles{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.n11-create-workspace #editTools .effect-tiles button{min-width:0;min-height:66px!important;padding:8px 3px!important;font-size:20px!important}
+.n11-create-workspace #editTools .effect-tiles small{font-size:10px!important}
+.n11-create-workspace #editTools .toolrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.n11-create-workspace #editTools .toolrow .btn{min-width:0!important;padding:9px 5px!important;font-size:11px!important}
+.n11-create-workspace #editTools .n11-music-studio{padding:10px!important}
+.n11-create-workspace #editTools .n11-music-tabs{flex-wrap:wrap}
+.n11-create-workspace #editTools .n11-music-tabs button{font-size:10px!important;padding:7px!important}
+.n11-create-workspace #editTools .n11-music-search input{min-width:0;width:100%}
+.n11-create-workspace #editTools .n11-library-note,.n11-create-workspace #editTools .n11-music-footnote{font-size:10px!important;line-height:1.45}
+.n11-create-workspace #editTools .field{max-width:100%;min-width:0}
+.n11-create-workspace #editTools .effect-categories{gap:5px!important}
+.n11-create-workspace #editTools .effect-cat{font-size:9px!important;padding:8px 6px!important}
+.n11-create-workspace #editTools .hint{font-size:10px!important;line-height:1.4}
+#n11CropBox{margin-top:12px!important}
+@media(max-width:700px){
+ .wrap{padding-left:8px!important;padding-right:8px!important}
+ .wrap>.panel{padding:12px 10px 100px!important}
+ .ig-picker-actions,.ig-recents,.ig-media-grid,#modeHint{margin-left:0!important;margin-right:0!important}
+ .creator-tabs{margin:8px 0 12px!important;gap:5px!important;padding:5px!important}
+ .creator-tab{min-height:43px!important;font-size:11px!important}
+ .n11-create-workspace{grid-template-columns:minmax(0,40%) minmax(0,60%);gap:7px;margin:10px 0}
+ .n11-create-workspace #preview{top:8px}
+ .n11-create-workspace #preview:empty{min-height:180px}
+ .n11-create-workspace #preview .preview-media{max-height:54vh!important;aspect-ratio:3/4!important;object-fit:cover!important}
+ .n11-create-workspace #editTools{padding:8px!important;max-height:70vh;border-radius:13px!important}
+ .n11-create-workspace #editTools .effect-categories{flex-wrap:wrap;overflow:visible}
+ .n11-create-workspace #editTools .effect-cat{white-space:normal!important;flex:1 1 42%;text-align:center}
+ .n11-create-workspace #editTools .effect-tiles{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important}
+ .n11-create-workspace #editTools .effect-tiles button{min-height:58px!important;font-size:17px!important}
+ .n11-create-workspace #editTools .n11-music-head{align-items:flex-start}
+ .n11-create-workspace #editTools .n11-music-head h3{font-size:14px}
+ .n11-create-workspace #editTools .n11-music-head p{font-size:10px}
+ .n11-create-workspace #editTools .n11-music-tabs{gap:4px}
+ .n11-create-workspace #editTools .n11-music-tabs button{font-size:9px!important}
+ .n11-create-workspace #editTools .toolrow{grid-template-columns:1fr}
+ .n11-create-workspace #editTools .n11-music-controls label{font-size:10px}
+ .n11-create-workspace #editTools .n11-track-card{gap:5px;padding:7px}
+ .n11-create-workspace #editTools .n11-track-info b{font-size:10px}
+ .n11-create-workspace #editTools .n11-track-info small{font-size:9px}
+}
+@media(min-width:701px){.n11-create-workspace #editTools{max-height:820px}}
+</style>
+
 </head><body><header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> CREATE</a><a href="index.html">✕ Close</a></header><main class="wrap"><section class="panel"><h2 id="uploadTitle">New post</h2>
 <div class="ig-picker-head"><button type="button" class="ig-back" onclick="location.href='index.html'" aria-label="Close">×</button><strong id="igPageTitle">New post</strong><button type="button" class="ig-next" id="igNext" onclick="document.getElementById('caption').scrollIntoView({behavior:'smooth'})">Next</button></div>
 <div class="ig-picker-actions"><button type="button" class="ig-chip" onclick="alert('Drafts will appear here when draft saving is enabled.')">▧ Drafts</button><button type="button" class="ig-chip" onclick="alert('Templates are coming soon.')">▣ Templates</button></div>
@@ -380,4 +438,22 @@ document.getElementById('editorMore').onclick=()=>alert('More tools: Crop, rotat
   }catch(e){alert('Photo crop nahi ho paya. Dusri photo try karein.');console.error(e)}finally{btn.disabled=false;btn.textContent='✓ Apply crop';}
  });
 })();
-window.addEventListener('pagehide',closeCam);document.getElementById('publish').addEventListener('click',()=>{if(kind==='reel'&&media.files[0]&&!media.files[0].type.startsWith('video/'))alert('Reel mein video zaroori hai.');});</script><script src="js/theme.js"></script><script src="js/studio-upgrade.js"></script></body></html>
+window.addEventListener('pagehide',closeCam);document.getElementById('publish').addEventListener('click',()=>{if(kind==='reel'&&media.files[0]&&!media.files[0].type.startsWith('video/'))alert('Reel mein video zaroori hai.');});
+// Put Post / Story / Reel / Live directly beside the creator workflow and keep preview + tools side-by-side.
+(()=>{
+ const panel=document.querySelector('.wrap>.panel');
+ const tabs=document.querySelector('.creator-tabs');
+ const head=document.querySelector('.ig-picker-head');
+ const preview=document.getElementById('preview');
+ const tools=document.getElementById('editTools');
+ const hint=preview&&preview.previousElementSibling;
+ if(panel&&tabs&&head){head.insertAdjacentElement('afterend',tabs);}
+ if(panel&&preview&&tools&&!preview.parentElement.classList.contains('n11-create-workspace')){
+   const workspace=document.createElement('div');workspace.className='n11-create-workspace';
+   preview.parentNode.insertBefore(workspace,preview);
+   workspace.appendChild(preview);
+   if(hint&&hint.classList.contains('hint'))workspace.appendChild(hint);
+   workspace.appendChild(tools);
+ }
+})();
+</script><script src="js/theme.js"></script><script src="js/studio-upgrade.js"></script></body></html>
