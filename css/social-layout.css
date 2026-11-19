@@ -1,0 +1,52 @@
+/* NEXOLY11 Instagram-style social surfaces: feed, reels and creator */
+:root{--n11-pink:#ff3b86;--n11-violet:#a12cff;--n11-cyan:#35d9c8}
+/* Home feed */
+body.home-page{padding-bottom:90px;background:#050505!important;color:#fff!important}
+.home-header{height:62px;padding:0 16px;border:0;border-bottom:1px solid #242424;background:#050505ed!important}
+.home-header .brand{font-size:24px;font-weight:950;letter-spacing:-1px}
+.home-actions{gap:20px!important}.home-actions a{font-size:25px!important}
+.home-wrap{max-width:620px;padding:10px 0 28px}
+.stories-panel{padding:10px 14px 14px;border:0;border-bottom:1px solid #242424;background:#050505!important}
+.stories-head{margin:0 2px 12px}.stories-head h2{font-size:15px;font-weight:800}
+.stories-head>a{background:linear-gradient(100deg,var(--n11-pink),var(--n11-violet));color:#fff;padding:7px 12px;border-radius:18px;font-size:11px}
+.stories{gap:14px;padding:2px 2px 5px}
+.story{flex:0 0 68px;min-width:68px;font-size:11px;color:#ddd!important}
+.ring{width:66px;height:66px;padding:3px;background:linear-gradient(45deg,#ffd54a,#ff315f 48%,#a42bff);box-shadow:0 0 0 1px #ffffff16}
+.ring img{border:3px solid #050505}
+.feed-heading{padding:16px 15px 11px;align-items:center}
+.feed-heading .eyebrow{display:none}.feed-heading h1{font-size:21px;margin:0;font-weight:850}
+.create-quick{border:0;background:linear-gradient(100deg,var(--n11-pink),var(--n11-violet))!important;color:#fff!important;padding:9px 15px}
+.feed-list{gap:13px}
+.feed-list .post{border:0!important;border-bottom:1px solid #282828!important;border-radius:0!important;background:#050505!important;margin:0!important;overflow:hidden}
+.feed-list .posthead{padding:11px 13px;min-height:58px}
+.feed-list .avatar{width:39px;height:39px;border:2px solid #ff3c88;box-shadow:0 0 0 2px #a12cff55}
+.feed-list .postmedia{width:100%;max-height:none;aspect-ratio:auto;object-fit:contain;background:#000}
+.feed-list .postactions{padding:9px 13px 5px;gap:17px}
+.feed-list .postactions button{font-size:25px}
+.feed-list .caption{padding:3px 13px 12px;font-size:13px;line-height:1.45}
+.feed-list .postmeta{padding:0 13px 12px;font-size:11px}
+/* Instagram-like reels viewer */
+body:has(.n11-reels-screen){background:#000!important;padding-bottom:70px}
+.n11-reels-screen{max-width:620px;margin:0 auto;position:relative}
+.n11-reels-head{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 15px;background:#050505;color:#fff}
+.n11-reels-head h1{font-size:19px;font-weight:900}.n11-reels-head a{font-size:12px;padding:8px 12px;border-radius:18px;background:linear-gradient(100deg,var(--n11-pink),var(--n11-violet));color:#fff}
+.n11-reels-screen #feed{display:flex;flex-direction:column;gap:12px}
+.n11-reels-screen #feed .post{position:relative;margin:0;border:0;border-radius:0;background:#050505;overflow:hidden;min-height:72vh}
+.n11-reels-screen #feed .posthead{position:absolute;left:0;right:58px;bottom:78px;z-index:3;background:linear-gradient(transparent,#0009);padding:14px;color:#fff}
+.n11-reels-screen #feed .postmedia{width:100%;height:76vh;max-height:820px;object-fit:cover;background:#000}
+.n11-reels-screen #feed .postactions{position:absolute;right:7px;bottom:88px;z-index:4;display:flex;flex-direction:column;gap:15px;padding:8px;background:linear-gradient(transparent,#0004);border-radius:20px}
+.n11-reels-screen #feed .postactions button{font-size:23px;color:#fff;text-shadow:0 2px 8px #000}
+.n11-reels-screen #feed .caption{position:absolute;left:12px;right:65px;bottom:18px;z-index:4;color:#fff;text-shadow:0 1px 4px #000;padding:0;font-size:13px}
+.n11-reels-screen #feed .postmeta{display:none}
+/* Creator: clear Post / Story / Reel choice, not a crop-first landing page */
+body:has(.creator-tabs) #uploadTitle{font-size:22px;font-weight:900}
+body:has(.creator-tabs) .creator-tabs{position:sticky;top:0;z-index:10;background:#090909;padding:8px 0}
+body:has(.creator-tabs) .creator-tab{min-height:46px;font-size:14px;font-weight:850}
+body:has(.creator-tabs) .creator-tab.active{background:linear-gradient(100deg,var(--n11-pink),var(--n11-violet))!important;color:#fff!important}
+body:has(.creator-tabs) .media-stage,body:has(.creator-tabs) .camera-box{background:#000;border:1px solid #34303a;border-radius:18px;overflow:hidden}
+body:has(.creator-tabs) .preview-media{width:100%;max-height:58vh;object-fit:contain;background:#000}
+body:has(.creator-tabs) .btn.full{background:linear-gradient(100deg,var(--n11-pink),var(--n11-violet))!important;color:#fff!important;border:0}
+/* Bottom navigation consistent across all three surfaces */
+.bottomnav{height:66px!important;background:#050505f5!important;border-top:1px solid #292929!important;backdrop-filter:blur(16px)}
+.bottomnav a{font-size:24px!important;color:#aaa!important}.bottomnav a.active{color:#fff!important}.bottomnav .create-nav span{display:inline-grid;place-items:center;width:31px;height:31px;border-radius:10px;background:linear-gradient(135deg,var(--n11-pink),var(--n11-violet));color:#fff;font-size:27px}
+@media(min-width:700px){.feed-list .post{border:1px solid #292929!important;border-radius:14px!important}.feed-list .postmedia{max-height:680px}.n11-reels-screen #feed .post{border-radius:14px}}
