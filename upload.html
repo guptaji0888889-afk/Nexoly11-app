@@ -280,6 +280,12 @@ body{padding-bottom:190px!important}
 @media(min-width:701px){.n11-create-workspace #editTools{max-height:820px}}
 </style>
 
+
+<style id="n11-manual-crop-style">
+.n11-crop-viewport{width:100%;aspect-ratio:1/1;max-height:58vh;position:relative;overflow:hidden;border-radius:14px;background:#05070a;border:1px solid #46515d;touch-action:none;user-select:none;margin:12px 0 8px}
+.n11-crop-viewport img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center center;pointer-events:none;will-change:transform}
+.n11-crop-instruction{font-size:12px;color:#aeb8c4;margin:5px 0 12px}
+</style>
 </head><body><header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> CREATE</a><a href="index.html">✕ Close</a></header><main class="wrap"><section class="panel"><h2 id="uploadTitle">New post</h2>
 <div class="ig-picker-head"><button type="button" class="ig-back" onclick="location.href='index.html'" aria-label="Close">×</button><strong id="igPageTitle">New post</strong><button type="button" class="ig-next" id="igNext" onclick="document.getElementById('caption').scrollIntoView({behavior:'smooth'})">Next</button></div>
 <div class="ig-picker-actions"><button type="button" class="ig-chip" onclick="alert('Drafts will appear here when draft saving is enabled.')">▧ Drafts</button><button type="button" class="ig-chip" onclick="alert('Templates are coming soon.')">▣ Templates</button></div>
@@ -297,6 +303,8 @@ body{padding-bottom:190px!important}
 <section id="n11CropBox" class="n11-crop-box" hidden aria-label="Photo crop editor">
  <div class="n11-crop-title"><b>✂️ Crop photo</b><span>Photo ko apne hisaab se set karein</span></div>
  <div class="n11-crop-ratios"><button type="button" class="active" data-ratio="1:1">1:1 Square</button><button type="button" data-ratio="4:5">4:5 Portrait</button><button type="button" data-ratio="original">Original</button></div>
+ <div id="n11CropViewport" class="n11-crop-viewport" aria-label="Drag photo to position; pinch with two fingers to zoom"><img id="n11CropImage" alt="Crop preview"></div>
+ <p class="n11-crop-instruction">☝️ Photo ko ungli se pakadkar aage-peeche karein • 🤏 Do ungli se chhota-bada karein</p>
  <label class="n11-crop-zoom">Zoom <input id="n11CropZoom" type="range" min="1" max="3" step="0.05" value="1"><b id="n11CropZoomValue">1.0×</b></label>
  <div class="n11-crop-actions"><button type="button" id="n11CropRotate">↻ Rotate</button><button type="button" id="n11CropReset">Reset</button><button type="button" id="n11CropApply" class="apply">✓ Apply crop</button></div>
  <small>Crop apply karne par nayi photo file banegi; original gallery photo safe rahegi.</small>
@@ -416,26 +424,33 @@ document.getElementById('editorDraw').onclick=()=>{alert('Draw tool: is MVP buil
 document.getElementById('editorSave').onclick=()=>{const f=media.files[0];if(!f){alert('Pehle media select karein.');return}const a=document.createElement('a');a.href=mediaUrl;a.download='Nexoly11-preview-'+f.name;a.click()};
 document.getElementById('editorMore').onclick=()=>alert('More tools: Crop, rotate, timer camera, front/back camera aur atmosphere effects neeche available hain.');
 
-// Instagram-style photo crop: ratio, zoom, rotate and export the cropped image.
+// Manual Instagram-style crop: drag, pinch zoom, slider zoom, rotate and export.
 (()=>{
- const input=document.getElementById('media'),box=document.getElementById('n11CropBox');
- if(!input||!box)return;
- let original=null,ratio='1:1',zoom=1,rotation=0;
+ const input=document.getElementById('media'),box=document.getElementById('n11CropBox');if(!input||!box)return;
+ const viewport=document.getElementById('n11CropViewport'),img=document.getElementById('n11CropImage');
+ let original=null,ratio='1:1',zoom=1,rotation=0,panX=0,panY=0,pointers=new Map(),pinchStart=0,pinchZoom=1,dragStart=null,objectUrl='';
  const zoomInput=document.getElementById('n11CropZoom'),zoomValue=document.getElementById('n11CropZoomValue');
- input.addEventListener('change',()=>{const f=input.files&&input.files[0];original=f&&f.type.startsWith('image/')?f:null;box.hidden=!original;ratio='1:1';zoom=1;rotation=0;zoomInput.value='1';zoomValue.textContent='1.0×';document.querySelectorAll('.n11-crop-ratios button').forEach(b=>b.classList.toggle('active',b.dataset.ratio==='1:1'));if(original){setTimeout(()=>box.scrollIntoView({behavior:'smooth',block:'center'}),250);}});
- document.querySelectorAll('.n11-crop-ratios button').forEach(b=>b.addEventListener('click',()=>{ratio=b.dataset.ratio;document.querySelectorAll('.n11-crop-ratios button').forEach(x=>x.classList.toggle('active',x===b));}));
- zoomInput.addEventListener('input',()=>{zoom=Number(zoomInput.value);zoomValue.textContent=zoom.toFixed(1)+'×';});
- document.getElementById('n11CropRotate').addEventListener('click',()=>{rotation=(rotation+90)%360;});
- document.getElementById('n11CropReset').addEventListener('click',()=>{ratio='1:1';zoom=1;rotation=0;zoomInput.value='1';zoomValue.textContent='1.0×';document.querySelectorAll('.n11-crop-ratios button').forEach(b=>b.classList.toggle('active',b.dataset.ratio==='1:1'));});
+ const ratioValue=()=>ratio==='original'?(img.naturalWidth/img.naturalHeight):(ratio==='4:5'?4/5:1);
+ const setRatio=()=>{viewport.style.aspectRatio=ratio==='original'?`${img.naturalWidth||1}/${img.naturalHeight||1}`:ratio==='4:5'?'4/5':'1/1';render()};
+ const render=()=>{img.style.transform=`translate(${panX}px,${panY}px) scale(${zoom}) rotate(${rotation}deg)`;zoomInput.value=zoom;zoomValue.textContent=zoom.toFixed(1)+'×'};
+ const reset=()=>{ratio='1:1';zoom=1;rotation=0;panX=panY=0;zoomInput.value='1';zoomValue.textContent='1.0×';document.querySelectorAll('.n11-crop-ratios button').forEach(b=>b.classList.toggle('active',b.dataset.ratio==='1:1'));setRatio()};
+ input.addEventListener('change',()=>{const f=input.files&&input.files[0];original=f&&f.type.startsWith('image/')?f:null;box.hidden=!original;if(objectUrl)URL.revokeObjectURL(objectUrl);if(original){objectUrl=URL.createObjectURL(original);img.onload=()=>{reset();setTimeout(()=>box.scrollIntoView({behavior:'smooth',block:'center'}),200)};img.src=objectUrl;}});
+ document.querySelectorAll('.n11-crop-ratios button').forEach(b=>b.addEventListener('click',()=>{ratio=b.dataset.ratio;document.querySelectorAll('.n11-crop-ratios button').forEach(x=>x.classList.toggle('active',x===b));panX=panY=0;setRatio()}));
+ zoomInput.addEventListener('input',()=>{zoom=Number(zoomInput.value);render()});
+ document.getElementById('n11CropRotate').addEventListener('click',()=>{rotation=(rotation+90)%360;panX=panY=0;render()});
+ document.getElementById('n11CropReset').addEventListener('click',reset);
+ viewport.addEventListener('pointerdown',e=>{e.preventDefault();viewport.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1)dragStart={x:e.clientX,y:e.clientY,px:panX,py:panY};if(pointers.size===2){const a=[...pointers.values()];pinchStart=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);pinchZoom=zoom;dragStart=null}});
+ viewport.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1&&dragStart){panX=dragStart.px+(e.clientX-dragStart.x);panY=dragStart.py+(e.clientY-dragStart.y);render()}else if(pointers.size===2){const a=[...pointers.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);zoom=Math.max(1,Math.min(3,pinchZoom*(d/(pinchStart||d))));render()}});
+ const endPointer=e=>{pointers.delete(e.pointerId);if(pointers.size===1){const a=[...pointers.values()][0];dragStart={x:a.x,y:a.y,px:panX,py:panY}}else dragStart=null};viewport.addEventListener('pointerup',endPointer);viewport.addEventListener('pointercancel',endPointer);
  document.getElementById('n11CropApply').addEventListener('click',async()=>{
   if(!original)return;const btn=document.getElementById('n11CropApply');btn.disabled=true;btn.textContent='Cropping…';
-  try{const bmp=await createImageBitmap(original);const swap=rotation%180!==0;const rw=swap?bmp.height:bmp.width,rh=swap?bmp.width:bmp.height;
+  try{const bmp=await createImageBitmap(original),swap=rotation%180!==0,rw=swap?bmp.height:bmp.width,rh=swap?bmp.width:bmp.height;
    const rotated=document.createElement('canvas');rotated.width=rw;rotated.height=rh;const rc=rotated.getContext('2d');rc.translate(rw/2,rh/2);rc.rotate(rotation*Math.PI/180);rc.drawImage(bmp,-bmp.width/2,-bmp.height/2);bmp.close&&bmp.close();
-   let ar=ratio==='original'?rw/rh:ratio==='4:5'?4/5:1;let cw=rw,ch=rh;if(cw/ch>ar)cw=ch*ar;else ch=cw/ar;cw/=zoom;ch/=zoom;
-   const out=document.createElement('canvas');const max=2000,scale=Math.min(1,max/Math.max(cw,ch));out.width=Math.max(1,Math.round(cw*scale));out.height=Math.max(1,Math.round(ch*scale));out.getContext('2d').drawImage(rotated,(rw-cw)/2,(rh-ch)/2,cw,ch,0,0,out.width,out.height);
-   const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error('Photo export failed')),'image/jpeg',.94));const cropped=new File([blob],(original.name.replace(/\.[^.]+$/,'')||'photo')+'-cropped.jpg',{type:'image/jpeg',lastModified:Date.now()});
-   const dt=new DataTransfer();dt.items.add(cropped);input.files=dt.files;input.dispatchEvent(new Event('change',{bubbles:true}));box.hidden=false;ratio='1:1';zoom=1;rotation=0;zoomInput.value='1';zoomValue.textContent='1.0×';
-  }catch(e){alert('Photo crop nahi ho paya. Dusri photo try karein.');console.error(e)}finally{btn.disabled=false;btn.textContent='✓ Apply crop';}
+   const ar=ratio==='original'?rw/rh:ratio==='4:5'?4/5:1;let cw,ch;if(rw/rh>ar){ch=rh;cw=ch*ar}else{cw=rw;ch=cw/ar}cw/=zoom;ch/=zoom;
+   const vw=viewport.clientWidth||360,vh=vw/ar,base=Math.max(vw/rw,vh/rh),cx=rw/2-panX/(base*zoom),cy=rh/2-panY/(base*zoom);let sx=Math.max(0,Math.min(rw-cw,cx-cw/2)),sy=Math.max(0,Math.min(rh-ch,cy-ch/2));
+   const out=document.createElement('canvas'),scale=Math.min(1,2000/Math.max(cw,ch));out.width=Math.max(1,Math.round(cw*scale));out.height=Math.max(1,Math.round(ch*scale));out.getContext('2d').drawImage(rotated,sx,sy,cw,ch,0,0,out.width,out.height);
+   const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error('Photo export failed')),'image/jpeg',.94));const cropped=new File([blob],(original.name.replace(/\.[^.]+$/,'')||'photo')+'-cropped.jpg',{type:'image/jpeg',lastModified:Date.now()});const dt=new DataTransfer();dt.items.add(cropped);input.files=dt.files;original=cropped;if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=URL.createObjectURL(cropped);img.src=objectUrl;reset();box.hidden=false;
+  }catch(e){alert('Photo crop nahi ho paya. Dusri photo try karein.');console.error(e)}finally{btn.disabled=false;btn.textContent='✓ Apply crop'}
  });
 })();
 window.addEventListener('pagehide',closeCam);document.getElementById('publish').addEventListener('click',()=>{if(kind==='reel'&&media.files[0]&&!media.files[0].type.startsWith('video/'))alert('Reel mein video zaroori hai.');});
