@@ -35,3 +35,11 @@ The upload path now resizes large images to a maximum 1920px edge and JPEG-optim
 
 ## Profile, highlights and view-count repair
 After the base `SUPABASE_SETUP.sql` is already installed, run the complete `PRIVACY_SOCIAL_MIGRATION.sql` once in Supabase SQL Editor. It creates the `story_highlights` table/policies and post-view table/policies/index required by profile highlights and view counts. Confirm the `nexoly-media` bucket exists and that authenticated users can upload only into their own `<user-id>/...` folder. Never paste a service-role key into `js/config.js`.
+
+## Login on a second phone / loading repair notes
+- The browser client stores a separate session on each phone/browser. The same email and password can be used on more than one device; signing in on one device does not invalidate another device.
+- In Supabase → Authentication → Providers → Email, keep Email enabled. If Confirm email is enabled, each new account must verify its email before password login succeeds.
+- In Supabase → Authentication → URL Configuration, add the deployed GitHub Pages base URL and `https://guptaji0888889-afk.github.io/Nexoly11-app/login.html` to Redirect URLs.
+- Never put a service-role/secret key in either config file. Keep only the publishable/anon key in browser code and protect tables with RLS.
+- The updated app applies a 20-second network timeout and loads the home feed and stories independently so a slow/failing Stories request does not hold the feed in a permanent Loading state.
+- If a specific screen still shows `permission denied` or `row-level security`, copy the exact message and the screen name. Login credentials are checked by Supabase Auth; table/storage permission errors are fixed in the corresponding table/storage RLS policy, not by disabling RLS.
