@@ -222,31 +222,35 @@ body.camera-live #cameraEnhance.beauty-open p{display:block!important;font-size:
 #n11CropBox .n11-crop-actions button.apply{flex:1}
 body{padding-bottom:190px!important}
 </style>
-<style id="n11-instagram-editor-look">
-body{background:#090d13!important;color:#f7f8fa}
-.topbar{display:none!important}
-.wrap{max-width:720px!important;padding:0!important}
-.panel{background:#090d13!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:0 0 24px!important}
-.ig-picker-head{height:64px;padding:0 20px;border:0}
-.ig-picker-head strong{font-size:19px}
-.ig-next{font-size:16px;color:#6575ff}
-.ig-picker-actions{display:none}
-.ig-recents{padding:12px 18px}
-.ig-media-grid{gap:2px}
-.ig-camera-tile,.ig-gallery-tile{background:#1b2028}
-.n11-reel-toolbar{display:flex;gap:9px;overflow-x:auto;padding:14px 14px 10px;scrollbar-width:none}
-.n11-reel-toolbar button{flex:0 0 82px;height:76px;border:0;border-radius:14px;background:#222831;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:13px}
-.n11-reel-toolbar button span{font-size:25px}
-.n11-selected-strip{display:flex;align-items:center;gap:12px;padding:8px 16px 18px;color:#aab2c0;font-size:12px}
-.n11-selected-thumb{width:58px;height:70px;border:2px solid #fff;border-radius:12px;display:grid;place-items:center;background:#242a33;font-size:28px;color:#fff}
-#preview{padding:0 12px}
-#preview .media-stage{max-width:100%;margin:0 auto;border-radius:4px;overflow:hidden}
-#preview .preview-media{max-height:58vh;object-fit:contain;background:#080b10}
-.creator-tabs{position:sticky;bottom:8px;z-index:30;max-width:360px;margin:14px auto;background:#171c25;border-radius:30px;padding:10px;box-shadow:0 8px 30px #0008}
-.creator-tab{color:#aab2c0}
-.creator-tab.active{color:#fff}
-#media{margin:8px 14px;max-width:calc(100% - 28px)}
-#multiHint{padding:0 16px}
+<style>
+/* Nexoly11 creator editor: Instagram-inspired filter tray + audio browser */
+.n11-music-studio{border-radius:26px!important;background:#202124!important;border:1px solid #34363d!important;padding:18px!important}
+.n11-ig-audio-tabs{display:flex!important;gap:10px!important;overflow-x:auto!important;white-space:nowrap!important;padding:12px 0!important}
+.n11-ig-audio-tabs button{flex:0 0 auto!important;border:0!important;border-radius:13px!important;padding:11px 16px!important;background:transparent!important;color:#e8e8ec!important;font-weight:700!important}
+.n11-ig-audio-tabs button.active{background:#fff!important;color:#111!important}
+.n11-audio-subcats{display:flex;gap:8px;overflow-x:auto;padding:0 0 12px}
+.n11-audio-subcats button{flex:0 0 auto;border:1px solid #45474e;background:#292b31;color:#eee;border-radius:20px;padding:8px 13px;font-size:12px}
+.n11-music-search{border-radius:14px!important;background:#34363d!important;padding:0 12px!important}
+.n11-track-card{background:#292b31!important;border:0!important;border-radius:14px!important;margin:7px 0!important;padding:12px!important}
+.n11-track-play{background:#383b43!important;color:#fff!important}
+#editTools{border-radius:25px!important}
+#editTools .effect-categories{display:flex;gap:18px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+#editTools .effect-cat{flex:0 0 auto;background:transparent!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;color:#c7c7ce;padding:12px 9px!important}
+#editTools .effect-cat.active{color:#fff!important;border-bottom-color:#fff!important}
+#editTools .effect-tiles{display:flex!important;gap:12px!important;overflow-x:auto!important;scroll-snap-type:x mandatory;padding:8px 2px 14px!important}
+#editTools .effect-tiles button{flex:0 0 142px!important;height:166px!important;min-height:166px!important;border:0!important;border-radius:14px!important;background:#292b31!important;overflow:hidden!important;scroll-snap-align:start!important;position:relative}
+#editTools .effect-tiles button:before{content:"";position:absolute;inset:0 0 34px;background:linear-gradient(135deg,#f8c54b66,#e85b3766),linear-gradient(45deg,#263e50,#b5a06a);opacity:.9}
+#editTools .effect-tiles button[data-filter="filter-bw"]:before{background:linear-gradient(135deg,#111,#aaa)}
+#editTools .effect-tiles button[data-filter="filter-cool"]:before{background:linear-gradient(135deg,#58a7d8,#233b72)}
+#editTools .effect-tiles button[data-filter="filter-glow"]:before{background:linear-gradient(135deg,#f9d67a,#f08a9b)}
+#editTools .effect-tiles button small{position:absolute;bottom:0;left:0;right:0;height:34px;display:grid;place-items:center;background:#292b31;font-size:12px!important}
+#editTools .effect-tiles button{font-size:0!important}
+#editTools .effect-tiles button.active{outline:2px solid #fff!important}
+@media(max-width:700px){
+ body:not(.camera-live) #editTools{margin:18px 0!important;padding:16px!important;background:#1b1b1d!important;border:1px solid #333!important;border-radius:26px!important}
+ body:not(.camera-live) #editTools .effect-tiles button{flex-basis:145px!important}
+ .n11-music-studio{margin-top:18px}
+}
 </style></head><body><header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> CREATE</a><a href="index.html">✕ Close</a></header><main class="wrap"><section class="panel"><h2 id="uploadTitle">New post</h2>
 <div class="ig-picker-head"><button type="button" class="ig-back" onclick="location.href='index.html'" aria-label="Close">×</button><strong id="igPageTitle">New post</strong><button type="button" class="ig-next" id="igNext" onclick="document.getElementById('caption').scrollIntoView({behavior:'smooth'})">Next</button></div>
 <div class="ig-picker-actions"><button type="button" class="ig-chip" onclick="alert('Drafts will appear here when draft saving is enabled.')">▧ Drafts</button><button type="button" class="ig-chip" onclick="alert('Templates are coming soon.')">▣ Templates</button></div>
@@ -260,7 +264,7 @@ body{background:#090d13!important;color:#f7f8fa}
 <nav class="camera-modebar"><a href="upload.html?type=post" data-mode="post">POST</a><a href="upload.html?type=story" data-mode="story">STORY</a><a href="upload.html?type=reel" data-mode="reel">REEL</a><a href="upload.html?type=live" data-mode="live">LIVE</a></nav>
 </div>
 <div class="camera-enhance" id="cameraEnhance"><b>✨ Camera Studio</b><div class="studio-buttons"><button type="button" class="btn secondary" id="gridToggle">▦ Grid</button><button type="button" class="btn secondary" id="mirrorToggle">↔ Mirror</button><button type="button" class="btn secondary" id="beautyReset">↺ Reset</button></div><label>Beauty smooth <input id="beautySmooth" type="range" min="0" max="45" value="0"></label><label>Brightness <input id="camBright" type="range" min="70" max="140" value="100"></label><label>Warmth <input id="camWarm" type="range" min="0" max="30" value="0"></label><label>Zoom <input id="camZoom" type="range" min="1" max="3" step="0.1" value="1"></label><p class="hint">Beauty, brightness aur zoom preview/captured photo par apply honge. Face-tracking AR masks ke liye dedicated AR engine ki zaroorat hoti hai.</p></div>
-<p class="hint">Camera permission browser se allow karein. Live camera HTTPS par kaam karta hai.</p><label class="muted" for="media">Choose from Gallery</label><input class="field" type="file" id="media" accept="image/*,video/*" required><p class="hint" id="multiHint">एक फोटो या वीडियो चुनें। पोस्ट में कई फोटो जोड़ने का विकल्प जल्द उपलब्ध होगा।</p>
+<p class="hint">Camera permission browser se allow karein. Live camera HTTPS par kaam karta hai.</p><label class="muted" for="media">Choose from Gallery</label><input class="field" type="file" id="media" accept="image/*,video/*" required><p class="hint" id="multiHint">Post mein multiple photos select kar sakte hain (har media alag post ke roop mein publish hoga).</p>
 <section id="n11CropBox" class="n11-crop-box" hidden aria-label="Photo crop editor">
  <div class="n11-crop-title"><b>✂️ Crop photo</b><span>Photo ko apne hisaab se set karein</span></div>
  <div class="n11-crop-ratios"><button type="button" class="active" data-ratio="1:1">1:1 Square</button><button type="button" data-ratio="4:5">4:5 Portrait</button><button type="button" data-ratio="original">Original</button></div>
@@ -268,15 +272,6 @@ body{background:#090d13!important;color:#f7f8fa}
  <div class="n11-crop-actions"><button type="button" id="n11CropRotate">↻ Rotate</button><button type="button" id="n11CropReset">Reset</button><button type="button" id="n11CropApply" class="apply">✓ Apply crop</button></div>
  <small>Crop apply karne par nayi photo file banegi; original gallery photo safe rahegi.</small>
 </section>
-<div class="n11-reel-toolbar" id="n11ReelToolbar">
-<button type="button" data-action="audio"><span>♫</span>ऑडियो</button>
-<button type="button" data-action="text"><span>Aa</span>टेक्स्ट</button>
-<button type="button" data-action="overlay"><span>▧</span>ओवरले</button>
-<button type="button" data-action="filter"><span>◉</span>फ़िल्टर</button>
-<button type="button" data-action="edit"><span>☷</span>एडिट</button>
-<button type="button" data-action="ratio"><span>⛶</span>रेशियो</button>
-</div>
-<div class="n11-selected-strip" id="n11SelectedStrip"><span class="n11-selected-thumb">＋</span><small>गैलरी से फोटो या वीडियो चुनें</small></div>
 <div id="preview"></div>
 <p class="hint">Image posts par NEXOLY11 watermark publish ke waqt add hota hai. Video watermark abhi preview tak limited hai.</p><div id="editTools" style="display:none"><label class="muted" for="visualFilter">✨ Filters & Effects</label><select class="field" id="visualFilter"><option value="filter-normal">Original</option><option value="filter-warm">Warm</option><option value="filter-cool">Cool</option><option value="filter-bw">Black & White</option><option value="filter-vivid">Vivid</option><option value="filter-glow">✨ Glow</option><option value="filter-portrait">Portrait</option><option value="filter-cinema">Cinema</option><option value="filter-vintage">Vintage</option></select>
 <div class="effect-categories" role="tablist" aria-label="Effect categories">
@@ -292,7 +287,7 @@ body{background:#090d13!important;color:#f7f8fa}
 <p class="hint">Color filters, rain, sea waves, fog, snowfall aur lighting effects preview mein dikhte hain. Ye atmospheric overlays hain; final file mein permanently merge nahi hote. Advanced background replacement aur face-tracking AR ke liye alag engine chahiye.</p><section class="n11-music-studio" id="musicStudio" aria-label="Music Studio">
  <div class="n11-music-head"><div><span class="n11-music-icon">♫</span><div><h3>Music Studio</h3><p>Apne video ke liye soundtrack choose karein</p></div></div><span class="n11-sound-badge">SOUNDTRACK</span></div>
  <div class="n11-music-search"><span>⌕</span><input id="musicSearch" type="search" placeholder="Search music: beat, chill, instrumental…" aria-label="Search music"></div>
- <div class="n11-music-tabs"><button type="button" class="active" data-music-tab="for-you">For You</button><button type="button" data-music-tab="hindi">Hindi</button><button type="button" data-music-tab="punjabi">Punjabi</button><button type="button" data-music-tab="romantic">Romantic</button><button type="button" data-music-tab="sad">Sad</button><button type="button" data-music-tab="bhakti">Bhakti</button><button type="button" data-music-tab="dj">DJ / Beats</button><button type="button" data-music-tab="chill">Lo-fi</button></div>
+ <div class="n11-music-tabs n11-ig-audio-tabs"><button type="button" class="active" data-music-tab="for-you">For you</button><button type="button" data-music-tab="dj">Trending</button><button type="button" data-music-tab="saved">Saved</button><button type="button" data-music-tab="original">Original audio</button></div><div class="n11-audio-subcats"><button type="button" data-music-tab="hindi">Hindi</button><button type="button" data-music-tab="punjabi">Punjabi</button><button type="button" data-music-tab="romantic">Romantic</button><button type="button" data-music-tab="bhakti">Bhakti</button><button type="button" data-music-tab="chill">Lo-fi</button></div>
  <a class="n11-library-note" id="pixabayMusicBrowse" style="display:block;text-decoration:none;margin:0 0 12px" href="https://pixabay.com/music/search/indian%20music/" target="_blank" rel="noopener">🎧 Pixabay par free music dhoondein ↗ <small style="display:block;margin-top:4px">Hindi, Punjabi, romantic, DJ aur cinematic beats. Download karke “My Music” se add karein.</small></a>
  <div class="n11-music-library" id="musicLibrary" aria-live="polite"></div><div class="n11-library-note">🔥 NCS ke popular EDM tracks neeche diye hain. NCS music ko Nexoly11 ki shared in-app music library mein stream/distribute karne ke liye NCS se app licence lena zaroori hai. Filhaal official NCS page se track download karke “My Music” se apne Reel preview mein add karein. Bollywood ke original hit songs ke liye bhi licence chahiye.</div>
  <label class="n11-my-music" for="music"><span class="n11-upload-icon">⇧</span><span><b>My Music</b><small>Phone se MP3, M4A, AAC ya WAV upload karein</small></span><span class="n11-chevron">›</span></label>
@@ -414,24 +409,4 @@ document.getElementById('editorMore').onclick=()=>alert('More tools: Crop, rotat
   }catch(e){alert('Photo crop nahi ho paya. Dusri photo try karein.');console.error(e)}finally{btn.disabled=false;btn.textContent='✓ Apply crop';}
  });
 })();
-window.addEventListener('pagehide',closeCam);document.getElementById('publish').addEventListener('click',()=>{if(kind==='reel'&&media.files[0]&&!media.files[0].type.startsWith('video/'))alert('Reel mein video zaroori hai.');});</script><script src="js/theme.js"></script><script src="js/studio-upgrade.js"></script><script id="n11-editor-toolbar-actions">
-document.querySelectorAll('#n11ReelToolbar button').forEach(btn=>btn.addEventListener('click',()=>{
- const a=btn.dataset.action;
- if(a==='text'){document.getElementById('addText')?.click();}
- else if(a==='filter'){document.getElementById('visualFilter')?.scrollIntoView({behavior:'smooth',block:'center'});}
- else if(a==='edit'){document.getElementById('n11CropBox')?.removeAttribute('hidden');document.getElementById('n11CropBox')?.scrollIntoView({behavior:'smooth',block:'center'});}
- else if(a==='ratio'){document.querySelector('#n11CropBox [data-ratio="4:5"]')?.click();document.getElementById('n11CropBox')?.scrollIntoView({behavior:'smooth',block:'center'});}
- else if(a==='overlay'){document.querySelector('.sticker')?.scrollIntoView({behavior:'smooth',block:'center'});}
- else if(a==='audio'){alert('ऑडियो जोड़ने का विकल्प अगला अपडेट में जोड़ा जाएगा।');}
-}));
-document.getElementById('media')?.addEventListener('change',e=>{
- const f=e.target.files&&e.target.files[0], strip=document.getElementById('n11SelectedStrip');
- if(!f||!strip)return;
- strip.innerHTML='';
- const thumb=document.createElement('span');thumb.className='n11-selected-thumb';
- if(f.type.startsWith('image/')){const im=document.createElement('img');im.src=URL.createObjectURL(f);im.style='width:100%;height:100%;object-fit:cover;border-radius:9px';thumb.append(im)}
- else thumb.textContent='▶';
- const label=document.createElement('small');label.textContent=f.name;
- strip.append(thumb,label);
-});
-</script></body></html>
+window.addEventListener('pagehide',closeCam);document.getElementById('publish').addEventListener('click',()=>{if(kind==='reel'&&media.files[0]&&!media.files[0].type.startsWith('video/'))alert('Reel mein video zaroori hai.');});</script><script src="js/theme.js"></script><script src="js/studio-upgrade.js"></script></body></html>
