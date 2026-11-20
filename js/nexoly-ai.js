@@ -1,4 +1,4 @@
-/* NEXOLY11 AI chat. The OpenAI key stays on the Supabase Edge Function. */
+/* Nexoly11 AI frontend. The OpenAI key is never stored in this file. */
 (() => {
   const $ = (id) => document.getElementById(id);
   const STORE = 'nexoly11_ai_chat_v1';
@@ -22,12 +22,20 @@
   }
 
   function restore() {
+    const box = $('aiReplies');
+    if (!box) return;
     try {
       const history = JSON.parse(localStorage.getItem(STORE) || '[]');
-      if (!Array.isArray(history) || !history.length) return;
-      $('aiReplies').replaceChildren();
+      box.replaceChildren();
+      if (!Array.isArray(history) || !history.length) {
+        addBubble('Namaste! Main Nexoly11 AI hoon. App use karne, creator growth aur settings mein madad kar sakta hoon.', 'theirs', false);
+        return;
+      }
       history.forEach(m => addBubble(String(m.text || ''), m.who === 'mine' ? 'mine' : 'theirs', false));
-    } catch (_) {}
+    } catch (_) {
+      box.replaceChildren();
+      addBubble('Namaste! Main Nexoly11 AI hoon. Aapki kya madad karun?', 'theirs', false);
+    }
   }
 
   async function send() {
@@ -35,7 +43,7 @@
     const button = $('sendAI');
     const question = input?.value.trim();
     if (!question || busy) return;
-    if (question.length > 1500) return addBubble('Please ek message 1500 characters se chhota bhejein.');
+    if (question.length > 1500) return addBubble('Ek message 1500 characters se chhota bhejein.');
     busy = true;
     button.disabled = true;
     input.disabled = true;
@@ -43,28 +51,32 @@
     input.value = '';
     const pending = document.createElement('p');
     pending.className = 'bubble theirs ai-pending';
-    pending.textContent = 'NEXOLY11 AI soch raha hai…';
+    pending.textContent = 'Nexoly11 AI jawab taiyar kar raha hai…';
     $('aiReplies').appendChild(pending);
     try {
-      if (!window.N11) throw new Error('Supabase connection nahi mila. Page refresh karke dobara try karein.');
-      const { data: sessionData } = await window.N11.auth.getSession();
-      if (!sessionData?.session) throw new Error('AI use karne ke liye pehle NEXOLY11 account mein login karein.');
+      if (!window.N11) throw new Error('Supabase connect nahi hua. Internet aur config.js check karein.');
+      const { data: sessionData, error: sessionError } = await window.N11.auth.getSession();
+      if (sessionError || !sessionData?.session) throw new Error('AI use karne ke liye pehle Nexoly11 mein login karein.');
       const history = JSON.parse(localStorage.getItem(STORE) || '[]')
-        .slice(-12).map(m => ({ role: m.who === 'mine' ? 'user' : 'assistant', content: m.text }));
-      const { data, error } = await window.N11.functions.invoke('nexoly-ai', {
-        body: { message: question, history }
-      });
+        .slice(-12).map(m => ({ role: m.who === 'mine' ? 'user' : 'assistant', content: String(m.text || '') }));
+      const { data, error } = await window.N11.functions.invoke('nexoly-ai', { body: { message: question, history } });
       if (error) {
-        let detail = error.message || 'AI server se response nahi mila.';
-        try { const ctx = error.context; if (ctx?.json) { const body = await ctx.json(); detail = body.error || detail; } } catch (_) {}
-        throw new Error(detail + ' Supabase AI function deploy aur OPENAI_API_KEY secret check karein.');
+        let detail = error.message || 'AI function se response nahi mila.';
+        try {
+          const ctx = error.context;
+          if (ctx?.clone) {
+            const payload = await ctx.clone().json();
+            if (payload?.error) detail = payload.error;
+          }
+        } catch (_) {}
+        throw new Error(detail);
       }
-      if (!data?.reply) throw new Error(data?.error || 'AI ka jawab khaali aaya.');
+      if (!data?.reply) throw new Error(data?.error || 'AI ka jawab nahi mila. Dobara try karein.');
       pending.remove();
       addBubble(data.reply, 'theirs');
     } catch (err) {
       pending.remove();
-      addBubble('AI connect nahi ho paya: ' + (err.message || 'Unknown error') + '\n\nAgar abhi setup nahi hua hai, SETUP_NEXOLY11_AI.md ke steps complete karein.');
+      addBubble('AI abhi connect nahi ho paya: ' + (err.message || 'Temporary server error') + '\n\nSetup ke liye SETUP_NEXOLY11_AI.md dekhein.');
       console.error('NEXOLY11 AI:', err);
     } finally {
       busy = false;
@@ -72,6 +84,15 @@
       input.disabled = false;
       input.focus();
     }
+  }
+
+  function openChat() {
+    const panel = $('aiChat');
+    if (!panel) return;
+    panel.hidden = false;
+    $('openAI').textContent = 'Close AI Chat';
+    restore();
+    $('aiText')?.focus();
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -85,6 +106,9 @@
     $('aiText')?.addEventListener('keydown', e => {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
     });
-    $('aiReplies')?.addEventListener('click', () => {});
+    $('inboxSearch')?.addEventListener('focus', () => {
+      if (!$('aiChat')?.hidden) return;
+      openChat();
+    });
   });
 })();
