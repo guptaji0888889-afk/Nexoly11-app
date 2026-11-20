@@ -351,6 +351,30 @@ body.camera-live #n11ArCanvas{display:block!important}
 .n11-lens-explorer[hidden]{display:none!important}body.camera-live #n11LensExplorer:not([hidden]){display:block!important}.n11-extra-tools{position:absolute;left:10px;right:10px;bottom:calc(112px + env(safe-area-inset-bottom));z-index:38;background:#090a0dbb;border-radius:15px;padding:7px;backdrop-filter:blur(10px)}body.camera-live .n11-extra-tools button{min-height:48px}.n11-lens-explorer header{display:flex;align-items:center;justify-content:space-between;font-size:18px;padding:5px 0 14px}.n11-lens-explorer header button{border:0;background:#282a31;color:white;border-radius:50%;width:38px;height:38px;font-size:24px}.n11-lens-tabs{display:flex;gap:8px;overflow:auto;padding:8px 0 14px}.n11-lens-tabs button{flex:none;border:0;border-radius:20px;padding:10px 14px;background:#292b32;color:#ddd}.n11-lens-tabs button.active{background:#fff;color:#111}.n11-lens-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.n11-lens-grid button{min-height:105px;border:1px solid #383a43;border-radius:15px;background:linear-gradient(145deg,#303440,#17191f);color:#fff;font-size:27px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}.n11-lens-grid button small{font-size:11px}.n11-lens-grid button.active{outline:2px solid #22c5ff}.n11-lens-note{font-size:11px;color:#a9abb5;line-height:1.5;margin:14px 2px}.n11-lens-explorer input{width:100%;padding:12px;border-radius:12px;background:#242630;color:#fff;border:1px solid #444;margin:4px 0 10px}
 .n11-extra-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}.n11-extra-tools button{padding:12px 4px;border:1px solid #393b45;border-radius:12px;background:#1b1d24;color:#fff;font-size:11px}.n11-extra-tools button span{display:block;font-size:21px;margin-bottom:5px}
 </style>
+
+<style id="nexoly11-gallery-camera-entry-fix">
+/* Entry screen: users choose Gallery or Camera; never force-open the camera. */
+body:not(.camera-live){background:#050609!important;overflow-x:hidden!important;min-height:100dvh!important}
+body:not(.camera-live) .topbar{display:flex!important}
+body:not(.camera-live) .wrap{width:100%!important;max-width:620px!important;margin:0 auto!important;padding:0 0 90px!important}
+body:not(.camera-live) .wrap>.panel{display:block!important;min-height:calc(100dvh - 130px)!important;padding:0 0 28px!important;margin:0!important;background:#050609!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+body:not(.camera-live) #uploadTitle{display:none!important}
+body:not(.camera-live) .ig-picker-head,body:not(.camera-live) .ig-picker-actions,body:not(.camera-live) .ig-recents,body:not(.camera-live) .ig-media-grid,body:not(.camera-live) #modeHint,body:not(.camera-live) .creator-tabs{display:flex!important}
+body:not(.camera-live) .ig-media-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;padding:8px 14px 16px!important}
+body:not(.camera-live) .ig-camera-tile,body:not(.camera-live) .ig-gallery-tile{aspect-ratio:1.25/1!important;border-radius:18px!important;border:1px solid #343943!important;background:linear-gradient(145deg,#202632,#11151c)!important;min-height:128px!important}
+body:not(.camera-live) .ig-camera-tile span,body:not(.camera-live) .ig-gallery-tile span{font-size:38px!important}
+body:not(.camera-live) .ig-camera-tile small,body:not(.camera-live) .ig-gallery-tile small{font-size:13px!important;font-weight:800!important}
+body:not(.camera-live) .ig-picker-actions{padding:12px 14px!important}
+body:not(.camera-live) .ig-recents{padding:10px 15px!important}
+body:not(.camera-live) #modeHint{padding:8px 15px 14px!important;color:#aab3c1!important}
+body:not(.camera-live) .creator-tabs{position:fixed!important;z-index:85!important;left:0!important;right:0!important;bottom:calc(58px + env(safe-area-inset-bottom))!important;justify-content:space-around!important;background:#080808!important;border-top:1px solid #252525!important;margin:0!important;padding:8px 4px!important}
+body:not(.camera-live) .camera-actions{display:none!important}
+body:not(.camera-live) #cameraBox[hidden]{display:none!important}
+body:not(.camera-live) #media{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+body:not(.camera-live) #preview:not(:empty){display:block!important;padding:10px 14px!important}
+body:not(.camera-live) #editTools:not([style*="display: none"]){display:block!important}
+body.camera-live .camera-gallery{display:grid!important;position:fixed!important;z-index:260!important;left:22px!important;right:auto!important;bottom:calc(30px + env(safe-area-inset-bottom))!important;top:auto!important;width:50px!important;height:50px!important;border-radius:15px!important;background:#171b25dd!important;border:1px solid #ffffff66!important;color:#fff!important;place-items:center!important;font-size:22px!important}
+</style>
 </head><body><header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> CREATE</a><a href="index.html">✕ Close</a></header><main class="wrap"><section class="panel"><h2 id="uploadTitle">New post</h2>
 <div class="ig-picker-head"><button type="button" class="ig-back" onclick="location.href='index.html'" aria-label="Close">×</button><strong id="igPageTitle">New post</strong><button type="button" class="ig-next" id="igNext" onclick="document.getElementById('caption').scrollIntoView({behavior:'smooth'})">Next</button></div>
 <div class="ig-picker-actions"><button type="button" class="ig-chip" onclick="alert('Drafts will appear here when draft saving is enabled.')">▧ Drafts</button><button type="button" class="ig-chip" onclick="alert('Templates are coming soon.')">▣ Templates</button></div>
@@ -579,14 +603,5 @@ window.addEventListener('pagehide',closeCam);document.getElementById('publish').
 })();
 </script>
 <script src="js/theme.js"></script>
-<script>
-/* NEXOLY11: open the integrated full-screen camera directly.
-   If permission is denied, the existing camera status message explains how to allow it. */
-window.addEventListener('load', function () {
-  const openButton = document.getElementById('openCamera');
-  if (openButton) window.setTimeout(function () {
-    if (!document.body.classList.contains('camera-live')) openButton.click();
-  }, 450);
-});
-</script>
+
 </body></html>
