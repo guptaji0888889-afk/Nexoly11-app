@@ -431,6 +431,18 @@ body.camera-live #startRecord{bottom:calc(28px + env(safe-area-inset-bottom))!im
 .creator-tabs{display:flex!important;visibility:visible!important;}
 #preview{display:block!important;}
 </style>
+
+<style id="nexoly-natural-beauty-only">
+/* Clean Natural Beauty camera: remove legacy lenses, filters and editing tool panels. */
+#n11LiveLooks,#cameraSideTools,#n11ExtraTools,#n11LensExplorer,#editTools,#n11CropBox,.story-editor-tools,.effect-categories,.effect-tiles,#atmosphereFilter,.sticker,#addText{display:none!important}
+#cameraEnhance{display:block!important;margin:14px 12px!important;padding:16px!important;border:1px solid #344054!important;border-radius:18px!important;background:#101722!important;color:#fff!important}
+#cameraEnhance>b{display:block!important;font-size:16px!important;margin-bottom:12px!important}
+#cameraEnhance label{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;margin:12px 0!important;color:#e7edf6!important;font-size:13px!important}
+#cameraEnhance input[type=range]{width:58%!important;accent-color:#35d6c5!important}
+#cameraEnhance .studio-buttons{display:flex!important;justify-content:flex-end!important}
+#cameraEnhance .hint{color:#9eacbd!important;line-height:1.5!important}
+#n11ArCanvas,#n11ArStatus{display:none!important}
+</style>
 </head><body><header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> CREATE</a><a href="index.html">✕ Close</a></header><main class="wrap"><section class="panel"><h2 id="uploadTitle">New post</h2>
 <div class="ig-picker-head"><button type="button" class="ig-back" onclick="location.href='index.html'" aria-label="Close">×</button><strong id="igPageTitle">New post</strong><button type="button" class="ig-next" id="igNext" onclick="document.getElementById('caption').scrollIntoView({behavior:'smooth'})">Next</button></div>
 <div class="ig-picker-actions"><button type="button" class="ig-chip" onclick="alert('Drafts will appear here when draft saving is enabled.')">▧ Drafts</button><button type="button" class="ig-chip" onclick="alert('Templates are coming soon.')">▣ Templates</button></div>
@@ -461,7 +473,7 @@ body.camera-live #startRecord{bottom:calc(28px + env(safe-area-inset-bottom))!im
  <div class="n11-lens-grid" id="n11LensGrid"></div>
  <p class="n11-lens-note">Face-tracking lenses ke liye internet aur compatible browser zaroori hai. Advanced 3D creator lenses alag AR assets se add honge.</p>
 </section>
-<div class="camera-enhance" id="cameraEnhance"><b>✨ LENSA AI CAMERA STUDIO</b><div class="studio-buttons"><button type="button" class="btn secondary" id="gridToggle">▦ Grid</button><button type="button" class="btn secondary" id="mirrorToggle">↔ Mirror</button><button type="button" class="btn secondary" id="beautyReset">↺ Reset</button></div><label>Face Beauty Smooth <input id="beautySmooth" type="range" min="0" max="100" value="35"></label><label>Light <input id="camBright" type="range" min="70" max="140" value="100"></label><label>Tone <input id="camWarm" type="range" min="0" max="30" value="0"></label><label>Zoom <input id="camZoom" type="range" min="1" max="3" step="0.1" value="1"></label><p class="hint">Skin looks: K-Beauty, Thai Soft Glow, Porcelain Glow aur Natural Bright. Ye soft bright portrait finish dete hain; lighting aur camera quality ke hisaab se result badlega. Ye skin-only AI retouch ya ethnicity change nahi hai. 30+ looks, exposure aur zoom capture mein apply hote hain.</p></div>
+<div class="camera-enhance" id="cameraEnhance"><b>✨ NEXOLY11 NATURAL BEAUTY</b><div class="studio-buttons"><button type="button" class="btn secondary" id="beautyReset">↺ Reset</button></div><label>Natural Smooth <input id="beautySmooth" type="range" min="0" max="100" value="35"></label><label>Natural Glow / Light <input id="camBright" type="range" min="70" max="140" value="100"></label><label>Glow warmth <input id="camWarm" type="range" min="0" max="30" value="0"></label><label>Zoom <input id="camZoom" type="range" min="1" max="3" step="0.1" value="1"></label><p class="hint">Sirf natural smooth, soft glow aur light enhancement. Skin ka asli rang aur texture natural rakha jayega. Result phone camera aur lighting par depend karega.</p></div>
 <p class="hint">Camera permission browser se allow karein. Live camera HTTPS par kaam karta hai.</p><label class="muted" for="media">Choose from Gallery</label><input class="field" type="file" id="media" accept="image/*,video/*" required><p class="hint" id="multiHint">Post mein multiple photos select kar sakte hain (har media alag post ke roop mein publish hoga).</p>
 <section id="n11CropBox" class="n11-crop-box" hidden aria-label="Photo crop editor">
  <div class="n11-crop-title"><b>✂️ Crop photo</b><span>Photo ko apne hisaab se set karein</span></div>
