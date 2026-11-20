@@ -431,30 +431,6 @@ body.camera-live #startRecord{bottom:calc(28px + env(safe-area-inset-bottom))!im
 .creator-tabs{display:flex!important;visibility:visible!important;}
 #preview{display:block!important;}
 </style>
-<style id="n11-gallery-picker-fix">
-/* Restore the gallery picker that was accidentally hidden by the camera-only redesign. */
-html,body{min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;background:#050609!important;color:#fff!important}
-body:not(.camera-live) .topbar{display:flex!important;position:sticky!important;top:0!important;z-index:30!important}
-body:not(.camera-live) .wrap{width:100%!important;max-width:760px!important;margin:0 auto!important;padding:12px!important}
-body:not(.camera-live) .wrap>.panel{min-height:0!important;height:auto!important;margin:0!important;padding:16px!important;display:block!important;align-items:stretch!important;justify-content:flex-start!important;background:#08090d!important;border:1px solid #222!important;border-radius:18px!important;box-shadow:none!important}
-body:not(.camera-live) #uploadTitle,body:not(.camera-live) .ig-picker-head,body:not(.camera-live) .ig-picker-actions,body:not(.camera-live) .ig-recents,body:not(.camera-live) .ig-media-grid,body:not(.camera-live) #modeHint,body:not(.camera-live) .creator-tabs,body:not(.camera-live) #media,body:not(.camera-live) label[for="media"],body:not(.camera-live) #multiHint{display:flex!important;visibility:visible!important}
-body:not(.camera-live) #uploadTitle{display:block!important}
-body:not(.camera-live) .ig-media-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;min-height:150px!important;margin:12px 0!important}
-body:not(.camera-live) .ig-camera-tile,body:not(.camera-live) .ig-gallery-tile{display:flex!important;min-height:140px!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;gap:10px!important;border:1px dashed #596273!important;border-radius:14px!important;background:#111722!important;color:#fff!important;text-decoration:none!important}
-body:not(.camera-live) .ig-gallery-tile span,body:not(.camera-live) .ig-camera-tile span{font-size:32px!important}
-body:not(.camera-live) #media{display:block!important;visibility:visible!important;width:100%!important;min-height:48px!important;margin:12px 0!important;padding:10px!important;background:#171a21!important;color:#fff!important;border:1px solid #3b4350!important;border-radius:12px!important}
-body:not(.camera-live) label[for="media"]{display:block!important;margin-top:12px!important;color:#dce2ec!important}
-body:not(.camera-live) #preview:not(:empty){display:block!important;padding:10px 0!important}
-body:not(.camera-live) #preview:empty{display:none!important}
-body:not(.camera-live) .camera-actions{display:flex!important;position:static!important;width:auto!important;margin:12px 0!important;padding:0!important;justify-content:flex-start!important}
-body:not(.camera-live) .camera-actions .btn{display:inline-flex!important;flex:1 1 45%!important}
-body:not(.camera-live) #openCamera{flex-basis:100%!important}
-body:not(.camera-live) .camera-box[hidden]{display:none!important}
-body:not(.camera-live) .creator-tabs{display:flex!important;justify-content:space-around!important;margin:16px -4px!important;padding:8px!important;border-bottom:1px solid #303744!important}
-body:not(.camera-live) .creator-tab{display:inline-flex!important}
-body:not(.camera-live) .bottomnav{display:flex!important}
-body:not(.camera-live) #cameraEnhance,body:not(.camera-live) #editTools,body:not(.camera-live) .n11-music-studio{display:none!important}
-</style>
 </head><body><header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> CREATE</a><a href="index.html">✕ Close</a></header><main class="wrap"><section class="panel"><h2 id="uploadTitle">New post</h2>
 <div class="ig-picker-head"><button type="button" class="ig-back" onclick="location.href='index.html'" aria-label="Close">×</button><strong id="igPageTitle">New post</strong><button type="button" class="ig-next" id="igNext" onclick="document.getElementById('caption').scrollIntoView({behavior:'smooth'})">Next</button></div>
 <div class="ig-picker-actions"><button type="button" class="ig-chip" onclick="alert('Drafts will appear here when draft saving is enabled.')">▧ Drafts</button><button type="button" class="ig-chip" onclick="alert('Templates are coming soon.')">▣ Templates</button></div>
@@ -495,7 +471,7 @@ body:not(.camera-live) #cameraEnhance,body:not(.camera-live) #editTools,body:not
  <small>Crop apply karne par nayi photo file banegi; original gallery photo safe rahegi.</small>
 </section>
 <div id="preview"></div>
-<p class="hint">Image posts par NEXOLY11 watermark publish ke waqt add hota hai. Video watermark abhi preview tak limited hai.</p><div id="editTools" style="display:none"><label class="muted" for="visualFilter">✨ Filters & Effects</label><select class="field" id="visualFilter"><option value="filter-normal">Original</option><option value="filter-warm">Warm</option><option value="filter-cool">Cool</option><option value="filter-bw">Black & White</option><option value="filter-vivid">Vivid</option><option value="filter-glow">✨ Glow</option><option value="filter-portrait">Portrait</option><option value="filter-cinema">Cinema</option><option value="filter-vintage">Vintage</option></select>
+<div class="n11-rights-check" style="margin:14px;padding:13px;border:1px solid #334155;border-radius:13px;background:#101923;color:#dce7f5;font-size:12px;line-height:1.5"><label style="display:flex;gap:10px;align-items:flex-start"><input id="rightsConfirm" type="checkbox" style="width:20px;height:20px;flex:0 0 auto;accent-color:#19b6a5"><span><b>Content rights confirmation</b><br>Main confirm karta/karti hoon ki is photo/video ko upload karne aur edit karne ka haq ya permission mere paas hai. Kisi doosre creator ka watermark bina permission nahi hataya jayega.</span></label><div style="margin-top:8px;color:#50d9ca;font-weight:800">✓ NEXOLY11 🇮🇳 branding upload ke baad dikhai degi</div></div><div id="editTools" style="display:none"><label class="muted" for="visualFilter">✨ Filters & Effects</label><select class="field" id="visualFilter"><option value="filter-normal">Original</option><option value="filter-warm">Warm</option><option value="filter-cool">Cool</option><option value="filter-bw">Black & White</option><option value="filter-vivid">Vivid</option><option value="filter-glow">✨ Glow</option><option value="filter-portrait">Portrait</option><option value="filter-cinema">Cinema</option><option value="filter-vintage">Vintage</option></select>
 <div class="effect-categories" role="tablist" aria-label="Effect categories">
 <button type="button" class="effect-cat active" data-effect-cat="trending">✨ TRENDING</button>
 <button type="button" class="effect-cat" data-effect-cat="appearance">💎 APPEARANCE</button>
