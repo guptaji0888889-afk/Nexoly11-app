@@ -47,6 +47,8 @@
     busy = true;
     button.disabled = true;
     input.disabled = true;
+    const previousHistory = JSON.parse(localStorage.getItem(STORE) || '[]')
+      .slice(-12).map(m => ({ role: m.who === 'mine' ? 'user' : 'assistant', content: String(m.text || '') }));
     addBubble(question, 'mine');
     input.value = '';
     const pending = document.createElement('p');
@@ -57,9 +59,7 @@
       if (!window.N11) throw new Error('Supabase connect nahi hua. Internet aur config.js check karein.');
       const { data: sessionData, error: sessionError } = await window.N11.auth.getSession();
       if (sessionError || !sessionData?.session) throw new Error('AI use karne ke liye pehle Nexoly11 mein login karein.');
-      const history = JSON.parse(localStorage.getItem(STORE) || '[]')
-        .slice(-12).map(m => ({ role: m.who === 'mine' ? 'user' : 'assistant', content: String(m.text || '') }));
-      const { data, error } = await window.N11.functions.invoke('nexoly-ai', { body: { message: question, history } });
+      const { data, error } = await window.N11.functions.invoke('nexoly-ai', { body: { message: question, history: previousHistory } });
       if (error) {
         let detail = error.message || 'AI function se response nahi mila.';
         try {
@@ -76,7 +76,7 @@
       addBubble(data.reply, 'theirs');
     } catch (err) {
       pending.remove();
-      addBubble('AI abhi connect nahi ho paya: ' + (err.message || 'Temporary server error') + '\n\nSetup ke liye SETUP_NEXOLY11_AI.md dekhein.');
+      addBubble('AI abhi connect nahi ho paya: ' + (err.message || 'Temporary server error') + '\n\nAdmin ko Supabase Edge Function aur OPENAI_API_KEY secret setup karna hoga.');
       console.error('NEXOLY11 AI:', err);
     } finally {
       busy = false;
