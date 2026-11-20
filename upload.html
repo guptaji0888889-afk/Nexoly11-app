@@ -409,6 +409,28 @@ body.camera-live #startRecord{bottom:calc(28px + env(safe-area-inset-bottom))!im
 .ig-gallery-tile{grid-column:1/-1;min-height:150px;border-radius:14px}
 #modeHint{font-size:13px!important}
 </style>
+
+<style id="nexoly11-force-remove-editor-tools">
+/* Gallery-only upload: permanently remove the old editing interface. */
+#editTools, .story-editor-tools { display: none !important; visibility: hidden !important; height: 0 !important; min-height: 0 !important; max-height: 0 !important; overflow: hidden !important; margin: 0 !important; padding: 0 !important; border: 0 !important; }
+</style>
+<style id="nexoly11-no-editor-final">
+/* FINAL REQUEST: Keep POST / STORY / REEL and gallery upload. Remove camera, beauty and every editing/effect panel. */
+#editTools,#cameraEnhance,#n11CropBox,.story-editor-tools,.n11-music-studio,
+#music,#musicPreview,#cameraBox,.camera-actions,.camera-enhance,.camera-side-tools,
+.n11-live-looks,#n11LiveLooks,.n11-extra-tools,#n11ExtraTools,
+#n11LensExplorer,.n11-lens-explorer,.ig-camera-tile,#launchCamera,
+#openCamera,#switchCamera,#takePhoto,#timerShot,#startRecord,#stopCamera,
+#cameraFlip,#cameraGrid,#cameraAtmosphere,.n11-ar-status,
+#visualFilter,#atmosphereFilter,.effect-categories,.effect-tiles,
+.toolrow,.creator-text,.creator-sticker {display:none!important;visibility:hidden!important;}
+#editTools *,#cameraEnhance *,#n11CropBox *,#n11LensExplorer * {display:none!important;}
+.ig-media-grid{display:grid!important;grid-template-columns:1fr!important;}
+.ig-gallery-tile{display:flex!important;grid-column:1/-1!important;min-height:145px!important;}
+#media{display:block!important;visibility:visible!important;}
+.creator-tabs{display:flex!important;visibility:visible!important;}
+#preview{display:block!important;}
+</style>
 </head><body><header class="topbar"><a class="brand" href="index.html">NEXOLY<span>11</span> CREATE</a><a href="index.html">✕ Close</a></header><main class="wrap"><section class="panel"><h2 id="uploadTitle">New post</h2>
 <div class="ig-picker-head"><button type="button" class="ig-back" onclick="location.href='index.html'" aria-label="Close">×</button><strong id="igPageTitle">New post</strong><button type="button" class="ig-next" id="igNext" onclick="document.getElementById('caption').scrollIntoView({behavior:'smooth'})">Next</button></div>
 <div class="ig-picker-actions"><button type="button" class="ig-chip" onclick="alert('Drafts will appear here when draft saving is enabled.')">▧ Drafts</button><button type="button" class="ig-chip" onclick="alert('Templates are coming soon.')">▣ Templates</button></div>
