@@ -585,7 +585,26 @@ Object.assign(liveLookNames,{'porcelain':'Porcelain','honey':'Honey','cobalt':'C
 const liveLookHost=document.getElementById('n11LiveLooks');Object.entries(extraLiveLooks).forEach(([key])=>{const b=document.createElement('button');b.type='button';b.dataset.liveLook=key;b.innerHTML='<span>✦</span><small>'+(liveLookNames[key]||key.replace(/([A-Z])/g,' $1'))+'</small>';b.addEventListener('click',()=>{liveLook=key;document.querySelectorAll('[data-live-look]').forEach(x=>x.classList.toggle('active',x===b));applyCameraLook()});liveLookHost.append(b)});
 const faceLensMeta={dog:['🐶','Dog'],bear:['🐻','Bear'],devil:['😈','Devil'],halo:['😇','Angel Halo'],hearts:['💗','Heart Eyes'],freckles:['🌟','Freckles'],flower:['🌼','Flower Crown'],starry:['✨','Starry Eyes'],anime:['👀','Anime Eyes']};
 Object.entries(faceLensMeta).forEach(([key,[icon,label]])=>{const b=document.createElement('button');b.type='button';b.dataset.liveLook=key;b.innerHTML=`<span>${icon}</span><small>${label}</small>`;b.addEventListener('click',async()=>{liveLook=key;document.querySelectorAll('[data-live-look]').forEach(x=>x.classList.toggle('active',x===b));await initN11AR();n11ArLast=0;applyCameraLook()});liveLookHost.append(b)});
-async function initN11AR(){if(n11FaceLandmarker||n11ArReady)return; n11ArReady=true;arStatus.hidden=false;arStatus.textContent='AR Face Engine loading…';try{const vision=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/+esm');const fileset=await vision.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');n11FaceLandmarker=await vision.FaceLandmarker.createFromOptions(fileset,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',delegate:'GPU'},runningMode:'VIDEO',numFaces:1});arStatus.textContent='AR Lens ready ✓';setTimeout(()=>arStatus.hidden=true,1800)}catch(e){arStatus.textContent='AR engine load nahi hua · Internet check karein';console.warn('Nexoly11 AR init:',e)}}
+async function initN11AR(){
+ if(n11FaceLandmarker||n11ArReady)return;
+ n11ArReady=true;arStatus.hidden=false;arStatus.textContent='Nexoly11 AI face engine loading…';
+ try{
+  const vision=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/+esm');
+  const fileset=await vision.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
+  const modelAssetPath='https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
+  try{
+   n11FaceLandmarker=await vision.FaceLandmarker.createFromOptions(fileset,{baseOptions:{modelAssetPath,delegate:'GPU'},runningMode:'VIDEO',numFaces:1});
+  }catch(gpuError){
+   console.warn('Nexoly11 AI GPU unavailable; trying CPU:',gpuError);
+   n11FaceLandmarker=await vision.FaceLandmarker.createFromOptions(fileset,{baseOptions:{modelAssetPath,delegate:'CPU'},runningMode:'VIDEO',numFaces:1});
+  }
+  arStatus.textContent='AI Face Tracking ready ✓';setTimeout(()=>arStatus.hidden=true,2200);
+ }catch(e){
+  n11ArReady=false;
+  arStatus.hidden=false;arStatus.textContent='AI engine load nahi hua · Internet check karke AI lens dobara select karein';
+  console.warn('Nexoly11 AI camera init:',e);
+ }
+}
 function arPoint(lm,i){return {x:lm[i].x*arCanvas.width,y:lm[i].y*arCanvas.height}}
 function drawN11AR(now){
  if(!stream||camera.readyState<2||!n11FaceLandmarker){arCtx.clearRect(0,0,arCanvas.width,arCanvas.height);n11ArFrame=requestAnimationFrame(drawN11AR);return}
@@ -651,7 +670,7 @@ function drawRecordFrame(){
  recordCtx.clearRect(0,0,w,h);recordCtx.save();
  const smooth=Number(document.getElementById('beautySmooth').value),bright=Number(document.getElementById('camBright').value),warm=Number(document.getElementById('camWarm').value),zoom=Number(document.getElementById('camZoom').value)||1;
  const beautyBright=1+(smooth/100)*.055,beautyContrast=1-(smooth/100)*.035;
- recordCtx.filter=[lookFilters[liveLook]||'',`brightness(${(bright/100)*beautyBright})`,`contrast(${beautyContrast})`,`saturate(${1+warm/100+(smooth/100)*.06})`].filter(Boolean).join(' ')||'none';
+ recordCtx.filter=[lookFilters[liveLook]||'',window.n11BeautyFilter||'',`brightness(${(bright/100)*beautyBright})`,`contrast(${beautyContrast})`,`saturate(${1+warm/100+(smooth/100)*.06})`].filter(Boolean).join(' ')||'none';
  recordCtx.translate(w/2,h/2);if(facing==='user'&&mirrorOn)recordCtx.scale(-1,1);recordCtx.scale(zoom,zoom);recordCtx.drawImage(camera,-w/2,-h/2,w,h);recordCtx.filter='none';if(arCanvas.width&&arCanvas.height)recordCtx.drawImage(arCanvas,-w/2,-h/2,w,h);recordCtx.restore();
  recordRAF=requestAnimationFrame(drawRecordFrame);
 }
