@@ -64,6 +64,11 @@
     .camera-tools button{flex:0 0 auto;border:1px solid #3b3e4b;border-radius:18px;background:#252833;color:#fff;padding:8px 12px;font-size:12px}
     .face-state{font-size:11px;color:#9da2b1;text-align:center;margin:0 0 8px}
     @media(min-width:560px){.effects{grid-template-columns:repeat(6,minmax(0,1fr));max-height:150px}}
+    .effects button {
+      flex: 0 0 auto; border: 1px solid #393b48; border-radius: 24px;
+      background: #242630; color: #fff; padding: 10px 15px;
+    }
+    .effects button.active { background: #fff; color: #111; }
     .actions {
       display: flex; align-items: center; justify-content: center; gap: 20px;
     }
@@ -168,7 +173,7 @@
         <button class="active" data-category="trending">🔥 Trending</button><button data-category="beauty">✨ Beauty</button><button data-category="glasses">🕶️ Glasses</button><button data-category="hats">👑 Hats</button><button data-category="fun">🐰 Fun</button><button data-category="devotional">🙏 Bhakti</button><button data-category="background">🌄 Background</button>
       </div>
       <div class="effects" id="effects"></div>
-      <p class="effect-help" id="effectHelp">Live AR filters use DeepAR effect assets. Aviators is included; other catalogue effects activate after their licensed .deepar assets are added.</p>
+      <p class="effect-help" id="effectHelp">Live AR filters use DeepAR effect assets. Aviators sample is ready. Other official free-pack effects need their .deepar files added to this project.</p>
       <div class="camera-tools"><button id="blurToggle">🌫️ Background Blur</button><button id="faceStatusBtn">◎ Face Tracking Status</button></div>
     </section>
     <footer class="bottom">
@@ -177,7 +182,7 @@
         <button class="shutter" id="capture" aria-label="Capture photo"></button>
         <button class="record" id="record">● Record</button>
       </div>
-      <p class="note">AR lenses are processed live. Available effects depend on the effect assets licensed/added to this project. Original upload and Supabase publishing remain on the existing Upload page.</p>
+      <p class="note">AR lenses are processed live. Aviators is ready; install official .deepar assets for the other lenses. Setup: DEEPAR_EFFECTS_SETUP_HI.md Original upload and Supabase publishing remain on the existing Upload page.</p>
     </footer>
 
     <section class="editor" id="editor" aria-label="Photo editor">
@@ -217,50 +222,27 @@
     // Add licensed .deepar files to assets/deepar/ and set their exact paths below.
     window.NEXOLY_DEEPAR = {
       licenseKey: '85c69d88470bbc90077c1a9a2a14f9395e1ac053ac58c4dd2c23f3ead2ee83ce3048c032142e78cf',
+      // Official DeepAR free-pack inventory. Aviators is the only effect bundled/hosted
+      // as a directly runnable sample in this project. Other effects activate when their
+      // original .deepar files are copied into assets/deepar/ (see README).
       effects: [
-        {id:'aviators',name:'Aviators',emoji:'🕶️',category:'trending',url:'https://cdn.jsdelivr.net/npm/deepar/effects/aviators'},
-        {id:'soft-glow',name:'Soft Glow',emoji:'✨',category:'beauty'},
-        {id:'natural-beauty',name:'Natural Beauty',emoji:'🌸',category:'beauty'},
-        {id:'viking',name:'Viking Helmet',emoji:'🪖',category:'hats',asset:'assets/deepar/viking_helmet.deepar'},
+        {id:'aviators',name:'Aviators',emoji:'🕶️',category:'glasses',url:'https://cdn.jsdelivr.net/npm/deepar/effects/aviators'},
+        {id:'viking',name:'Viking Helmet PBR',emoji:'🪖',category:'hats',asset:'assets/deepar/viking_helmet.deepar'},
         {id:'vendetta',name:'Vendetta Mask',emoji:'🎭',category:'fun',asset:'assets/deepar/vendetta_mask.deepar'},
         {id:'flower-face',name:'Flower Face',emoji:'🌺',category:'beauty',asset:'assets/deepar/flower_face.deepar'},
         {id:'humanoid',name:'Humanoid',emoji:'🤖',category:'fun',asset:'assets/deepar/humanoid.deepar'},
         {id:'snail',name:'Snail',emoji:'🐌',category:'fun',asset:'assets/deepar/snail.deepar'},
-        {id:'devil-horns',name:'Devil Horns',emoji:'😈',category:'fun',asset:'assets/deepar/devil_neon_horns.deepar'},
+        {id:'devil-horns',name:'Devil Neon Horns',emoji:'😈',category:'fun',asset:'assets/deepar/devil_neon_horns.deepar'},
+        {id:'fire',name:'Fire Effect',emoji:'🔥',category:'background',asset:'assets/deepar/fire_effect.deepar'},
         {id:'hope',name:'Hope',emoji:'💫',category:'beauty',asset:'assets/deepar/hope.deepar'},
-        {id:'elephant',name:'Elephant Trunk',emoji:'🐘',category:'fun',asset:'assets/deepar/elephant_trunk.deepar'},
-        {id:'stallone',name:'Stallone',emoji:'🧔',category:'fun',asset:'assets/deepar/stallone.deepar'},
-        {id:'galaxy',name:'Galaxy BG',emoji:'🌌',category:'background',asset:'assets/deepar/galaxy_background.deepar'},
         {id:'burning-man',name:'Burning Man',emoji:'🔥',category:'background',asset:'assets/deepar/burning_man.deepar'},
-        {id:'pixel-hearts',name:'Pixel Hearts',emoji:'💖',category:'trending',asset:'assets/deepar/pixel_hearts_particles.deepar'},
-        {id:'radhe-radhe',name:'Radhe Radhe',emoji:'🙏',category:'devotional'},
-        {id:'jai-shree-ram',name:'Jai Shree Ram',emoji:'🚩',category:'devotional'},
-        {id:'hanuman',name:'Hanuman Ji',emoji:'🙏',category:'devotional'},
-        {id:'mahadev',name:'Mahadev',emoji:'🔱',category:'devotional'},
-        {id:'cat-ears',name:'Cat Ears',emoji:'🐱',category:'fun',asset:'assets/deepar/cat_ears.deepar'},
-        {id:'bunny',name:'Bunny',emoji:'🐰',category:'fun',asset:'assets/deepar/bunny.deepar'},
-        {id:'dog-face',name:'Dog Face',emoji:'🐶',category:'fun',asset:'assets/deepar/dog_face.deepar'},
-        {id:'lion',name:'Lion',emoji:'🦁',category:'fun',asset:'assets/deepar/lion.deepar'},
-        {id:'rainbow',name:'Rainbow',emoji:'🌈',category:'trending',asset:'assets/deepar/rainbow.deepar'},
-        {id:'heart-eyes',name:'Heart Eyes',emoji:'😍',category:'trending',asset:'assets/deepar/heart_eyes.deepar'},
-        {id:'star-crown',name:'Star Crown',emoji:'👑',category:'hats',asset:'assets/deepar/star_crown.deepar'},
-        {id:'flower-crown',name:'Flower Crown',emoji:'🌼',category:'hats',asset:'assets/deepar/flower_crown.deepar'},
-        {id:'cowboy',name:'Cowboy Hat',emoji:'🤠',category:'hats',asset:'assets/deepar/cowboy_hat.deepar'},
-        {id:'beanie',name:'Beanie',emoji:'🧢',category:'hats',asset:'assets/deepar/beanie.deepar'},
-        {id:'round-glasses',name:'Round Glasses',emoji:'👓',category:'glasses',asset:'assets/deepar/round_glasses.deepar'},
-        {id:'neon-glasses',name:'Neon Glasses',emoji:'🥽',category:'glasses',asset:'assets/deepar/neon_glasses.deepar'},
-        {id:'heart-glasses',name:'Heart Glasses',emoji:'💗',category:'glasses',asset:'assets/deepar/heart_glasses.deepar'},
-        {id:'gold-glasses',name:'Gold Frames',emoji:'🕶️',category:'glasses',asset:'assets/deepar/gold_glasses.deepar'},
-        {id:'skin-soft',name:'Skin Softener',emoji:'✨',category:'beauty',asset:'assets/deepar/skin_softener.deepar'},
-        {id:'pink-glow',name:'Pink Glow',emoji:'🌸',category:'beauty',asset:'assets/deepar/pink_glow.deepar'},
-        {id:'freckles',name:'Freckles',emoji:'🌟',category:'beauty',asset:'assets/deepar/freckles.deepar'},
-        {id:'butterfly',name:'Butterflies',emoji:'🦋',category:'beauty',asset:'assets/deepar/butterflies.deepar'},
-        {id:'sunset',name:'Sunset Background',emoji:'🌇',category:'background',asset:'assets/deepar/sunset_background.deepar'},
-        {id:'beach',name:'Beach Background',emoji:'🏖️',category:'background',asset:'assets/deepar/beach_background.deepar'},
-        {id:'temple',name:'Temple Glow',emoji:'🛕',category:'devotional',asset:'assets/deepar/temple_glow.deepar'},
-        {id:'saffron-aura',name:'Saffron Aura',emoji:'🚩',category:'devotional',asset:'assets/deepar/saffron_aura.deepar'},
-        {id:'rudraksha',name:'Rudraksha',emoji:'📿',category:'devotional',asset:'assets/deepar/rudraksha.deepar'},
-        {id:'tricolor',name:'Tricolor Pride',emoji:'🇮🇳',category:'trending',asset:'assets/deepar/tricolor.deepar'}
+        {id:'galaxy',name:'Galaxy Background',emoji:'🌌',category:'background',asset:'assets/deepar/galaxy_background.deepar'},
+        {id:'elephant',name:'Elephant Trunk',emoji:'🐘',category:'fun',asset:'assets/deepar/elephant_trunk.deepar'},
+        {id:'emotion-meter',name:'Emotion Meter',emoji:'🎭',category:'fun',asset:'assets/deepar/emotion_meter.deepar'},
+        {id:'emotions-exaggerator',name:'Emotions Exaggerator',emoji:'😜',category:'fun',asset:'assets/deepar/emotions_exaggerator.deepar'},
+        {id:'ping-pong',name:'Ping Pong Mini Game',emoji:'🏓',category:'fun',asset:'assets/deepar/ping_pong.deepar'},
+        {id:'pixel-hearts',name:'Pixel Hearts Particles',emoji:'💖',category:'trending',asset:'assets/deepar/pixel_hearts_particles.deepar'},
+        {id:'stallone',name:'Stallone',emoji:'🧔',category:'fun',asset:'assets/deepar/stallone.deepar'}
       ]
     };
   </script>
@@ -330,16 +312,17 @@
         visible.forEach(e => {
           const b = document.createElement('button');
           b.type = 'button'; b.dataset.effect = e.id;
-          const ready = !!e.url;
+          const effectPath = e.asset || e.url;
+          const ready = !!effectPath;
           b.disabled = !ready;
           b.innerHTML = '<span class="emoji">' + (e.emoji || '✨') + '</span><span>' + e.name + '</span>' + (!ready ? '<small>Asset needed</small>' : '');
           b.classList.toggle('active', e.id === 'aviators');
-          b.title = ready ? 'Apply ' + e.name : 'Add the matching licensed .deepar asset to enable this effect';
+          b.title = ready ? 'Apply ' + e.name : 'Add the official .deepar file at: ' + (e.asset || '');
           b.onclick = async () => {
-            if (!ar || !e.url) return;
+            if (!ar || !effectPath) return;
             try {
               setStatus('Loading ' + e.name + '…'); b.classList.add('busy');
-              await ar.switchEffect(e.url);
+              await ar.switchEffect(effectPath);
               document.querySelectorAll('#effects button').forEach(x => x.classList.toggle('active', x === b));
               setStatus(e.name + ' active');
             } catch (err) { setStatus('Effect could not load. Check the asset file and path.'); console.error(err); }
@@ -349,7 +332,7 @@
         });
         if (!visible.length) $('effects').innerHTML = '<p style="grid-column:1/-1;color:#aaa;font-size:12px">No effects in this category yet.</p>';
         const pending = visible.filter(e => !e.url).length;
-        $('effectHelp').textContent = pending ? pending + ' effects are catalogue placeholders until their licensed .deepar assets are installed. Aviators is currently live.' : 'Select a live effect to apply it to the camera. Other lenses need their matching licensed .deepar files.';
+        $('effectHelp').textContent = pending ? pending + ' effects are catalogue placeholders until their licensed .deepar assets are installed. Aviators is currently live.' : 'Select a live effect to apply it to the camera.';
       }
 
       $('effectCats').addEventListener('click', e => {
@@ -469,12 +452,6 @@
           'blur(' + (sm * .12) + 'px)'
         ].join(' ');
         ctx.drawImage(img, 0, 0, c.width, c.height);
-        ctx.save();
-        ctx.font = 'bold ' + Math.max(18, c.width * .025) + 'px system-ui, sans-serif';
-        ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
-        ctx.shadowColor = '#000'; ctx.shadowBlur = 5; ctx.fillStyle = '#fff';
-        ctx.fillText('NEXOLY11 🇮🇳', c.width - 20, c.height - 20);
-        ctx.restore();
         return await new Promise((resolve, reject) =>
           c.toBlob(b => b ? resolve(b) : reject(new Error('Edited photo export nahi hua.')), 'image/jpeg', .94)
         );
@@ -532,9 +509,6 @@
           'blur(' + (sm * .12) + 'px)'
         ].join(' ');
         ctx.drawImage(img, 0, 0, c.width, c.height);
-        ctx.save(); ctx.font = 'bold ' + Math.max(18, c.width * .025) + 'px system-ui, sans-serif';
-        ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.shadowColor = '#000'; ctx.shadowBlur = 5;
-        ctx.fillStyle = '#fff'; ctx.fillText('NEXOLY11 🇮🇳', c.width - 20, c.height - 20); ctx.restore();
         download(c.toDataURL('image/jpeg', .94), 'Nexoly11-edited-' + Date.now() + '.jpg');
         setStatus('Edited photo saved');
         $('editor').classList.remove('open');
@@ -581,7 +555,7 @@
 
       $('photo').onclick = () => $('capture').click();
       $('retry').onclick = e => { e.preventDefault(); init(); };
-      $('help').onclick = () => alert('Aviators is included. To activate the other catalogue effects, download the official DeepAR Free Effects Pack, copy its .deepar files into assets/deepar/, then update each asset path in NEXOLY_DEEPAR. Create/verify your Web App key for this GitHub Pages domain.');
+      $('help').onclick = () => alert('Aviators is the only live effect bundled here. The official DeepAR Free Effects Pack contains separate .deepar assets. Open the official effects page from the setup guide in this ZIP, download the pack on a computer if Android download fails, then copy the .deepar files into assets/deepar/. Also verify your Web App license key for your exact domain.');
 
       init();
     })();
