@@ -64,11 +64,6 @@
     .camera-tools button{flex:0 0 auto;border:1px solid #3b3e4b;border-radius:18px;background:#252833;color:#fff;padding:8px 12px;font-size:12px}
     .face-state{font-size:11px;color:#9da2b1;text-align:center;margin:0 0 8px}
     @media(min-width:560px){.effects{grid-template-columns:repeat(6,minmax(0,1fr));max-height:150px}}
-    .effects button {
-      flex: 0 0 auto; border: 1px solid #393b48; border-radius: 24px;
-      background: #242630; color: #fff; padding: 10px 15px;
-    }
-    .effects button.active { background: #fff; color: #111; }
     .actions {
       display: flex; align-items: center; justify-content: center; gap: 20px;
     }
@@ -241,7 +236,31 @@
         {id:'radhe-radhe',name:'Radhe Radhe',emoji:'🙏',category:'devotional'},
         {id:'jai-shree-ram',name:'Jai Shree Ram',emoji:'🚩',category:'devotional'},
         {id:'hanuman',name:'Hanuman Ji',emoji:'🙏',category:'devotional'},
-        {id:'mahadev',name:'Mahadev',emoji:'🔱',category:'devotional'}
+        {id:'mahadev',name:'Mahadev',emoji:'🔱',category:'devotional'},
+        {id:'cat-ears',name:'Cat Ears',emoji:'🐱',category:'fun',asset:'assets/deepar/cat_ears.deepar'},
+        {id:'bunny',name:'Bunny',emoji:'🐰',category:'fun',asset:'assets/deepar/bunny.deepar'},
+        {id:'dog-face',name:'Dog Face',emoji:'🐶',category:'fun',asset:'assets/deepar/dog_face.deepar'},
+        {id:'lion',name:'Lion',emoji:'🦁',category:'fun',asset:'assets/deepar/lion.deepar'},
+        {id:'rainbow',name:'Rainbow',emoji:'🌈',category:'trending',asset:'assets/deepar/rainbow.deepar'},
+        {id:'heart-eyes',name:'Heart Eyes',emoji:'😍',category:'trending',asset:'assets/deepar/heart_eyes.deepar'},
+        {id:'star-crown',name:'Star Crown',emoji:'👑',category:'hats',asset:'assets/deepar/star_crown.deepar'},
+        {id:'flower-crown',name:'Flower Crown',emoji:'🌼',category:'hats',asset:'assets/deepar/flower_crown.deepar'},
+        {id:'cowboy',name:'Cowboy Hat',emoji:'🤠',category:'hats',asset:'assets/deepar/cowboy_hat.deepar'},
+        {id:'beanie',name:'Beanie',emoji:'🧢',category:'hats',asset:'assets/deepar/beanie.deepar'},
+        {id:'round-glasses',name:'Round Glasses',emoji:'👓',category:'glasses',asset:'assets/deepar/round_glasses.deepar'},
+        {id:'neon-glasses',name:'Neon Glasses',emoji:'🥽',category:'glasses',asset:'assets/deepar/neon_glasses.deepar'},
+        {id:'heart-glasses',name:'Heart Glasses',emoji:'💗',category:'glasses',asset:'assets/deepar/heart_glasses.deepar'},
+        {id:'gold-glasses',name:'Gold Frames',emoji:'🕶️',category:'glasses',asset:'assets/deepar/gold_glasses.deepar'},
+        {id:'skin-soft',name:'Skin Softener',emoji:'✨',category:'beauty',asset:'assets/deepar/skin_softener.deepar'},
+        {id:'pink-glow',name:'Pink Glow',emoji:'🌸',category:'beauty',asset:'assets/deepar/pink_glow.deepar'},
+        {id:'freckles',name:'Freckles',emoji:'🌟',category:'beauty',asset:'assets/deepar/freckles.deepar'},
+        {id:'butterfly',name:'Butterflies',emoji:'🦋',category:'beauty',asset:'assets/deepar/butterflies.deepar'},
+        {id:'sunset',name:'Sunset Background',emoji:'🌇',category:'background',asset:'assets/deepar/sunset_background.deepar'},
+        {id:'beach',name:'Beach Background',emoji:'🏖️',category:'background',asset:'assets/deepar/beach_background.deepar'},
+        {id:'temple',name:'Temple Glow',emoji:'🛕',category:'devotional',asset:'assets/deepar/temple_glow.deepar'},
+        {id:'saffron-aura',name:'Saffron Aura',emoji:'🚩',category:'devotional',asset:'assets/deepar/saffron_aura.deepar'},
+        {id:'rudraksha',name:'Rudraksha',emoji:'📿',category:'devotional',asset:'assets/deepar/rudraksha.deepar'},
+        {id:'tricolor',name:'Tricolor Pride',emoji:'🇮🇳',category:'trending',asset:'assets/deepar/tricolor.deepar'}
       ]
     };
   </script>
@@ -330,7 +349,7 @@
         });
         if (!visible.length) $('effects').innerHTML = '<p style="grid-column:1/-1;color:#aaa;font-size:12px">No effects in this category yet.</p>';
         const pending = visible.filter(e => !e.url).length;
-        $('effectHelp').textContent = pending ? pending + ' effects are catalogue placeholders until their licensed .deepar assets are installed. Aviators is currently live.' : 'Select a live effect to apply it to the camera.';
+        $('effectHelp').textContent = pending ? pending + ' effects are catalogue placeholders until their licensed .deepar assets are installed. Aviators is currently live.' : 'Select a live effect to apply it to the camera. Other lenses need their matching licensed .deepar files.';
       }
 
       $('effectCats').addEventListener('click', e => {
@@ -450,6 +469,12 @@
           'blur(' + (sm * .12) + 'px)'
         ].join(' ');
         ctx.drawImage(img, 0, 0, c.width, c.height);
+        ctx.save();
+        ctx.font = 'bold ' + Math.max(18, c.width * .025) + 'px system-ui, sans-serif';
+        ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.shadowColor = '#000'; ctx.shadowBlur = 5; ctx.fillStyle = '#fff';
+        ctx.fillText('NEXOLY11 🇮🇳', c.width - 20, c.height - 20);
+        ctx.restore();
         return await new Promise((resolve, reject) =>
           c.toBlob(b => b ? resolve(b) : reject(new Error('Edited photo export nahi hua.')), 'image/jpeg', .94)
         );
@@ -507,6 +532,9 @@
           'blur(' + (sm * .12) + 'px)'
         ].join(' ');
         ctx.drawImage(img, 0, 0, c.width, c.height);
+        ctx.save(); ctx.font = 'bold ' + Math.max(18, c.width * .025) + 'px system-ui, sans-serif';
+        ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.shadowColor = '#000'; ctx.shadowBlur = 5;
+        ctx.fillStyle = '#fff'; ctx.fillText('NEXOLY11 🇮🇳', c.width - 20, c.height - 20); ctx.restore();
         download(c.toDataURL('image/jpeg', .94), 'Nexoly11-edited-' + Date.now() + '.jpg');
         setStatus('Edited photo saved');
         $('editor').classList.remove('open');
