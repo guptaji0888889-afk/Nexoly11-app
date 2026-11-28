@@ -1,1 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#08090d">
+  <title>Nexoly11 AR Camera</title>
+  <script src="https://cdn.jsdelivr.net/npm/deepar/js/deepar.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; width: 100%; height: 100%;
+      background: #08090d; color: #fff;
+      font-family: system-ui, Arial;
+    }
+    body { overflow: hidden; }
+    .app {
+      height: 100dvh; display: flex; flex-direction: column;
+      max-width: 760px; margin: auto;
+    }
+    .head {
+      height: 58px; flex: none;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 14px; background: #101116;
+    }
+    .head a, .head button {
+      color: #fff; text-decoration: none; background: #242630;
+      border: 0; border-radius: 22px; padding: 9px 13px;
+    }
+    .brand { font-weight: 900; letter-spacing: 1px; }
+    .brand span { color: #ff3478; }
+    .status {
+      font-size: 12px; color: #c7c9d2; text-align: center; padding: 8px;
+    }
+    .stage {
+      position: relative; flex: 1; min-height: 0;
+      background: #000; display: grid; place-items: center;
+    }
+    #deepar-preview {
+      width: 100%; height: 100%; position: absolute; inset: 0;
+    }
+    #deepar-preview canvas {
+      width: 100% !important; height: 100% !important; object-fit: cover;
+    }
+    .overlay {
+      position: absolute; z-index: 2; inset: 0;
+      pointer-events: none; border: 1px solid #ffffff12;
+    }
+    .bottom {
+      background: #111218;
+      padding: 10px 12px calc(12px + env(safe-area-inset-bottom));
+    }
+    .effect-panel{background:#111218;padding:8px 12px 12px;border-top:1px solid #252733}
+    .effect-cats{display:flex;gap:8px;overflow:auto;padding:2px 0 10px;scrollbar-width:none}
+    .effect-cats button{flex:0 0 auto;border:0;border-radius:20px;padding:9px 13px;background:#252833;color:#dfe1e8;font-weight:700}
+    .effect-cats button.active{background:#f32d68;color:#fff}
+    .effects {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-height:132px;overflow:auto;padding:2px 0 10px}
+    .effects button{min-width:0;border:1px solid #383b48;border-radius:13px;background:#252833;color:#fff;padding:9px 4px;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px}
+    .effects button .emoji{font-size:24px}
+    .effects button.active{border:2px solid #ff3478;background:#3a202c}
+    .effects button:disabled{opacity:.45}
+    .effect-help{font-size:10px;color:#aeb1bd;margin:0 2px 8px;line-height:1.4}
+    .camera-tools{display:flex;gap:8px;overflow:auto;padding:0 0 10px}
+    .camera-tools button{flex:0 0 auto;border:1px solid #3b3e4b;border-radius:18px;background:#252833;color:#fff;padding:8px 12px;font-size:12px}
+    .face-state{font-size:11px;color:#9da2b1;text-align:center;margin:0 0 8px}
+    @media(min-width:560px){.effects{grid-template-columns:repeat(6,minmax(0,1fr));max-height:150px}}
+    .effects button {
+      flex: 0 0 auto; border: 1px solid #393b48; border-radius: 24px;
+      background: #242630; color: #fff; padding: 10px 15px;
+    }
+    .effects button.active { background: #fff; color: #111; }
+    .actions {
+      display: flex; align-items: center; justify-content: center; gap: 20px;
+    }
+    .actions button {
+      border: 0; color: #fff; background: #292b35;
+      border-radius: 15px; padding: 12px 16px; font-weight: 700;
+    }
+    .actions .shutter {
+      width: 68px; height: 68px; border: 5px solid #fff;
+      border-radius: 50%; background: #ffffff35; padding: 0;
+    }
+    .actions .record { background: #e52d55; }
+    .note {
+      font-size: 11px; color: #aeb1bd; text-align: center;
+      line-height: 1.5; margin: 10px 5px 0;
+    }
+    .gate {
+      position: absolute; z-index: 5; inset: 0; background: #090a0f;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; text-align: center;
+    }
+    .gatebox { max-width: 420px; }
+    .gate h2 { font-size: 22px; }
+    .gate p { color: #c2c4ce; line-height: 1.55; font-size: 14px; }
+    .gate a {
+      display: inline-block; background: #ff3478; color: #fff;
+      text-decoration: none; padding: 12px 18px;
+      border-radius: 12px; font-weight: 800;
+    }
+    .gate.hidden { display: none; }
+    .busy { opacity: .5; pointer-events: none; }
 
+    .editor {
+      position: fixed; z-index: 20; inset: 0; background: #090a0f;
+      display: none; flex-direction: column;
+      padding: 14px; overflow: auto;
+    }
+    .editor.open { display: flex; }
+    .editor-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; padding: 8px 0 14px;
+    }
+    .editor-head button, .editor-actions button {
+      border: 0; border-radius: 22px; padding: 11px 16px;
+      background: #292b35; color: white; font-weight: 700;
+    }
+    .editor-preview-wrap {
+      flex: 1; min-height: 220px; display: grid; place-items: center;
+      background: #000; border-radius: 16px; overflow: hidden;
+    }
+    .editor-preview {
+      max-width: 100%; max-height: 58vh; object-fit: contain; filter: none;
+    }
+    .tool-title { font-size: 13px; color: #c7c9d2; margin: 14px 0 7px; }
+    .filter-list {
+      display: flex; gap: 8px; overflow: auto; padding-bottom: 6px;
+    }
+    .filter-list button {
+      flex: 0 0 auto; border: 1px solid #454755; background: #242630;
+      color: #fff; border-radius: 18px; padding: 9px 13px;
+    }
+    .filter-list button.active { background: #fff; color: #111; }
+    .slider-row {
+      display: grid; grid-template-columns: 95px 1fr 32px;
+      gap: 8px; align-items: center; margin: 9px 0; font-size: 13px;
+    }
+    .slider-row input { width: 100%; accent-color: #ff3478; }
+    .editor-actions {
+      display: flex; gap: 10px; justify-content: space-between;
+      margin: 14px 0 6px;
+    }
+    .editor-actions button:last-child { background: #e52d65; flex: 1; }
+    .editor-actions button:first-child { background: #30323d; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="head">
+      <a href="upload.html">← Back</a>
+      <div class="brand">NEXOLY<span>11</span> AR</div>
+      <button id="help">Help</button>
+    </header>
+
+    <div class="status" id="status">Preparing AR camera…</div>
+
+    <section class="stage">
+      <div id="deepar-preview"></div>
+      <div class="overlay"></div>
+      <div class="gate" id="gate">
+        <div class="gatebox">
+          <h2>✨ Nexoly11 AR Camera</h2>
+          <p id="gateText">Checking DeepAR setup…</p>
+          <a id="retry" href="#">Try again</a>
+          <p>Camera requires HTTPS and camera permission. DeepAR requires a Web App license key for your deployed domain.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="effect-panel">
+      <div class="face-state" id="faceState">Face tracking: waiting for camera…</div>
+      <div class="effect-cats" id="effectCats">
+        <button class="active" data-category="trending">🔥 Trending</button><button data-category="beauty">✨ Beauty</button><button data-category="glasses">🕶️ Glasses</button><button data-category="hats">👑 Hats</button><button data-category="fun">🐰 Fun</button><button data-category="devotional">🙏 Bhakti</button><button data-category="background">🌄 Background</button>
+      </div>
+      <div class="effects" id="effects"></div>
+      <p class="effect-help" id="effectHelp">Live AR filters use DeepAR effect assets. Aviators is included; other catalogue effects activate after their licensed .deepar assets are added.</p>
+      <div class="camera-tools"><button id="blurToggle">🌫️ Background Blur</button><button id="faceStatusBtn">◎ Face Tracking Status</button></div>
+    </section>
+    <footer class="bottom">
+      <div class="actions">
+        <button id="photo">📸 Photo</button>
+        <button class="shutter" id="capture" aria-label="Capture photo"></button>
+        <button class="record" id="record">● Record</button>
+      </div>
+      <p class="note">AR lenses are processed live. Available effects depend on the effect assets licensed/added to this project. Original upload and Supabase publishing remain on the existing Upload page.</p>
+    </footer>
+
+    <section class="editor" id="editor" aria-label="Photo editor">
+      <div class="editor-head">
+        <button id="retake">← Retake</button>
+        <strong>NEXOLY11 PHOTO EDITOR</strong>
+        <button id="closeEditor">✕</button>
+      </div>
+      <div class="editor-preview-wrap">
+        <img id="editorPreview" class="editor-preview" alt="Captured photo preview">
+      </div>
+      <div class="tool-title">✨ Quick filters</div>
+      <div class="filter-list" id="filterList">
+        <button class="active" data-filter="none">Original</button>
+        <button data-filter="soft">Soft</button>
+        <button data-filter="glow">Glow</button>
+        <button data-filter="warm">Warm</button>
+        <button data-filter="cool">Cool</button>
+        <button data-filter="vivid">Vivid</button>
+        <button data-filter="mono">B&amp;W</button>
+        <button data-filter="vintage">Vintage</button>
+      </div>
+      <div class="tool-title">Beauty &amp; adjustments</div>
+      <label class="slider-row">Smooth <input id="smooth" type="range" min="0" max="8" value="0"><span id="smoothVal">0</span></label>
+      <label class="slider-row">Brightness <input id="bright" type="range" min="70" max="140" value="100"><span id="brightVal">100</span></label>
+      <label class="slider-row">Contrast <input id="contrast" type="range" min="70" max="140" value="100"><span id="contrastVal">100</span></label>
+      <div class="editor-actions">
+        <button id="resetEdit">Reset</button>
+        <button id="saveEdited">⬇ Save Photo</button>
+        <button id="useInPost">➤ Use in Post</button>
+      </div>
+      <p class="note">These are photo-editor filters applied after capture. Live AR face lenses depend on separate DeepAR effect assets.</p>
+    </section>
+  </main>
+
+  <script>
+    // Add licensed .deepar files to assets/deepar/ and set their exact paths below.
+    window.NEXOLY_DEEPAR = {
+      licenseKey: '85c69d88470bbc90077c1a9a2a14f9395e1ac053ac58c4dd2c23f3ead2ee83ce3048c032142e78cf',
+      effects: [
+        {id:'aviators',name:'Aviators',emoji:'🕶️',category:'trending',url:'https://cdn.jsdelivr.net/npm/deepar/effects/aviators'},
+        {id:'soft-glow',name:'Soft Glow',emoji:'✨',category:'beauty'},
+        {id:'natural-beauty',name:'Natural Beauty',emoji:'🌸',category:'beauty'},
+        {id:'viking',name:'Viking Helmet',emoji:'🪖',category:'hats',asset:'assets/deepar/viking_helmet.deepar'},
+        {id:'vendetta',name:'Vendetta Mask',emoji:'🎭',category:'fun',asset:'assets/deepar/vendetta_mask.deepar'},
+        {id:'flower-face',name:'Flower Face',emoji:'🌺',category:'beauty',asset:'assets/deepar/flower_face.deepar'},
+        {id:'humanoid',name:'Humanoid',emoji:'🤖',category:'fun',asset:'assets/deepar/humanoid.deepar'},
+        {id:'snail',name:'Snail',emoji:'🐌',category:'fun',asset:'assets/deepar/snail.deepar'},
+        {id:'devil-horns',name:'Devil Horns',emoji:'😈',category:'fun',asset:'assets/deepar/devil_neon_horns.deepar'},
+        {id:'hope',name:'Hope',emoji:'💫',category:'beauty',asset:'assets/deepar/hope.deepar'},
+        {id:'elephant',name:'Elephant Trunk',emoji:'🐘',category:'fun',asset:'assets/deepar/elephant_trunk.deepar'},
+        {id:'stallone',name:'Stallone',emoji:'🧔',category:'fun',asset:'assets/deepar/stallone.deepar'},
+        {id:'galaxy',name:'Galaxy BG',emoji:'🌌',category:'background',asset:'assets/deepar/galaxy_background.deepar'},
+        {id:'burning-man',name:'Burning Man',emoji:'🔥',category:'background',asset:'assets/deepar/burning_man.deepar'},
+        {id:'pixel-hearts',name:'Pixel Hearts',emoji:'💖',category:'trending',asset:'assets/deepar/pixel_hearts_particles.deepar'},
+        {id:'radhe-radhe',name:'Radhe Radhe',emoji:'🙏',category:'devotional'},
+        {id:'jai-shree-ram',name:'Jai Shree Ram',emoji:'🚩',category:'devotional'},
+        {id:'hanuman',name:'Hanuman Ji',emoji:'🙏',category:'devotional'},
+        {id:'mahadev',name:'Mahadev',emoji:'🔱',category:'devotional'}
+      ]
+    };
+  </script>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const $ = id => document.getElementById(id);
+      const mediaType = new URLSearchParams(location.search).get('type') || 'post';
+      let ar = null, recording = false, currentCategory = 'trending', blurEnabled = false;
+
+      function setStatus(s) { $('status').textContent = s; }
+
+      function gate(s) {
+        $('gateText').textContent = s;
+        $('gate').classList.remove('hidden');
+      }
+
+      async function init() {
+        const cfg = window.NEXOLY_DEEPAR || {};
+
+        if (!cfg.licenseKey || cfg.licenseKey === 'PASTE_YOUR_KEY_HERE') {
+          gate('DeepAR SDK is wired into this page, but your private Web App license key has not been added yet. Replace PASTE_YOUR_KEY_HERE in the inline config with the key generated for your exact website domain.');
+          setStatus('License key required');
+          return;
+        }
+
+        if (!window.isSecureContext) {
+          gate('Open Nexoly11 over HTTPS (GitHub Pages is HTTPS). Camera access is blocked on insecure pages.');
+          return;
+        }
+
+        if (!navigator.mediaDevices?.getUserMedia) {
+          gate('This browser does not support camera access. Try the latest Chrome on Android.');
+          return;
+        }
+
+        try {
+          setStatus('Loading DeepAR engine…');
+          ar = await deepar.initialize({
+            licenseKey: cfg.licenseKey,
+            previewElement: $('deepar-preview'),
+            effect: (cfg.effects && cfg.effects.find(x => x.url)?.url) ||
+              'https://cdn.jsdelivr.net/npm/deepar/effects/aviators',
+            additionalOptions: { hint: ['faceInit', 'faceModelsPredownload'] }
+          });
+          $('gate').classList.add('hidden');
+          setStatus('AR camera ready');
+          if (ar.callbacks) {
+            ar.callbacks.onFaceVisibilityChanged = visible => {
+              $('faceState').textContent = visible ? '● Face detected · tracking active' : '○ Face not detected · look at camera';
+              $('faceState').style.color = visible ? '#55df9a' : '#c3c5ce';
+            };
+          }
+          renderEffects(cfg.effects || []);
+        } catch (e) {
+          console.error(e);
+          gate('DeepAR could not start: ' + (e.message || 'Check the license key, domain, internet connection and camera permission.'));
+          setStatus('AR camera setup error');
+        }
+      }
+
+      function renderEffects(list) {
+        const visible = list.filter(e => e.category === currentCategory || (currentCategory === 'trending' && e.category === 'trending'));
+        $('effects').innerHTML = '';
+        visible.forEach(e => {
+          const b = document.createElement('button');
+          b.type = 'button'; b.dataset.effect = e.id;
+          const ready = !!e.url;
+          b.disabled = !ready;
+          b.innerHTML = '<span class="emoji">' + (e.emoji || '✨') + '</span><span>' + e.name + '</span>' + (!ready ? '<small>Asset needed</small>' : '');
+          b.classList.toggle('active', e.id === 'aviators');
+          b.title = ready ? 'Apply ' + e.name : 'Add the matching licensed .deepar asset to enable this effect';
+          b.onclick = async () => {
+            if (!ar || !e.url) return;
+            try {
+              setStatus('Loading ' + e.name + '…'); b.classList.add('busy');
+              await ar.switchEffect(e.url);
+              document.querySelectorAll('#effects button').forEach(x => x.classList.toggle('active', x === b));
+              setStatus(e.name + ' active');
+            } catch (err) { setStatus('Effect could not load. Check the asset file and path.'); console.error(err); }
+            finally { b.classList.remove('busy'); }
+          };
+          $('effects').appendChild(b);
+        });
+        if (!visible.length) $('effects').innerHTML = '<p style="grid-column:1/-1;color:#aaa;font-size:12px">No effects in this category yet.</p>';
+        const pending = visible.filter(e => !e.url).length;
+        $('effectHelp').textContent = pending ? pending + ' effects are catalogue placeholders until their licensed .deepar assets are installed. Aviators is currently live.' : 'Select a live effect to apply it to the camera.';
+      }
+
+      $('effectCats').addEventListener('click', e => {
+        const b = e.target.closest('button[data-category]'); if (!b) return;
+        currentCategory = b.dataset.category;
+        document.querySelectorAll('#effectCats button').forEach(x => x.classList.toggle('active', x === b));
+        renderEffects(window.NEXOLY_DEEPAR.effects || []);
+      });
+
+      $('blurToggle').onclick = async () => {
+        if (!ar) return;
+        try { blurEnabled = !blurEnabled; await ar.backgroundBlur(blurEnabled, 5);
+          $('blurToggle').textContent = blurEnabled ? '✓ Blur On' : '🌫️ Background Blur';
+          setStatus(blurEnabled ? 'Background blur on' : 'Background blur off');
+        } catch (e) { blurEnabled = false; setStatus('Background blur unavailable in this browser/session'); console.error(e); }
+      };
+      $('faceStatusBtn').onclick = () => alert('DeepAR face tracking starts with a face-tracking effect. Look straight at the camera with good lighting. Status appears above the effect categories.');
+
+      function download(dataUrl, name) {
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+
+      let capturedPhoto = '';
+      let selectedFilter = 'none';
+
+      const FILTERS = {
+        none: '',
+        soft: 'saturate(1.05) contrast(.98)',
+        glow: 'brightness(1.12) saturate(1.08)',
+        warm: 'sepia(.18) saturate(1.12)',
+        cool: 'hue-rotate(12deg) saturate(1.08)',
+        vivid: 'saturate(1.35) contrast(1.08)',
+        mono: 'grayscale(1)',
+        vintage: 'sepia(.32) contrast(.92) saturate(.85)'
+      };
+
+      const FILTERS_EXPORT = {
+        none: 'none',
+        soft: 'saturate(1.05) contrast(.98)',
+        glow: 'brightness(1.12) saturate(1.08)',
+        warm: 'sepia(.18) saturate(1.12)',
+        cool: 'hue-rotate(12deg) saturate(1.08)',
+        vivid: 'saturate(1.35) contrast(1.08)',
+        mono: 'grayscale(1)',
+        vintage: 'sepia(.32) contrast(.92) saturate(.85)'
+      };
+
+      function applyEditor() {
+        const img = $('editorPreview');
+        const f = FILTERS[selectedFilter] || '';
+        const sm = Number($('smooth').value);
+        img.style.filter = [
+          f,
+          'brightness(' + ($('bright').value / 100) + ')',
+          'contrast(' + ($('contrast').value / 100) + ')',
+          'blur(' + (sm * .12) + 'px)'
+        ].filter(Boolean).join(' ');
+        $('smoothVal').textContent = sm;
+        $('brightVal').textContent = $('bright').value;
+        $('contrastVal').textContent = $('contrast').value;
+      }
+
+      function resetEditor() {
+        selectedFilter = 'none';
+        $('smooth').value = 0;
+        $('bright').value = 100;
+        $('contrast').value = 100;
+        document.querySelectorAll('#filterList button')
+          .forEach(b => b.classList.toggle('active', b.dataset.filter === 'none'));
+        applyEditor();
+      }
+
+      $('capture').onclick = async () => {
+        if (!ar) return;
+        try {
+          capturedPhoto = await ar.takeScreenshot();
+          $('editorPreview').src = capturedPhoto;
+          resetEditor();
+          $('editor').classList.add('open');
+          setStatus('Photo ready to edit');
+        } catch (e) {
+          setStatus('Photo capture failed');
+          console.error(e);
+        }
+      };
+
+      $('filterList').addEventListener('click', e => {
+        const b = e.target.closest('button[data-filter]');
+        if (!b) return;
+        selectedFilter = b.dataset.filter;
+        document.querySelectorAll('#filterList button')
+          .forEach(x => x.classList.toggle('active', x === b));
+        applyEditor();
+      });
+
+      ['smooth', 'bright', 'contrast'].forEach(id => $(id).addEventListener('input', applyEditor));
+      $('resetEdit').onclick = resetEditor;
+
+      async function exportEditedBlob() {
+        const img = $('editorPreview');
+        if (!img.complete || !img.naturalWidth) throw new Error('Photo preview ready nahi hai.');
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth;
+        c.height = img.naturalHeight;
+        const ctx = c.getContext('2d');
+        const sm = Number($('smooth').value);
+        const f = FILTERS_EXPORT[selectedFilter] || 'none';
+        ctx.filter = [
+          f,
+          'brightness(' + ($('bright').value / 100) + ')',
+          'contrast(' + ($('contrast').value / 100) + ')',
+          'blur(' + (sm * .12) + 'px)'
+        ].join(' ');
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        return await new Promise((resolve, reject) =>
+          c.toBlob(b => b ? resolve(b) : reject(new Error('Edited photo export nahi hua.')), 'image/jpeg', .94)
+        );
+      }
+
+      async function openTransferDB() {
+        return await new Promise((resolve, reject) => {
+          const r = indexedDB.open('nexoly11-media-transfer', 1);
+          r.onupgradeneeded = () => {
+            if (!r.result.objectStoreNames.contains('pending')) r.result.createObjectStore('pending');
+          };
+          r.onsuccess = () => resolve(r.result);
+          r.onerror = () => reject(r.error);
+        });
+      }
+
+      async function putTransferBlob(blob, kind) {
+        const db = await openTransferDB();
+        await new Promise((resolve, reject) => {
+          const tx = db.transaction('pending', 'readwrite');
+          tx.objectStore('pending').put({ blob, kind }, 'camera-media');
+          tx.oncomplete = resolve;
+          tx.onerror = () => reject(tx.error);
+        });
+      }
+
+      $('useInPost').onclick = async () => {
+        try {
+          setStatus('Preparing edited photo for publishing…');
+          const blob = await exportEditedBlob();
+          await putTransferBlob(blob, 'image');
+          location.href = 'upload.html?from=deep-ar&type=' + encodeURIComponent(mediaType);
+        } catch (e) {
+          console.error(e);
+          setStatus(e.message || 'Photo transfer failed');
+          alert('Photo transfer nahi hua. Dobara try karein.');
+        }
+      };
+
+      $('retake').onclick = () => $('editor').classList.remove('open');
+      $('closeEditor').onclick = () => $('editor').classList.remove('open');
+
+      $('saveEdited').onclick = () => {
+        const img = $('editorPreview');
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth;
+        c.height = img.naturalHeight;
+        const ctx = c.getContext('2d');
+        const sm = Number($('smooth').value);
+        const f = FILTERS_EXPORT[selectedFilter] || 'none';
+        ctx.filter = [
+          f,
+          'brightness(' + ($('bright').value / 100) + ')',
+          'contrast(' + ($('contrast').value / 100) + ')',
+          'blur(' + (sm * .12) + 'px)'
+        ].join(' ');
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        download(c.toDataURL('image/jpeg', .94), 'Nexoly11-edited-' + Date.now() + '.jpg');
+        setStatus('Edited photo saved');
+        $('editor').classList.remove('open');
+      };
+
+      $('record').onclick = async () => {
+        if (!ar) return;
+        try {
+          if (!recording) {
+            await ar.startVideoRecording();
+            recording = true;
+            $('record').textContent = '■ Stop';
+            setStatus('Recording…');
+          } else {
+            const result = await ar.finishVideoRecording();
+            recording = false;
+            $('record').textContent = '● Record';
+
+            let blob = null;
+            if (result instanceof Blob) {
+              blob = result;
+            } else if (typeof result === 'string') {
+              if (result.startsWith('data:') || result.startsWith('blob:') || result.startsWith('http')) {
+                const resp = await fetch(result);
+                blob = await resp.blob();
+              }
+            } else if (result && result.blob instanceof Blob) {
+              blob = result.blob;
+            }
+
+            if (!blob) throw new Error('DeepAR video export nahi mila. SDK recording output check karein.');
+
+            await putTransferBlob(blob, 'video');
+            setStatus('Video ready. Opening preview and publish…');
+            location.href = 'upload.html?from=deep-ar&type=' + encodeURIComponent(mediaType);
+          }
+        } catch (e) {
+          recording = false;
+          $('record').textContent = '● Record';
+          setStatus(e.message || 'Video recording failed');
+          console.error(e);
+        }
+      };
+
+      $('photo').onclick = () => $('capture').click();
+      $('retry').onclick = e => { e.preventDefault(); init(); };
+      $('help').onclick = () => alert('Aviators is included. To activate the other catalogue effects, download the official DeepAR Free Effects Pack, copy its .deepar files into assets/deepar/, then update each asset path in NEXOLY_DEEPAR. Create/verify your Web App key for this GitHub Pages domain.');
+
+      init();
+    })();
+  </script>
+</body>
+  </html>
